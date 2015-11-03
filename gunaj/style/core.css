@@ -255,14 +255,15 @@ body,h1, h2, h3, h4, h5, h6 {
 	
 }
 
-.path-course-view .course_title h1, .path-course-view .course_title h2{
-	font-size:17px;
-	margin-bottom: -5px;
-	font-weight: 300;
+.path-course-view .course_title h1, .path-course-view .course_title h2 {
+	font-size: 22px;
+	font-weight: 500;
+	margin-bottom: -2px;
 }
 
-.path-course-view .course_title h2{
+.path-course-view .course_title h2 {
 	font-size: 15px;
+	font-weight: 300;
 }
 
 .path-course-view .course_title .course_title_left {
@@ -285,7 +286,32 @@ body,h1, h2, h3, h4, h5, h6 {
 	height:86px;
 	padding-top: 20px;
 }
-Z
+
+#page-course-view-topics .course-content ul.topics li.section {
+	border-bottom-style: solid;
+}
+
+#page-course-view-topics .topics .section .content>h3.sectionname {
+	background: url([[pix:theme|li_seccion_curso]]) no-repeat top left;
+	padding: 4px 0px 0px 37px;
+	-webkit-border-bottom-right-radius: 20px;
+	-moz-border-radius-bottomright: 20px;
+	border-bottom-right-radius: 20px;
+	border-right: solid 2px #ccc;
+	border-bottom: solid 2px #ccc;
+	min-height: 40px;
+	text-transform: uppercase;
+	font-size: 18px;
+	font-weight: 300;
+}
+
+
+
+#page-course-view-topics .topics .section .content > h3.sectionname + .summary {
+	background: url([[pix:theme|li_etiqueta]]) no-repeat top left;
+	padding: 0px 0px 0px 20px;
+	margin-left: 17px;
+}
 
 /*************************************/
 /************ BLOCKS *****************/

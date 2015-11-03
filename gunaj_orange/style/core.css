@@ -41,27 +41,6 @@ a {
 	color:#F29230;
 }
 
-
-#page-course-view-topics .topics .section .content > h3.sectionname + .summary {
-	background: url([[pix:theme|li_etiqueta]]) no-repeat top left;
-	padding: 0px 0px 0px 22px;
-	margin-left: 15px;
-}
-
-.topics .section .content > h3.sectionname {
-	background: url([[pix:theme|li_seccion_curso]]) no-repeat top left;
-	padding: 4px 0px 0px 40px;
-	-webkit-border-bottom-right-radius: 20px;
-	-moz-border-radius-bottomright: 20px;
-	border-bottom-right-radius: 20px;
-	border-right: solid 2px #ccc;
-	border-bottom: solid 2px #ccc;
-	min-height: 40px;
-	text-transform: uppercase;
-	font-size: 22px;
-	font-weight: 500;
-}
-
 /*************************************/
 /*********** BREADCRUMB **************/
 /*************************************/
