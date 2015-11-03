@@ -1,0 +1,91 @@
+/*************************************/
+/************ HEADER *****************/
+/*************************************/
+
+.navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
+    border-color: rgb(138,176,63);
+}
+
+.navbar .navbar-nav>.dropdown>a:hover .caret,
+.navbar .navbar-nav>.dropdown>a:focus .caret {
+    border-top-color: rgb(138,176,63);
+    border-bottom-color: rgb(138,176,63);
+}
+
+.navbar-inverse .navbar-toggle{
+    background-color: rgb(138,176,63);
+}
+
+.navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
+    border-color: rgb(138,176,63);
+}
+
+@media (max-width: 767px) {
+	.navbar-inverse .navbar-nav .open .dropdown-menu > li > a:hover, 
+	.navbar-inverse .navbar-nav .open .dropdown-menu > li > a:focus {
+		color: rgb(138,176,63);
+	}
+}
+/*************************************/
+/************** BODY *****************/
+/*************************************/
+a {
+	color:rgb(138,176,63);;
+}
+
+.breadcrumb>li>a:hover, .breadcrumb>li>a:active, .breadcrumb>li>a:focus {
+    color:rgb(138,176,63);
+}
+
+.path-course-view .course_title h2{
+	color:rgb(138,176,63);
+}
+
+
+.topics .section .content > h3.sectionname {
+	background: url([[pix:theme|li_seccion_curso]]) no-repeat top left;
+	padding: 10px 0px 0px 66px;
+	-webkit-border-bottom-right-radius: 20px;
+	-moz-border-radius-bottomright: 20px;
+	border-bottom-right-radius: 20px;
+	border-right: solid 2px #ccc;
+	border-bottom: solid 2px #ccc;
+	min-height: 44px;
+	text-transform: uppercase;
+	font-size: 22px;
+	font-weight: 500;
+}
+
+/*************************************/
+/*********** BREADCRUMB **************/
+/*************************************/
+
+.navbar-inverse .navbar-nav>.open>a,
+.navbar-inverse .navbar-nav>.open>a:hover,
+.navbar-inverse .navbar-nav>.open>a:focus,
+.navbar-inverse .navbar-nav> li >a:hover {
+    border-bottom-color: rgb(138,176,63);
+}
+
+.dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
+	background-color: rgb(138,176,63);
+}
+
+/*************************************/
+/************ BLOCKS *****************/
+/*************************************/
+#block-region-side-post .block .header,
+#block-region-side-pre .block .header {
+	background-color: rgb(138,176,63);
+}
+
+
+.block_login .content .footer div:nth-child(1) a {
+	color:rgb(138,176,63);
+}
+
+.block_login .btn:hover{
+	background:rgb(138,176,63) !important;
+    
+}
+
