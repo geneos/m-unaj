@@ -469,6 +469,10 @@ body,h1, h2, h3, h4, h5, h6 {
 	color:rgb(0,159,227);
 }
 
+/**** LOGIN *****/
+.loginpanel form {
+	background:none;
+}
 
 /*
 .block_login .btn,
