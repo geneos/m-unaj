@@ -420,7 +420,8 @@ body,h1, h2, h3, h4, h5, h6 {
 }
 
 .loginpanel form ,
-.loginpanel form .inputarea input[type="text"]{
+.loginpanel form .inputarea input[type="text"],
+.loginpanel form .inputarea input[type="password"]{
 	background-color:rgb(0,159,227);
 }
 
@@ -474,9 +475,27 @@ body,h1, h2, h3, h4, h5, h6 {
 	background:none;
 }
 
-/*
-.block_login .btn,
-.block_login .content .footer a {
-    background-color: #ecedf0;
-	border: 1px solid #b4b4b7;
-}*/
+/** FORMATO PESTAÑAS **/
+
+.nav-tabs.nav-justified>li a:hover{
+	cursor:pointer;
+}
+
+.nav-tabs.nav-justified>li a {
+	min-height:38px;
+	min-width: 35px;
+}
+
+.nav-tabs.nav-justified>li.active a:hover{
+	cursor:default;
+}
+
+@media (min-width: 992px) {
+	.nav-tabs.nav-justified>li {
+		float:left;
+		width: auto;
+		margin-bottom: 4px;
+	}
+	
+}
+
