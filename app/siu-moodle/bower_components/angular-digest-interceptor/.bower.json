@@ -1,0 +1,37 @@
+{
+  "name": "angular-digest-interceptor",
+  "version": "0.0.1",
+  "homepage": "https://github.com/PatrickHeneise/angular-digest-interceptor.git",
+  "authors": [
+    "Patrick Heneise <mail@patrickheneise.com>"
+  ],
+  "description": "AngularJS Digest Authentication Interceptor",
+  "main": "digest.js",
+  "keywords": [
+    "angularjs",
+    "digest",
+    "auth",
+    "authentication",
+    "interceptor",
+    "passportjs",
+    "angular"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "_release": "0.0.1",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.0.1",
+    "commit": "6770087798352a7b7d54ab3d74283a5d717ef70b"
+  },
+  "_source": "git://github.com/PatrickHeneise/angular-digest-interceptor.git",
+  "_target": "~0.0.1",
+  "_originalSource": "angular-digest-interceptor",
+  "_direct": true
+}
