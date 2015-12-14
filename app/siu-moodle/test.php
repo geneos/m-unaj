@@ -1,20 +1,20 @@
 <?
 //Obtengo parametros post
-$username = $_POST['username'];
+/*$username = $_POST['username'];
 $password = $_POST['password'];
 $method = $_POST['method'];
 $parameters = $_POST['parameters'];
-$url = $_POST['url'];
+$url = $_POST['url'];*/
 
-$data = array("curso" => 'curso',"nombre" => 'nombre');
+$data = array("curso" => '',"nombre" => '');
+$data_string = json_encode($data);  
 
 $ch = curl_init();
 // set url
-curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
 curl_setopt($ch, CURLOPT_URL, 'http://170.210.158.23/guarani/3.10/rest/cursos/test2');
 curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
 curl_setopt($ch, CURLOPT_USERPWD, 'guarani' .":".'guarani');
-
+//curl_setopt($ch, CURLOPT_PUT, true);
 
 //first authentication with a head request
 curl_setopt($ch, CURLOPT_NOBODY, 1);
@@ -25,13 +25,19 @@ try {
 
   //get the real output
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-  curl_setopt($ch, CURLOPT_HEADER, 1);
+  curl_setopt($ch, CURLOPT_NOBODY, FALSE);
+  //curl_setopt($ch, CURLOPT_HEADER, 1);
   curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
-  //curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
-  //curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+  //curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+  curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
+    'Content-Type: application/json',                                                                                
+    'Content-Length: ' . strlen($data_string))                                                                       
+  );   
+  curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+  
   //curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
   $result = array();
-  $result['response']         = curl_exec($ch);
+  $result['response']         = json_decode(curl_exec($ch));
   $result['info']             = curl_getinfo ($ch);
   $result['info']['errno']    = curl_errno($ch);
   $result['info']['errmsg']   = curl_error($ch);
@@ -42,11 +48,13 @@ try {
 
   // validate HTTP status code (user/password credential issues)
   $status_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-  if ($status_code != 200){
-      var_dump( $result['info']) ;
-	echo  $result['info']['errno'];
-	echo $result['info']['errmsg'];
-      throw new Exception("Response with Status Code [" . $status_code . "].", 500);
+
+  if ($status_code != 200 || $status_code != 201 || $status_code != 204){
+      var_dump( $result) ;
+	echo $result['response']->error;
+	echo $result['response']->mensaje;
+	echo $result['response']->descripcion;
+      throw new Exception("Response with Status Code [" . $status_code . ":".$result['response']->descripcion."].", 500);
 }
 
 } catch(Exception $ex) {
@@ -57,11 +65,6 @@ try {
 if ($ch != null) curl_close($ch);
 
 //Prints output without header
-$datastring = substr($result['response'],$result['info']['header_size']);
-echo $datastring;
-
-echo $result['info'] ;
-echo  $result['info']['errno'];
-echo $result['info']['errmsg'];
+var_dump($result);
 
 ?>

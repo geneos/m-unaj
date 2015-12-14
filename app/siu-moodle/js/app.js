@@ -54,4 +54,5 @@ var app = angular.module('siuMoodleApp', ['ngTable','angular-md5','LocalStorageM
 	}
 	return false;
 	};
+
 });

@@ -20,9 +20,12 @@
 
 		<link rel="stylesheet" href="css/ng-table.min.css">
 		
+
 		<script src="bower_components/angular/angular.min.js"></script>
+		
 		<script src="js/ng-table.min.js"></script>
 		<script src="js/app.js"></script>
+		<script src="js/properties.js"></script>
 		<script src="js/controller.js"></script>
 		<script src="js/siuFactory.js"></script>
 		<script src="js/moodleFactory.js"></script>
@@ -32,25 +35,66 @@
 
 
 		
-
 	</head>
 	<body>
-		<div data-ng-app="siuMoodleApp" data-ng-controller="siuMoodleCtrl" >
+		<div class="container">
+			<div class="" data-ng-app="siuMoodleApp" data-ng-controller="siuMoodleCtrl" >
+					
+				<script type="text/ng-template" id="headerCheckbox.html">
+				    <input type="checkbox" ng-model="selectedAll" ng-click="checkAll()" value="" />
+				</script>
+				
+			
+				<div class="row">
+					<div class="col-sm-10 col-sm-offset-1" >
+						<div class="form-horizontal">
+						  <div class="form-group">
+						    <label for="siuUser"  class="col-sm-2 control-label">Usuario SIU</label>
+						    <div class="col-sm-4">
+						      <input ng-disabled="dataInitialized" type="text" class="form-control" id="siuUser" ng-model="siuUser" placeholder="Usuario">
+						    </div>
+						    <label for="siuPassword"  class="col-sm-2 control-label">Password SIU</label>
+						    <div class="col-sm-4">
+						      <input ng-disabled="dataInitialized" type="password" class="form-control" id="siuPassword" ng-model="siuPassword" placeholder="Password">
+						    </div>
+						  </div>
+						  <div class="form-group">
+						    <label for="moodleToken"  class="col-sm-2 control-label">Moodle Token</label>
+						    <div class="col-sm-6">
+						      <input ng-disabled="dataInitialized" type="text" class="form-control" id="moodleToken"ng-model="moodleToken"  placeholder="Token">
+						    </div>
+						    <div class="col-sm-2">
+						      <button type="button" class="btn btn-primary" ng-click="initData()">Cargar datos</button>
+						    </div>
+						    
+						  </div>
+						</div>
+					</div>
+				</div>
 
-			<table ng-table="tableParams" class="table table-hover table-bordered" show-filter="true">
-			    <tr ng-repeat="comision in $data" data-ng-class="{success:(comision.actividad_codigo | comisionMigrated:moodlecourses), danger: !(comision.actividad_codigo | comisionMigrated:moodlecourses)}">
-				<td title="'#'">{{ $index + 1 }}</td>
-				<td header="'headerCheckbox.html'"><input type="checkbox" ng-model="synchronizedData[$index].selected" /></td>
-				<td title="'Comision'">{{comision.comision}}</td>				
-				<td title="'Codigo'" sortable="'actividad_codigo'" filter="{actividad_codigo: 'text'}">
-				    {{comision.actividad_codigo}}</td>
-				<td title="'Actividad'" sortable="'actividad_nombre'" filter="{actividad_nombre: 'text'}">
-				    {{comision.actividad_nombre}}</td>
-				<td filter="{ {comision.actividad_codigo | comisionMigrated:moodlecourses}: 'select'}" filter-data="[{'id':true,'title':true},{'id':false,'title':false}]"><button type="button" class="btn btn-primary" ng-disabled="comision.actividad_codigo | comisionMigrated:moodlecourses" ng-click="createCourse(comision)">Importar</button></td>
-				<td><button type="button" class="btn btn-success" ng-disabled="!(comision.actividad_codigo | comisionMigrated:moodlecourses)" >Sincronizar</button></td>
-			    </tr>
-			</table>
 
+				<div class="row">
+					<table ng-table="tableParams" class="table table-hover table-bordered" show-filter="true">
+					    <tr ng-repeat="comision in $data" data-ng-class="{success:(comision.actividad_codigo | comisionMigrated:moodlecourses), danger: !(comision.actividad_codigo | comisionMigrated:moodlecourses)}">
+						<td title="'#'">{{ $index + 1 }}</td>
+						<td header="'headerCheckbox.html'"><input type="checkbox" ng-model="synchronizedData[$index].selected" /><input type="checkbox" ng-model="comision.selected"  value="" /></td>
+						<td title="'Comision'">{{comision.comision}}</td>				
+						<td title="'Codigo'" sortable="'actividad_codigo'" filter="{actividad_codigo: 'text'}">
+						    {{comision.actividad_codigo}}</td>
+						<td title="'Actividad'" sortable="'actividad_nombre'" filter="{actividad_nombre: 'text'}">
+						    {{comision.actividad_nombre}}</td>
+						<td title="'Categoria'" >
+						    <select ng-options="category.id as category.name for category in categoriasUnaj" ng-model="comision.moodleCategoryID" ng-disabled="comision.actividad_codigo | comisionMigrated:moodlecourses"></select></td>
+						<td ><button type="button" class="btn btn-primary" ng-disabled="comision.actividad_codigo | comisionMigrated:moodlecourses" ng-click="importCourse(comision)">Importar</button></td>
+						<td><button type="button" class="btn btn-success" ng-disabled="!(comision.actividad_codigo | comisionMigrated:moodlecourses)" >Sincronizar</button></td>
+					    </tr>
+					</table>
+				</div>
+				<div class="row">
+					<samp><textarea id="logArea" ng-model="logArea" rows=10 style="overflow-y:scroll"  class="col-sm-12 bg-success text-warning"></textarea></samp>
+				</div>
+
+			</div>
 		</div>
 		
 	</body>

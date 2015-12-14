@@ -39,6 +39,18 @@ app.factory('siuFactory', function($http,md5){
 
 	};
 
+	service.getEstudiantes = function(){
+	_finalUrl = _url + 'cursos';
+	return $http.post('wrapper.php',setParametros())
+
+	};
+
+	service.getProfesores = function(){
+	_finalUrl = _url + 'cursos';
+	return $http.post('wrapper.php',setParametros())
+
+	};
+
 	return service;
 });
 

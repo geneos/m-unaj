@@ -36,6 +36,12 @@ app.factory('moodleFactory', function($http){
 	return $http.post(_url,_parametros);
 	};
 
+	service.getCategoriesByParent = function(parent){
+	_function = "core_course_get_categories";
+	setParametros().criteria= [{"key":"parent","value":parent}];
+	return $http.post(_url,_parametros);
+	};
+
 	service.getCourses = function(ids){
 	if (ids == null)
 	ids = [];
