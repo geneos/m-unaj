@@ -1,0 +1,75 @@
+/*************************************/
+/************ HEADER *****************/
+/*************************************/
+
+.navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
+    border-color: #9FA3A2;
+}
+
+.navbar .navbar-nav>.dropdown>a:hover .caret,
+.navbar .navbar-nav>.dropdown>a:focus .caret {
+    border-top-color: #9FA3A2;
+    border-bottom-color: #9FA3A2;
+}
+
+.navbar-inverse .navbar-toggle{
+    background-color: #9FA3A2;
+}
+
+.navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
+    border-color: #9FA3A2;
+}
+
+@media (max-width: 767px) {
+	.navbar-inverse .navbar-nav .open .dropdown-menu > li > a:hover, 
+	.navbar-inverse .navbar-nav .open .dropdown-menu > li > a:focus {
+		color: #9FA3A2;
+	}
+}
+/*************************************/
+/************** BODY *****************/
+/*************************************/
+a {
+	color:#9FA3A2;
+}
+
+.breadcrumb>li>a:hover, .breadcrumb>li>a:active, .breadcrumb>li>a:focus {
+    color:#9FA3A2;
+}
+
+.path-course-view .course_title h2{
+	color:#9FA3A2;
+}
+
+/*************************************/
+/*********** BREADCRUMB **************/
+/*************************************/
+
+.navbar-inverse .navbar-nav>.open>a,
+.navbar-inverse .navbar-nav>.open>a:hover,
+.navbar-inverse .navbar-nav>.open>a:focus,
+.navbar-inverse .navbar-nav> li >a:hover {
+    border-bottom-color: #9FA3A2;
+}
+
+.dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
+	background-color: #9FA3A2;
+}
+
+/*************************************/
+/************ BLOCKS *****************/
+/*************************************/
+#block-region-side-post .block .header,
+#block-region-side-pre .block .header {
+	background-color:#9FA3A2;
+}
+
+
+.block_login .content .footer div:nth-child(1) a {
+	color:#9FA3A2;
+}
+
+.block_login .btn:hover{
+	background:#9FA3A2 !important;
+   
+}
