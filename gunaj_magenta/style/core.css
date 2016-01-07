@@ -72,3 +72,28 @@ a {
 	background:#A63322 !important;
     
 }
+
+/** TINY MCE **/
+.titulo_oscuro{
+	color:#911d14;
+}
+
+.titulo_claro{
+	color:#b7433b;
+}
+
+.subtitulo_oscuro{
+	color:#911d14;
+}
+
+.subtitulo_claro{
+	color:#b7433b;
+}
+
+.recuadro_oscuro{
+	border-color:#911d14;
+}
+
+.recuadro_claro{
+	border-color:#b7433b;
+}

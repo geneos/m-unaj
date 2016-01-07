@@ -499,3 +499,21 @@ body,h1, h2, h3, h4, h5, h6 {
 	
 }
 
+/** TINY MCE **/
+
+.titulo_oscuro,.titulo_claro{
+	font-size:18px;
+	margin-bottom:12px;
+	display:inline-block;
+	text-transform:uppercase;
+}
+
+.subtitulo_oscuro,.subtitulo_claro{
+	font-size:16px;
+	margin-bottom:8px;
+	display:inline-block;
+}
+
+.recuadro_oscuro,.recuadro_claro{
+	border:1px solid;
+	

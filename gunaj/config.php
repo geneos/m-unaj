@@ -31,6 +31,7 @@ $THEME->name = 'gunaj';
 $THEME->parents = array('elegance','bootstrap');
 
 $THEME->sheets = array('core');
+$THEME->editor_sheets = array('editor');
 
 $THEME->supportscssoptimisation = false;
 
