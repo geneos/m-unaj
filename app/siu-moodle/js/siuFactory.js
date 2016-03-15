@@ -1,4 +1,4 @@
-app.factory('siuFactory', function($http,md5){
+app.factory('siuFactory', function($http,PROPERTIES){
 	var service = {};
 	var _url = '';
 	var _parametros = '';
@@ -18,6 +18,14 @@ app.factory('siuFactory', function($http,md5){
 	_password = password;
 	}
 
+	function setInfiniteLimit(){
+	_finalUrl = _finalUrl + '?limit=999'
+	}
+
+	function setFinalUrl(path){
+	_finalUrl = _url + path;
+	}
+
 	function setParametros(){
 	_parametros = 
 	{
@@ -28,26 +36,56 @@ app.factory('siuFactory', function($http,md5){
 	return _parametros;
 	}
 
+
 	service.getComisiones = function(){
-	_finalUrl = _url + 'comisiones';
+	setFinalUrl('comisiones');
+	return $http.post('wrapper.php',setParametros())
+	};
+
+	service.getAllComisiones = function(){
+	setFinalUrl('comisiones');
+	setInfiniteLimit();
 	return $http.post('wrapper.php',setParametros())
 	};
 
 	service.getCursos = function(){
-	_finalUrl = _url + 'cursos';
+	setFinalUrl('cursos');
+	setInfiniteLimit();
 	return $http.post('wrapper.php',setParametros())
 
 	};
 
-	service.getEstudiantes = function(){
-	_finalUrl = _url + 'cursos';
-	return $http.post('wrapper.php',setParametros())
+	//Agrego prefijo PREFIX como para poder saber cuales son de moodle
+	service.createCurso = function(id,codigo){
+	_finalUrl = _url + 'cursos/'+PROPERTIES.PREFIX+id;
+	setParametros().parameters = {"curso": PROPERTIES.PREFIX+id,"nombre":PROPERTIES.CURRENT_YEAR+'-'+codigo};
+	return $http.post('put.php',_parametros)
 
 	};
 
-	service.getProfesores = function(){
-	_finalUrl = _url + 'cursos';
-	return $http.post('wrapper.php',setParametros())
+	service.addComisionCurso = function(id,idcomision){
+	_finalUrl = _url + 'cursos/M-'+id+'/comisiones/'+idcomision;
+	setParametros();
+	return $http.post('put.php',_parametros)
+
+	};
+
+
+	service.getAlumnos = function(idcomision){
+	setFinalUrl('comisiones/'+idcomision+'/alumnos');
+	//setInfiniteLimit();
+	//Agrego este parametro solo para saber la comision en el callback
+	setParametros().comision = idcomision;
+	return $http.post('wrapper.php',_parametros)
+
+	};
+
+	service.getDocentes = function(idcomision){
+	setFinalUrl('comisiones/'+idcomision+'/docentes');
+	//setInfiniteLimit();
+	//Agrego este parametro solo para saber la comision en el callback
+	setParametros().comision = idcomision;
+	return $http.post('wrapper.php',_parametros)
 
 	};
 

@@ -38,6 +38,6 @@ if ($ch != null) curl_close($ch);
 //Prints output without header
 if ($status_code != 200)
 	$error = true;
-$datastring = /*'{status:'.$status_code.',data:'.*/substr($result['response'],$result['info']['header_size'])/*.'}'*/;
+$datastring = substr($result['response'],$result['info']['header_size']);
 echo $datastring;
 ?>
