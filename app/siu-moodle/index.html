@@ -19,6 +19,7 @@
 		<![endif]-->
 
 		<link rel="stylesheet" href="css/ng-table.min.css">
+		<link rel="stylesheet" href="css/custom.css">
 		
 
 		<script src="bower_components/angular/angular.min.js"></script>
@@ -32,9 +33,10 @@
 		
 	</head>
 	<body>
-		<div class="container">
-			<div class="" data-ng-app="siuMoodleApp" data-ng-controller="siuMoodleCtrl" >
-				
+		
+		<div id="app" data-ng-app="siuMoodleApp" data-ng-controller="siuMoodleCtrl" >
+			
+			<div class="container">
 
 				<button type="button" class="btn btn-primary" ng-click="testGrupo()">Test crear grupo</button><br>
 				<button type="button" class="btn btn-primary" ng-click="testUser()">Test crear user</button><br>
@@ -72,7 +74,7 @@
 						  <div class="form-group">
 						    <label for="siuPeriodos"  class="col-sm-2 control-label">Periodos</label>
 						    <div class="col-sm-4">
-						       <select class="form-control" ng-options="periodo.periodo_lectivo as periodo.nombre for periodo in periodosLectivos" ng-model="periodoSelected"></select>
+						       <select class="form-control" ng-options="periodo as periodo.nombre for periodo in periodosLectivos" ng-model="periodoSelected" ng-change="update()"></select>
 						    </div>
 						    <div class="col-sm-2">
 						      <button type="button" class="btn btn-primary" ng-click="initData()">Cargar datos</button>
@@ -99,24 +101,60 @@
 						<td title="'Actividad'" sortable="'nombre'" filter="{nombre: 'text'}">
 						    {{actividad.nombre}}</td>
 						<td title="'Categoria'" >
-						    <select ng-options="category.id as category.name for category in categoriasUnaj" ng-model="actividad.moodleCategoryID" ng-disabled="actividad.actividad_codigo | actividadMigrated:moodlecourses"></select></td>
+						    <select ng-options="category.id as category.name for category in categoriasUnaj" ng-model="actividad.moodleCategoryID" ng-disabled="!actividad.migrado"  ></select></td>
 						<td ><button type="button" class="btn btn-primary" ng-disabled="actividad.migrado" ng-click="importCourse(actividad)">Importar</button></td>
 						<td ><button type="button" class="btn btn-danger" ng-disabled="actividad.codError == 0" ng-click="repairCourse(actividad)">Reparar</button></td>
-						<td><button type="button" class="btn btn-success" ng-disabled="!actividad.migrado" ng-click="syncrhonizeCourse(actividad)" >Sincronizar</button></td>
+						<td><button type="button" class="btn btn-success" ng-disabled="!actividad.migrado" ng-click="synchronizeCourse(actividad)" >Sincronizar</button></td>
 					    </tr>
 
 					    <tr ng-hide="actividad.$hideRows" class="warning" ng-repeat="comision in actividad.comisiones" ng-repeat-end>
-							<td colspan="8">{{comision.comision}}</td>
+							<td colspan="8">{{comision.nombre}}</td>
 						</tr>
 
 					</table>
 				</div>
+
+
+				<div class="row">
+					<div class="col-sm-9 col-sm-offset-3" >
+						<div class="form-horizontal">
+						  <div class="form-group">
+						    <div class="col-sm-8">
+						    </div>
+						    <div class="col-sm-2">
+						      <button type="button" class="btn btn-primary" ng-click="bulkImportCourses()">Importar Todos</button>
+						    </div>
+						    <div class="col-sm-2">
+						      <button type="button"  class="btn btn-success" ng-click="bulkSynchronizeCourses()">Sincronizar Todos</button>
+						    </div>
+						  </div>
+
+
+						</div>
+					</div>
+				</div>
+
 
 				<div class="row">
 					<samp><textarea id="logArea" ng-model="logArea" rows=10 style="overflow-y:scroll"  class="col-sm-12 bg-success text-warning"></textarea></samp>
 				</div>
 
 			</div>
+
+
+			<div id="loading-container" ng-show="spinner">
+				<div id="loading" class="loading bar">
+					<div></div>
+					<div></div>
+					<div></div>
+					<div></div>
+					<div></div>
+					<div></div>
+					<div></div>
+					<div></div>
+				</div>
+			</div>
+
 		</div>
 		
 	</body>

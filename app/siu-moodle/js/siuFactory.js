@@ -19,7 +19,7 @@ app.factory('siuFactory', function($http,PROPERTIES){
 	}
 
 	function setInfiniteLimit(){
-	_finalUrl = _finalUrl + '?limit=999'
+	_finalUrl = _finalUrl + '?limit=20'
 	}
 
 	function setFinalUrl(path){

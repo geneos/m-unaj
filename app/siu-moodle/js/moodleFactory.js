@@ -31,13 +31,15 @@ app.factory('moodleFactory', function($http,PROPERTIES){
 
 	/*
 		Crea un curso dentro de la plataforma moodle.
-		- Se agrega como prefijo el año en el shortname para identificarlo, ya que debe existir un curso por año dada una actividad
+		- Se agrega como prefijo PREFIX definido en properties y se agrega como sufijo el periodo lectivo ya que debe existir un curso por año dada una actividad
 		- El curso se agrega siempre a la categoria "importados" dentro de el instituto que corresponda
 		- Se crean en el formato de temas
+		- Se agrega como descripcion el nombre del periodo lectivo.
 	*/
-	service.createCourse = function(fullname,shortname,category){
+	service.createCourse = function(fullname,shortname,category,periodo){
+		console.log(periodo);
 	_function = "core_course_create_courses";
-	setParametros().courses = [{"fullname":fullname,"shortname":PROPERTIES.CURRENT_YEAR+'-'+shortname,"categoryid":category,"visible":0,"format":"topics"}];
+	setParametros().courses = [{"fullname":fullname,"shortname":PROPERTIES.MOODLE_COURSE_SHORTNAME_PREFIX+shortname+'-'+periodo.periodo_lectivo,"categoryid":category,"visible":0,"format":"topics","summary":periodo.nombre}];
 	return $http.post(_url,_parametros);
 	};
 
@@ -64,6 +66,15 @@ app.factory('moodleFactory', function($http,PROPERTIES){
 	return enrolUser(PROPERTIES.MOODLE_TEACHING_ROLE_ID,userid,courseid);
 	};
 
+
+	/*
+		Desmatricula un usuario {userid} del curso {courseid}
+	*/
+	service.unenrolUser = function (userid,courseid){
+	_function = "enrol_manual_unenrol_users";
+	setParametros().enrolments = [{"userid":userid,"courseid":courseid}];
+	return $http.post(_url,_parametros);
+	};
 
 	service.createGroupForCourseFunctionName = function(){
 		return "core_group_create_groups";
@@ -127,7 +138,7 @@ app.factory('moodleFactory', function($http,PROPERTIES){
 	}
 
 	service.getGroupsMembers = function(groupsid){
-	_function = "local_myplugin_get_group_members";
+	_function = "core_group_get_group_members";
 	setParametros().groupids = groupsid;
 	return $http.post(_url,_parametros);
 	};
@@ -138,15 +149,19 @@ app.factory('moodleFactory', function($http,PROPERTIES){
 	return $http.post(_url,_parametros);
 	};
 
-	service.getCategoriesImportCategory = function(parent){
+	/*service.getCategoriesImportCategory = function(parent){
 	_function = "core_course_get_categories";
-	setParametros().criteria= [{"key":"parent","value":parent},{"key":"name","value":'importados'}];
+	setParametros().criteria= [{"key":"parent","value":parent},{"key":"name","value":PROPERTIES.MOODLE_IMPORT_CATEGORY_NAME}];
 	return $http.post(_url,_parametros);
-	};
+	};*/
 
-	service.getCategoriesByParent = function(parent){
+	service.getCategoriesByParent = function(parent,subcategories){
+	var value = "1";
+	if (!subcategories)
+		value = "0";
 	_function = "core_course_get_categories";
-	setParametros().criteria= [{"key":"parent","value":parent}];
+	setParametros().criteria = [{"key":"parent","value":parent}];
+	_parametros.addsubcategories = value;
 	return $http.post(_url,_parametros);
 	};
 

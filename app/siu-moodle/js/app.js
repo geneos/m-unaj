@@ -47,15 +47,16 @@ var app = angular.module('siuMoodleApp', ['ngTable'],function($httpProvider) {
 	});
 
 
-	app.filter('estudianteMigrated', function() {
-		return function(estudianteSiu,comisionSiu,cursosMoodle) {
+	app.filter('estudianteMigrated', function($filter) {
+		return function(estudianteSiu,comisionSiu,cursosMoodle,actividad,periodo) {
 			for (var i = 0; i<cursosMoodle.length ; i++){
-				if (cursosMoodle[i].comisiones){
+				if ($filter('actividadEquals')(actividad,cursosMoodle[i].shortname,periodo) && cursosMoodle[i].comisiones){
 					for (var j = 0; j<cursosMoodle[i].comisiones.length ; j++){
 						if (comisionSiu == cursosMoodle[i].comisiones[j].name ){
+							console.log(cursosMoodle[i].comisiones[j]);
 							if (cursosMoodle[i].comisiones[j].estudiantes){
 								for (var h = 0; h<cursosMoodle[i].comisiones[j].estudiantes.length ; h++){
-									if (estudianteSiu.usuario == cursosMoodle[i].comisiones[j].estudiantes[h].username)
+									if (estudianteSiu.usuario.toLowerCase() == cursosMoodle[i].comisiones[j].estudiantes[h].username)
 										return true;
 								}
 
@@ -69,18 +70,37 @@ var app = angular.module('siuMoodleApp', ['ngTable'],function($httpProvider) {
 		};
 	});
 
-	app.filter('docenteMigrated', function() {
-		return function(docenteSiu,comisionSiu,cursosMoodle) {
+	app.filter('docenteMigrated', function($filter) {
+		return function(docenteSiu,comisionSiu,cursosMoodle,actividad,periodo) {
 			for (var i = 0; i<cursosMoodle.length ; i++){
-				if (cursosMoodle[i].comisiones){
+				if ($filter('actividadEquals')(actividad,cursosMoodle[i].shortname,periodo) && cursosMoodle[i].comisiones){
 					for (var j = 0; j<cursosMoodle[i].comisiones.length ; j++){
 						if (comisionSiu == cursosMoodle[i].comisiones[j].name ){
 							if (cursosMoodle[i].comisiones[j].docentes){
 								for (var h = 0; h<cursosMoodle[i].comisiones[j].docentes.length ; h++){
-									if (docenteSiu.usuario == cursosMoodle[i].comisiones[j].docentes[h].username)
+									if (docenteSiu.usuario.toLowerCase() == cursosMoodle[i].comisiones[j].docentes[h].username)
 										return true;
 								}
 
+							}
+						return false;
+						}
+					}	
+				}
+			};
+			return false;
+		};
+	});
+
+	app.filter('isDocente', function($filter) {
+		return function(username,comision,actividades,moodleCourseShortName,periodo) {
+			for (var i = 0; i<actividades.length ; i++){
+				if ($filter('actividadEquals')(actividades[i].codigo,moodleCourseShortName,periodo) && actividades[i].comisiones){
+					for (var j = 0; j<actividades[i].comisiones.length ; j++){
+						if (comision == actividades[i].comisiones[j].nombre && actividades[i].comisiones[j].docentes){
+							for (var h = 0; h<actividades[i].comisiones[j].docentes.length ; h++){
+								if (username == actividades[i].comisiones[j].docentes[h].docente.usuario.toLowerCase())
+									return true;
 							}
 						return false;
 						}
@@ -104,10 +124,10 @@ var app = angular.module('siuMoodleApp', ['ngTable'],function($httpProvider) {
 	});
 
 
-	app.filter('comisionMigrated', function() {
-		return function(comision,cursosMoodle) {
+	app.filter('comisionMigrated', function($filter) {
+		return function(comision,cursosMoodle,actividad,periodo) {
 			for (var i = 0; i<cursosMoodle.length ; i++){
-				if (cursosMoodle[i].comisiones){
+				if ( $filter('actividadEquals')(actividad,cursosMoodle[i].shortname,periodo) &&  cursosMoodle[i].comisiones){
 					for (var j = 0; j<cursosMoodle[i].comisiones.length ; j++){
 						if (comision == cursosMoodle[i].comisiones[j].name)
 							return true;
@@ -119,17 +139,18 @@ var app = angular.module('siuMoodleApp', ['ngTable'],function($httpProvider) {
 	});
 
 	app.filter('actividadEquals', function(PROPERTIES) {
-		return function(actividadSiu,actividadMoodle) {
-			if (PROPERTIES.CURRENT_YEAR+'-'+actividadSiu == actividadMoodle)
+
+		return function(actividadSiu,actividadMoodle,periodo) {
+			if (PROPERTIES.MOODLE_COURSE_SHORTNAME_PREFIX+actividadSiu+'-'+periodo.periodo_lectivo == actividadMoodle)
 				return true;
 			return false;
 		};
 	});
 
 	app.filter('actividadMigrated', function($filter) {
-		return function(actividad,cursosMoodle) {
+		return function(actividad,cursosMoodle,periodo) {
 			for (var i = 0; i<cursosMoodle.length ; i++){
-				if ($filter('actividadEquals')(actividad,cursosMoodle[i].shortname)){
+				if ($filter('actividadEquals')(actividad,cursosMoodle[i].shortname,periodo)){
 					return true;
 				}
 			}

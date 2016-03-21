@@ -3,20 +3,18 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,PROPERTIES,ngT
 	$scope.logArea = '';
 	
 	logInfo = function (text){
-		//$scope.logArea = angular.element(document.querySelector('#logArea'));
 		$scope.logArea = $scope.logArea + '[INFO] '+text+'\n';
+		console.info(text);
 	}
 
 	logSuccess = function (text,caller,object){
-		//$scope.logArea = angular.element(document.querySelector('#logArea'));
 		$scope.logArea = $scope.logArea + '[SUCESS] '+text+'\n';
 		console.log(caller+'.success',object);
 	}
 	
 	logError = function (text,caller,object){
-		//$scope.logArea = angular.element(document.querySelector('#logArea'));
 		$scope.logArea = $scope.logArea + '[ERROR] '+text+'\n';
-		console.log(caller+'.error',object);
+		console.error(caller+'.error',object);
 	}
 
 	$scope.logClear = function (){
@@ -25,6 +23,7 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,PROPERTIES,ngT
 
 	$scope.dataInitialized = false;
 	$scope.periodosInitialized = false;
+	$scope.spinner = false;
 
 
 	$scope.selectedAll = false;
@@ -62,10 +61,9 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,PROPERTIES,ngT
 
 	//TEST CATEGORIA IMPORTADOS
 	$scope.testCategoriaImportar = function(){
-		moodleFactory.getCategoriesImportCategory(5)
+		moodleFactory.getCategoriesByParent(5)
 		.success(function(data) {
 		    if (data.exception) {
-			console.log(data.exception + '\n'+data.message +'\n'+data.debuginfo);
 			logError('Error al intentar crear grupo:'+'\n'+data.exception+'\n'+data.message +'\n'+data.debuginfo,'moodleFactory.createGroupForCourse',data);
 		    }else{
 			logSuccess('Se creo grupo' +data+' de Moodle');
@@ -84,10 +82,8 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,PROPERTIES,ngT
 		moodleFactory.createGroupForCourse(2,"Comision 1")
 		.success(function(data) {
 		    if (data.exception) {
-			console.log(data.exception + '\n'+data.message +'\n'+data.debuginfo);
 			logError('Error al intentar crear grupo:'+'\n'+data.exception+'\n'+data.message +'\n'+data.debuginfo,'moodleFactory.createGroupForCourse',data);
 		    }else{
-		    	console.log(data);
 			logSuccess('Se creo grupo' +data+' de Moodle');
 		    }
 		}).error(function(data, status, header, config) {
@@ -104,7 +100,6 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,PROPERTIES,ngT
 		moodleFactory.createUser("123456","@1B2c3D4","test","test2","test@testaso.com")
 		.success(function(data) {
 		    if (data.exception) {
-			console.log(data.exception + '\n'+data.message +'\n'+data.debuginfo);
 			logError('Error al intentar crear user:'+'\n'+data.exception+'\n'+data.message +'\n'+data.debuginfo,'moodleFactory.createGroupForCourse',data);
 		    }else{
 			logSuccess('Se creo user' +data+' de Moodle');
@@ -123,7 +118,6 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,PROPERTIES,ngT
 		moodleFactory.enrolUser(5,4,2)
 		.success(function(data) {
 		    if (data && data.exception) {
-			console.log(data.exception + '\n'+data.message +'\n'+data.debuginfo);
 			logError('Error al intentar enrole user:'+'\n'+data.exception+'\n'+data.message +'\n'+data.debuginfo,'moodleFactory.createGroupForCourse',data);
 		    }else{
 			logSuccess('Se creo enrol' +data+' de Moodle');
@@ -142,7 +136,6 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,PROPERTIES,ngT
 		moodleFactory.addGroupMember(3,4)
 		.success(function(data) {
 		    if (data && data.exception) {
-			console.log(data.exception + '\n'+data.message +'\n'+data.debuginfo);
 			logError('Error al intentar add group memeber:'+'\n'+data.exception+'\n'+data.message +'\n'+data.debuginfo,'moodleFactory.createGroupForCourse',data);
 		    }else{
 			logSuccess('Se creo add group' +data+' de Moodle');
@@ -211,7 +204,7 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,PROPERTIES,ngT
 		moodleUsersPromise
 			.success(function (data) {
 					if(!data.exception){
-						console.log('TODOS LOS USUARIOS',data);
+						console.info('TODOS LOS USUARIOS',data);
 						$scope.moodleusers =  data.users;
 						logInfo('Se obtuvieron '+data.users.length + ' usuarios de moodle')
 					}
@@ -222,23 +215,10 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,PROPERTIES,ngT
 					logError('Error al intentar obtener usuarios de moodle','moodleFactory.getUsers',data);
 				});
 
-		//Mando a pedir comisiones (Ordenadas por actividad) y agrego a la cola de request
-		/*var siuComisionesPromise = siuFactory.getComisiones();
-		requestPromise.push(siuComisionesPromise);
-		siuComisionesPromise
-			.success(function(data) {
-			    if (data.mensaje){
-					logError('Error al intentar obtener comisiones de SIU: '+data.mensaje,'siuFactory.getComisiones',data);
-			    }
-			    else {*/
-
-
-			    	
-			    	//$scope.comisiones = $filter('filter')($scope.comisiones,    params.filter());
 
     	//Filtro por periodo
 		var comisionesFiltered = $scope.comisiones.filter(function (comision) {
-		    return (comision.periodo_lectivo.periodo_lectivo == $scope.periodoSelected);
+		    return (comision.periodo_lectivo.periodo_lectivo == $scope.periodoSelected.periodo_lectivo);
 		});
 
 
@@ -258,7 +238,7 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,PROPERTIES,ngT
 			  							'checked':false,
 			  							'moodleCategoryID':null,
 			  							'migrado':false,
-			  							'curso':0,
+			  							//'curso':0,
 			  							'codError':0,
 			  							'$hideRows':true
 			  							});
@@ -272,7 +252,6 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,PROPERTIES,ngT
 	    //Itero sobre todos las actividades y obtengo los docentes
 	    var docentesPromise = [];
 		angular.forEach($scope.actividades, function (actividad) {
-			console.log('Voy a obtener Docentes');
 			angular.forEach(actividad.comisiones, function (comision) {
 				docentesPromise.push (siuFactory.getDocentes(comision.comision));
 			});
@@ -282,37 +261,35 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,PROPERTIES,ngT
 		//Itero sobre todos las actividades y obtengo los estudiantes
 	    var estudiantesPromise = [];
 		angular.forEach($scope.actividades, function (actividad) {
-			console.log('Voy a obtener Alumnos');
 			angular.forEach(actividad.comisiones, function (comision) {
 				estudiantesPromise.push (siuFactory.getAlumnos(comision.comision));
 			});
 		    
 		});	
+
+
+		var docentesSiuFinishedDefer = $q.defer();
+		var docentesSiuFinishedPromise = docentesSiuFinishedDefer.promise;
 		$q.all(docentesPromise).then(function(data) {
-			console.log('Docentes!!',data);
 			for (i=0 ; i<data.length ; i++){
 				if (data[i].data.length > 0)
 					addProfesorsToComision(data[i].data,data[i].config.data.comision);
 			}
+			docentesSiuFinishedDefer.resolve();
 		});
 
+		var estudiantesSiuFinishedDefer = $q.defer();
+		var estudiantesSiuFinishedPromise = estudiantesSiuFinishedDefer.promise;
 		$q.all(estudiantesPromise).then(function(data) {
-			console.log('Estudiantes!!',data);
 			for (i=0 ; i<data.length ; i++){
 				if (data[i].data.length > 0)
 					addStudentsToComision(data[i].data,data[i].config.data.comision);
 			}
+			estudiantesSiuFinishedDefer.resolve();
 		});
-
-			    /*}
-			}).error(function(data, status, header, config) {
-			    logError('Error al intentar obtener comisiones de SIU','siuFactory.getComisiones',data);
-			});*/
-		
 
 		//Mando a pedir cursos de siu y agrego a la cola de request
 		var siuCursosPromise = siuFactory.getCursos();
-		console.log('Hola1!!');
 		requestPromise.push(siuCursosPromise);
 		siuCursosPromise
 			.success(function(data) {
@@ -330,21 +307,22 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,PROPERTIES,ngT
 
 
 		//Mando a pedir categoria por id de categoria padre (Categoria donde se encuentran las sub categorias facultades)
-		var moodleCategoriesPromise = moodleFactory.getCategoriesByParent(PROPERTIES.MOODLE_ROOT_CATEGORY_ID);
-		console.log('Hola2!!');
+		var moodleCategoriesPromise = moodleFactory.getCategoriesByParent(PROPERTIES.MOODLE_ROOT_CATEGORY_ID,false);
 		requestPromise.push(moodleCategoriesPromise);		
 		moodleCategoriesPromise
 			.success(function(data) {
 			    if (data.exception)
 					logError('Error al intentar obtener categorias de Moodle:'+'\n'+data.exception+'\n'+data.message +'\n'+data.debuginfo,'moodleFactory.getCategoriesByParent',data);
 			    else{
-					logSuccess('Se obtuvieron' +data.length+' categorias de Moodle','moodleFactory.getCategoriesByParent',data);
-					$scope.categoriasUnaj = data;		
+					logSuccess('Se obtuvieron ' +data.length+' categorias de Moodle','moodleFactory.getCategoriesByParent',data);
+					$scope.categoriasUnaj = data;	
+
+					$scope.subCategoriasUnaj = $scope.categoriasUnaj;
 
 					//Itero sobre todos las categorias y obtengo las categorias "importados"
 				    var catImportadosPromise = [];
 					angular.forEach($scope.categoriasUnaj, function (categoria) {
-						catImportadosPromise.push (moodleFactory.getCategoriesImportCategory(categoria.id));   
+						catImportadosPromise.push (moodleFactory.getCategoriesByParent(categoria.id,true));   
 					});	
 
 					$q.all(catImportadosPromise).then(function(data) {
@@ -368,30 +346,26 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,PROPERTIES,ngT
 		var moodleGroupsPromise = [];
 		var moodleGroupsMembersPromise = [];
 		var moodleCursosPromise = moodleFactory.getCourses(null);
-		console.log('Hola3!!');
 		moodleCursosPromise
 			.success(function(data) {
 			    if (data.exception) {
-					console.log(data.exception + '\n'+data.message +'\n'+data.debuginfo);
 					logError('Error al intentar obtener cursos de Moodle:'+'\n'+data.exception+'\n'+data.message +'\n'+data.debuginfo,'moodleFactory.getCursos',data);
 			    }else{
 
-					logSuccess('Se obtuvieron' +data.length+' cursos de Moodle');
+					logSuccess('Se obtuvieron ' +data.length+' cursos de Moodle');
 					$scope.moodlecourses = data; 
 
 					//Control de sincronizacion por obtencion de cursos (SIU), comisiones (SIU), categorias (Moodle) y usuarios (Moodle)
 					$q.all(requestPromise).then(function(data) {
-						console.log('Se obtuvieros cursos (moodle), categorias (moodle) y comisiones(siu) correctamente');
 						for (var i = 0; i < $scope.actividades.length; i++) {
-							
-							$scope.actividades[i].migrado =  $filter('actividadMigrated')($scope.actividades[i].codigo,$scope.moodlecourses);
-							$scope.actividades[i].curso = getSIUCourseID($scope.actividades[i].codigo);
+														$scope.actividades[i].migrado =  $filter('actividadMigrated')($scope.actividades[i].codigo,$scope.moodlecourses,$scope.periodoSelected);
+							//$scope.actividades[i].curso = getSIUCourseID($scope.actividades[i].codigo);
 							
 							if ($scope.actividades[i].migrado && $scope.actividades[i].curso == 0) {
 								$scope.actividades[i].codError = 100;
 							}
-							$scope.actividades[i].moodleCategoryID =  getMoodleCategoryID($scope.actividades[i].codigo,false);
-							$scope.actividades[i].parentMoodleCategoryID =  getMoodleCategoryID($scope.actividades[i].codigo,true);
+							$scope.actividades[i].moodleCategoryID =  getMoodleCategoryID($scope.actividades[i].codigo,true);
+							//$scope.actividades[i].parentMoodleCategoryID =  getMoodleCategoryID($scope.actividades[i].codigo,true);
 						} 
 						var groupsPromise = [];
 						//Itero sobre todos los cursos y obtengo los grupos
@@ -414,25 +388,30 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,PROPERTIES,ngT
 									groupsMembersPromise.push(moodleFactory.getGroupsMembers(groupIDs));			
 								}
 							});	
-							$q.all(groupsMembersPromise).then(function(data) {
-								logSuccess('Se obtuvieron miembros de grupos');
-								angular.forEach(data, function (courses) {
-									addMembersToGroup(courses.data);
+
+							//Me aseguro que los estudiantes y docentes de siu ya estan mapeados para el filtro
+							$q.all([docentesSiuFinishedPromise,estudiantesSiuFinishedPromise]).then(function(data) { 
+								$q.all(groupsMembersPromise).then(function(data) {
+									logSuccess('Se obtuvieron miembros de grupos');
+									console.log('Miembros',data);
+									angular.forEach(data, function (courses) {
+										addMembersToGroup(courses.data);
+									});
+
+									
+									//Mapa de MOODLE completo
+									console.log('Mapa de cursos de moodle: ',$scope.moodlecourses);
+
+									//Mapa de SIU completo
+									console.log('Mapa de actividades de moodle: ',$scope.actividades);
+
+									$scope.tableParams.reload();
+
+
+									$scope.dataInitialized = true;
+									logInfo('Se Inicializaron los datos correctamente');
 								});
-
-								
-								//Mapa de MOODLE completo
-								console.log('Mapa de cursos de moodle: ',$scope.moodlecourses);
-
-								//Mapa de SIU completo
-								console.log('Mapa de actividades de moodle: ',$scope.actividades);
-
-								$scope.tableParams.reload();
-
-
-								$scope.dataInitialized = true;
-								logInfo('Se Inicializaron los datos correctamente');
-							});
+							})
 							
 						});
 			
@@ -448,65 +427,37 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,PROPERTIES,ngT
 	}
 
 	//Crear Curso
-	$scope.importCourse = function (siuActividad,categoria){
+	function _importCourse (siuActividad,categoria){
 		console.log('importCourse',siuActividad);
+
+		//Callback para controlar importacion de varios cursos
+		var deferred = $q.defer();
+
 		var categoriaid = getImportCategory(siuActividad.moodleCategoryID);
-		if (categoriaid != 0)
-			moodleFactory.createCourse(siuActividad.nombre,siuActividad.codigo,getImportCategory(siuActividad.moodleCategoryID)).
+		if (categoriaid != 0 && ($scope.periodoSelected.periodo_lectivo == siuActividad.comisiones[0].periodo_lectivo.periodo_lectivo) )
+			moodleFactory.createCourse(siuActividad.nombre,siuActividad.codigo,categoriaid,$scope.periodoSelected).
 			success(function(data) {
 			    if (data.exception)
-					logError('Hubo un error al importar actividad '+siuActividad.nombre+' en moodle','importCourse.createCourse.Error'+data.exception + '\n'+data.message +'\n'+data.debuginfo);
+					logError('Hubo un error al importar actividad '+siuActividad.nombre+' en moodle','importCourse.createCourse.Error'+data.exception + '\n'+data.message +'\n'+data.debuginfo,data);
 			    else{
 					logInfo('Se creo curso en moodle para actividad '+siuActividad.nombre);
 					siuActividad.migrado = true;
-					//Sincronizo con SIU (Creo curso)
 					var moodleCourseID = data[0].id;
 					$scope.moodlecourses.push(data[0]);
 					$scope.tableParams.reload();
-					/*siuFactory.createCurso(moodleCourseID,data[0].shortname)
-						.success(function(data) {
-						    if ( (data.status == 204) || (data.status == 201)){
-								logInfo('El curso para la actividad '+siuActividad.codigo+' fue creado en SIU');
-								siuActividad.curso = moodleCourseID;
-								$scope.tableParams.reload();
-							}
+					deferred.resolve('Termine');
 
-							//Ahora agrego la comision al curso -> Esto se hace al sincronizar!
-							/*
-							siuFactory.addComisionCurso(moodleCourseID,siuComision.comision).
-							success(function(data) {
-							    if ( (data.status == 204)){
-								siuComision.error = false;
-								siuComision.codError = 0;
-								siuComision.curso = moodleCourseID;
-								$scope.tableParams.reload();
-								logSuccess('La comision '+siuComision.actividad_codigo+' fue agregada al curso de SIU M-'+moodleCourseID,'siuFactory.addComisionCurso',data);
-							    }
-							    else {
-								siuComision.error = true;
-								siuComision.codError = 100;
-								logError('Hubo un error al intentar asignar la comision '+siuComision.actividad_codigo+' al curso M-'+moodleCourseID,'siuFactory.addComisionCurso',data);
-								}
-							}).error(function(data) {
-							     logError('Hubo un error al intentar asignar la comision '+siuComision.actividad_codigo+' al curso M-'+moodleCourseID,'siuFactory.addComisionCurso',data);
-							});
-						    }*/
+					//Sincronizo con SIU (Creo curso) -> No utilizo cursos de SIU, dejar para agrupar luego
 
-/*
-						    else {
-								siuActividad.codError = 100;
-								logError('Hubo un error al crear el curso en SIU para la actividad '+siuActividad.codigo,'siuFactory.createCurso',data);
-								$scope.tableParams.reload();
-							}
-						}).error(function(data) {
-							console.log('importCourse.createCourse.error',data);
-						});		*/	
+
 			    }
 			}).error(function(data) {
 			     console.log('importCourse.Error',data);
 			});
 		else
-			logError('Hubo un error al crear el curso en SIU para la actividad '+siuActividad.codigo+' no existe subcategoria importados en moodle','siuFactory.createCurso',data);
+			logError('Hubo un error al crear el curso en Moodle para la actividad '+siuActividad.codigo+' no existe subcategoria importados en moodle','moodleFactory.createCourse',data);
+	
+		return deferred.promise;
 	};
 
 	/**
@@ -523,25 +474,6 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,PROPERTIES,ngT
 					siuActividad.codError = 0;
 					siuActividad.curso = moodleCourseID;
 					$scope.tableParams.reload();
-
-				//Ahora agrego la comision al curso -> Esto se hace al sincronizar!
-				/*
-				siuFactory.addComisionCurso(moodleCourseID,siuComision.comision).
-				success(function(data) {
-				    if ( (data.status == 204)){
-					siuComision.error = false;
-					siuComision.codError = 0;
-					siuComision.curso = moodleCourseID;
-					$scope.tableParams.reload();
-					logSuccess('La comision '+siuComision.actividad_codigo+' fue agregada al curso de SIU M-'+moodleCourseID,'siuFactory.addComisionCurso',data);
-				    }
-				    else {
-					logError('Hubo un error al intentar asignar la comision '+siuComision.actividad_codigo+' al curso M-'+moodleCourseID,'siuFactory.addComisionCurso',data);
-					}
-				}).error(function(data) {
-				     logError('Hubo un error al intentar asignar la comision '+siuComision.actividad_codigo+' al curso M-'+moodleCourseID,'siuFactory.addComisionCurso',data);
-				});*/
-
 			    }
 			    else {
 					logError('Hubo un error al crear el curso en SIU para la actividad '+siuActividad.codigo,'siuFactory.createCurso',data);
@@ -554,19 +486,17 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,PROPERTIES,ngT
 	};
 
 	//Sincronizar Actividad <-> Curso
-	function _syncrhonizeCourse(siuActividad){
+	function _synchronizeCourse(siuActividad){
 
 		//Callback para controlar sincronizacion de varios cursos
 		var deferred = $q.defer();
 
-
 		logInfo('Comenzando sincronizacion de actividad '+siuActividad.codigo+'...');
-
 
 		var moodleCourse = getMoodleCourseByActividad(siuActividad.codigo);
 
 		if (moodleCourse == null){
-			logError('Hubo un error al crear el comision en MOODLE para la comision '+comision.comision+' no existe curso asociado en moodle','siuFactory.moodleFactory.createGroupForCourse',data); 
+			logError('Hubo un error al crear la comision en MOODLE para la actividad '+siuActividad.codigo+' no existe curso asociado en moodle para el periodo lectivo','siuFactory.moodleFactory.createGroupForCourse',data); 
 			return;
 		}
 
@@ -577,39 +507,37 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,PROPERTIES,ngT
 		*/
 		
 		// (1)
-		var addComisionesPromise = [];
-		var count = 0;
-		angular.forEach(siuActividad.comisiones, function (comision) {
-			console.log(comision.actividad.codigo);
+		var newCount = 0;
+		var oldCount = 0;
 
-			if ( !$filter('comisionMigrated')(comision.comision,$scope.moodlecourses) )	{
-				count++;
-		    	addComisionesPromise.push (moodleFactory.createGroupForCourse(moodleCourse.id,comision.comision));  
+		var addComisionesPromise = [];
+
+		angular.forEach(siuActividad.comisiones, function (comision) {
+
+			if ( !$filter('comisionMigrated')(comision.nombre,$scope.moodlecourses,comision.actividad.codigo,$scope.periodoSelected) )	{
+				newCount++;
+		    	addComisionesPromise.push (moodleFactory.createGroupForCourse(moodleCourse.id,comision.nombre));  
 			}
 		});	
 
-		logInfo('Comisiones sin migrar a Moodle: '+count);
+		logInfo('Se van a crear: '+addComisionesPromise.length+' nuevos grupos');
 
 		// (2)
 		var deleteComisionesPromise = [];
-		count = 0;
-		angular.forEach($scope.moodlecourses, function (course) {
-			if ($filter('actividadEquals')(siuActividad.codigo,course.shortname))
-				angular.forEach(course.comisiones, function (comisionMoodle) {
-					var exist = false;
-					angular.forEach(siuActividad.comisiones, function (comisionSiu) {
-						if (comisionMoodle.name == comisionSiu.comision)
-							exist = true;
-					});	
-					if (!exist){
-						count++;
-						deleteComisionesPromise.push(moodleFactory.deleteGroup(comisionMoodle.id))
-					}
-				});	
+
+		angular.forEach(moodleCourse.comisiones, function (comisionMoodle) {
+			var exist = false;
+			angular.forEach(siuActividad.comisiones, function (comisionSiu) {
+				if (comisionMoodle.name == comisionSiu.nombre)
+					exist = true;
+			});	
+			if (!exist){
+				oldCount++;
+				deleteComisionesPromise.push(moodleFactory.deleteGroup(comisionMoodle.id))
+			}
 		});	
 
-		logInfo('Comisiones migradas que ya no estan en siu: '+count);
-
+		logInfo('Se van a eliminar: '+deleteComisionesPromise.length+' nuevos grupos');
 
 		$q.all( addComisionesPromise.concat(deleteComisionesPromise) ).then(function (data){
 
@@ -618,7 +546,6 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,PROPERTIES,ngT
 				//Resolve create callbacks (Actualizo mapa de moodle)
 				if (myItem.config.data.wsfunction == moodleFactory.createGroupForCourseFunctionName()) {
 					if (myItem.data.exception) {
-						console.log(data.exception + '\n'+data.message +'\n'+data.debuginfo);
 						logError('Error al intentar crear grupo:'+'\n'+myItem.data.exception+'\n'+myItem.data.message +'\n'+myItem.data.debuginfo,'moodleFactory.createGroupForCourse',data);
 					}
 					else {
@@ -632,7 +559,6 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,PROPERTIES,ngT
 				//Resolve delete callbacks (Actualizo mapa de moodle (VER!))
 				else if (myItem.config.data.wsfunction == moodleFactory.deleteGroupFunctionName()) {
 					if (myItem.data && myItem.data.exception) {
-							console.log(data.exception + '\n'+data.message +'\n'+data.debuginfo);
 							logError('Error al intentar eliminar grupo:'+'\n'+myItem.data.exception+'\n'+myItem.data.message +'\n'+myItem.data.debuginfo,'moodleFactory.deleteGroup',data);
 						}
 				}
@@ -643,169 +569,220 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,PROPERTIES,ngT
 
 			/* 
 			* Sincronizo estudiantes/docentes
-			* 1) Itero sobre todos los estudiantes/docentes por comision de siu y por cada uno que no esta
-			* en moodle:
-			+	1.1) Si no existe como user en moodle lo creo
-			+	1.2) lo agrego con perfil estudiante/profesor al curso
-			+	1.3) lo agrego al grupo (comision)
-			* 2) Itero sobre todos los estudiantes/docentes de moodle por comisiones y por cada uno que no esta en siu
+			* 1) Itero sobre todos los estudiantes/docentes de moodle por comisiones y por cada uno que no esta en siu
 			* lo elimino del grupo (comision)
+			*
+			* 2) Itero sobre todos los estudiantes/docentes por comision de siu y por cada uno que no esta
+			* en moodle:
+			*	1.1) Si no existe como user en moodle lo creo
+			*	1.2) lo agrego con perfil estudiante/profesor al curso
+			*	1.3) lo agrego al grupo (comision)
 			*/
 			
 			// (1)
-			count = 0;
-			var countNotExistInMoodle = 0;
+			var removeFromCourse = [];
 
-			//Control para continuar ejecucion solo cuando todas las promesas fueron resueltas
-			var studentsPromise = [];
+			var exist = false;
+			for (j = 0 ; j<moodleCourse.comisiones.length ; j++){
+				if (moodleCourse.comisiones[j].estudiantes){
+					for (h = 0 ; h<moodleCourse.comisiones[j].estudiantes.length ; h++){
+						exist = false;
+						for (i2 = 0 ; i2<siuActividad.comisiones.length ; i2++){
+							
+							if (siuActividad.comisiones[i2].nombre == moodleCourse.comisiones[j].name && siuActividad.comisiones[i2].alumnos)
+								for (j2 = 0 ; j2<siuActividad.comisiones[i2].alumnos.length ; j2++){
+									if (siuActividad.comisiones[i2].alumnos[j2].usuario.toLowerCase() == moodleCourse.comisiones[j].estudiantes[h].username){
+										exist = true;
+									}
 
-
-			//1.1
-			var createUserPromise = [];
-			angular.forEach(siuActividad.comisiones, function (comision) {
-				console.log('Comisiones:',comision);
-				angular.forEach(comision.alumnos, function (alumno) {
-					
-					
-					console.log('Alumno:',alumno);
-
-					if ( !$filter('userExistInMoodle')(alumno,$scope.moodleusers) )	{
-						countNotExistInMoodle++;
-						createUserPromise.push(moodleFactory.createUser(alumno.usuario,"@1B2c3D4",alumno.nombres,alumno.apellido,alumno.email));
+								}
+						}
+					if (false){
+						removeFromCourse.push( moodleFactory.unenrolUser(moodleCourse.comisiones[j].estudiantes[h].id,moodleCourse.id) );
+						}
 					}
-				});
+				}
+				
+			}
+			
+			logInfo('Se van a desmatricular: '+removeFromCourse.length+' usuarios');
 
-				angular.forEach(comision.docentes, function (docente) {
-					
-					
-					console.log('Docente:',docente);
-
-					if ( !$filter('userExistInMoodle')(docente.docente,$scope.moodleusers) )	{
-						countNotExistInMoodle++;
-						createUserPromise.push(moodleFactory.createUser(docente.docente.usuario.toLowerCase(),"@1B2c3D4",docente.docente.nombres,docente.docente.apellido,docente.docente.email));
-					}
-				});
-			});
-
-			//Actualizo mapa de moodle
-			$q.all(createUserPromise).then(function (data){
-				angular.forEach(data, function(myItem){ 
+			$q.all(removeFromCourse).then(function (data){
+				console.log(data);
+				/*angular.forEach(data, function(myItem){ 
 					if (!myItem.data.exception){
 						$scope.moodleusers.push(myItem.data);
-						console.log('Los usuarios despues de agregar'+$scope.moodleusers)
 					}
 					else{
 						logError('Error al crear usuario',"moodleFactory.createUser",myItem);
 					}
 						
 
-				});
+				});*/
 
+				// (2)
 
-				//1.2
-				var assignRolePromises = [];
+				//Control para continuar ejecucion solo cuando todas las promesas fueron resueltas
+				var studentsPromise = [];
+
+				//1.1
+				var createUserPromise = [];
 				angular.forEach(siuActividad.comisiones, function (comision) {
-					console.log('Comisiones:',comision);
 					angular.forEach(comision.alumnos, function (alumno) {
-						
-						if ( !$filter('estudianteMigrated')(alumno,comision.comision,$scope.moodlecourses) )	{
-
-							//userid: lo saco de los usuarios de moodle
-							var user = getMoodleUserByUsername(alumno.usuario);
-							if (user != null)
-								assignRolePromises.push(moodleFactory.enrolStudent(user.id,moodleCourse.id));
-							else
-								logError('Error al asignar usuario a curso, el usuario no existe en moodle',"moodleFactory.createUser",alumno)
-
-
+						if ( !$filter('userExistInMoodle')(alumno,$scope.moodleusers) )	{
+							newCount++;
+							createUserPromise.push(moodleFactory.createUser(alumno.usuario.toLowerCase(),"@1B2c3D4",alumno.nombres,alumno.apellido,alumno.email));
 						}
-
 					});
 
 					angular.forEach(comision.docentes, function (docente) {
-						
-						if ( !$filter('docenteMigrated')(docente.docente,comision.comision,$scope.moodlecourses) )	{
-
-							//userid: lo saco de los usuarios de moodle
-							var user = getMoodleUserByUsername(docente.docente.usuario);
-							if (user != null)
-								assignRolePromises.push(moodleFactory.enrolTeaching(user.id,moodleCourse.id));
-							else
-								logError('Error al asignar usuario a curso, el usuario no existe en moodle',"moodleFactory.createUser",docente)
-
-
+						if ( !$filter('userExistInMoodle')(docente.docente,$scope.moodleusers) )	{
+							newCount++;
+							createUserPromise.push(moodleFactory.createUser(docente.docente.usuario.toLowerCase(),"@1B2c3D4",docente.docente.nombres,docente.docente.apellido,docente.docente.email));
 						}
-
 					});
 				});
 
-				$q.all(assignRolePromises).then(function (data){
+				logInfo('Se van a crear '+createUserPromise.length+' nuevos usuarios en moodle');
+
+				//Actualizo mapa de moodle
+				$q.all(createUserPromise).then(function (data){
 					angular.forEach(data, function(myItem){ 
-						if (!myItem.data)
-							console.log('Asignado a curso');
-						else
-							logError('Error al asignar usuario a curso','moodleFactory.enrolStudent',myItem);
+						if (!myItem.data.exception){
+							$scope.moodleusers.push(myItem.data);
+						}
+						else{
+							logError('Error al crear usuario',"moodleFactory.createUser",myItem);
+						}
+							
+
 					});
 
-
-					//1.3
-					var addToGroupPromises = [];
+					//1.2
+					var assignRolePromises = [];
+					var cAlumnos = 0;
+					var cDocentes = 0;
 					angular.forEach(siuActividad.comisiones, function (comision) {
-						console.log('Comisiones:',comision);
+
 						angular.forEach(comision.alumnos, function (alumno) {
-							
-							if ( !$filter('estudianteMigrated')(alumno,comision.comision,$scope.moodlecourses) )	{
+							if ( !$filter('estudianteMigrated')(alumno,comision.nombre,$scope.moodlecourses,comision.actividad.codigo,$scope.periodoSelected) )	{
+								//userid: lo saco de los usuarios de moodle
 								var user = getMoodleUserByUsername(alumno.usuario);
-								if (user != null) {
-									var group = getMoodleGroupByComision(comision.comision,moodleCourse);
-									addToGroupPromises.push(moodleFactory.addGroupMember(group.id,user.id));
+								if (user != null){
+									cAlumnos++;
+									assignRolePromises.push(moodleFactory.enrolStudent(user.id,moodleCourse.id));
 								}
 								else
-									logError('Error al asignar usuario a grupo, el usuario no existe en moodle',"moodleFactory.createUser",alumno)
+									logError('Error al asignar usuario a curso, el usuario no existe en moodle',"moodleFactory.createUser",alumno)
+
 
 							}
 
 						});
+
 
 						angular.forEach(comision.docentes, function (docente) {
 							
-							if ( !$filter('docenteMigrated')(docente.docente,comision.comision,$scope.moodlecourses) )	{
+							if ( !$filter('docenteMigrated')(docente.docente,comision.nombre,$scope.moodlecourses,comision.actividad.codigo,$scope.periodoSelected) )	{
+
+								//userid: lo saco de los usuarios de moodle
 								var user = getMoodleUserByUsername(docente.docente.usuario);
-								if (user != null) {
-									var group = getMoodleGroupByComision(comision.comision,moodleCourse);
-									addToGroupPromises.push(moodleFactory.addGroupMember(group.id,user.id));
+								if (user != null){
+									cDocentes++;
+									assignRolePromises.push(moodleFactory.enrolTeaching(user.id,moodleCourse.id));
 								}
 								else
-									logError('Error al asignar usuario a grupo, el usuario no existe en moodle',"moodleFactory.createUser",docente)
+									logError('Error al asignar usuario a curso, el usuario no existe en moodle',"moodleFactory.createUser",docente)
+
 
 							}
 
 						});
+
+
 					});
 
-					$q.all(addToGroupPromises).then(function (data){
+					logInfo('Se agregan '+cAlumnos+' nuevos estudiantes en moodle');
+					logInfo('Se agregan '+cDocentes+' nuevos docentes en moodle');
+
+
+					$q.all(assignRolePromises).then(function (data){
 						angular.forEach(data, function(myItem){ 
-							console.log(myItem);
-							if (!myItem.data){
-								
-								var user = getMoodleUserByID(myItem.config.data.members[0].userid);
-								user.groupid = myItem.config.data.members[0].groupid;
-								console.log('asignado a grupo',user);
-								addMembersToGroup(user);
-							}
-							else
-								logError('Error al asignar alumno a curso','moodleFactory.enrolStudent',data);
+							if (myItem.data)
+								logError('Error al asignar usuario a curso','moodleFactory.enrolStudent',myItem);
 						});
 
 
-						//Disparo finalizacion
-						deferred.resolve('Termine');
+						//1.3
+						var addToGroupPromises = [];
+						angular.forEach(siuActividad.comisiones, function (comision) {
 
+							var cAlumnos = 0;
+							var cDocentes = 0;
+
+							angular.forEach(comision.alumnos, function (alumno) {
+								
+								if ( !$filter('estudianteMigrated')(alumno,comision.nombre,$scope.moodlecourses,comision.actividad.codigo,$scope.periodoSelected) )	{
+									var user = getMoodleUserByUsername(alumno.usuario);
+									if (user != null) {
+										var group = getMoodleGroupByComision(comision.nombre,moodleCourse);
+										cAlumnos++;
+										addToGroupPromises.push(moodleFactory.addGroupMember(group.id,user.id,false));
+									}
+									else
+										logError('Error al asignar usuario a grupo, el usuario no existe en moodle',"moodleFactory.addGroupMember",alumno)
+
+								}
+
+							});
+
+							angular.forEach(comision.docentes, function (docente) {
+								if ( !$filter('docenteMigrated')(docente.docente,comision.nombre,$scope.moodlecourses,comision.actividad.codigo,$scope.periodoSelected) )	{
+									var user = getMoodleUserByUsername(docente.docente.usuario);
+									if (user != null) {
+										var group = getMoodleGroupByComision(comision.nombre,moodleCourse);
+										cDocentes++;
+										addToGroupPromises.push(moodleFactory.addGroupMember(group.id,user.id));
+									}
+									else
+										logError('Error al asignar usuario a grupo, el usuario no existe en moodle',"moodleFactory.addGroupMember",docente)
+
+								}
+
+							});
+
+							logInfo('Se agregan '+cAlumnos+' nuevos estudiantes a la comision '+comision.nombre);
+							logInfo('Se agregan '+cDocentes+' nuevos docentes  a la comision '+comision.nombre);
+
+						});
+
+						$q.all(addToGroupPromises).then(function (data){
+							angular.forEach(data, function(myItem){ 
+								if (!myItem.data){
+									console.log(myItem);
+									dummyMember = {};
+									var user = getMoodleUserByID(myItem.config.data.members[0].userid);
+									dummyMember.groupid = myItem.config.data.members[0].groupid;
+									var group = getMoodleGroupById(dummyMember.groupid,moodleCourse);
+									dummyMember.groupname = group.groupname;
+									dummyMember.users = [user];
+									addMembersToGroup(dummyMember);
+								}
+								else
+									logError('Error al asignar usuario a grupo','moodleFactory.addGroupMember',data);
+							});
+
+
+							//Disparo finalizacion
+							deferred.resolve('Termine');
+
+						});
+						
 					});
-					
+
 				});
 
-			});
+			}); 
 			
 		});
     
@@ -814,16 +791,52 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,PROPERTIES,ngT
 
 
     //Sincronizar Actividad <-> Curso
-	$scope.syncrhonizeCourse = function (siuActividad){
-		_syncrhonizeCourse(siuActividad).then(function (data){
+	$scope.synchronizeCourse = function (siuActividad){
+		_synchronizeCourse(siuActividad).then(function (data){
 			logSuccess('Finalizada migracion de actividad: '+siuActividad.codigo);
 		});
+	}
+
+	//Bulk Sincronizar Actividad <-> Curso
+	$scope.bulkSynchronizeCourses = function (){
+		angular.forEach($scope.actividades, function(actividad){ 
+			if (actividad.selected)
+				_synchronizeCourse(actividad).then(function (data){
+					logSuccess('Finalizada migracion de actividad: '+siuActividad.codigo);
+				});
+		})
+	}
+
+	//Crear Curso
+	$scope.importCourse = function(siuActividad,categoria){
+		_importCourse(siuActividad,categoria).then(function (data){
+			logSuccess('Finalizada importacion de actividad: '+siuActividad.codigo);
+		});
+	}
+
+	//Bulk crear curso
+	$scope.bulkImportCourses = function (){
+		var queue = [];
+		angular.forEach($scope.actividades, function(actividad){ 
+			if (actividad.selected)
+				queue.push(actividad);
+		})
+		importQueue(queue,0);
+	}
+
+	function importQueue(queue,curr){
+		if (curr < queue.length)
+			_importCourse(queue[curr],queue[curr].moodleCategoryID).then(function (){
+				logSuccess('Finalizada importacion de actividad: '+queue[curr].codigo);
+				importQueue(queue,curr+1);
+			});
+		return;
 	}
 
 
 	var getMoodleCategoryID = function (codigoActividad,parent) {
 		for(var i = 0; i<$scope.moodlecourses.length; i++){
-			if ($scope.moodlecourses[i].shortname == PROPERTIES.CURRENT_YEAR+'-'+codigoActividad)
+			if ($filter('actividadEquals')(codigoActividad,$scope.moodlecourses[i].shortname,$scope.periodoSelected))
 				if (parent)	
 					return 	getParentCategory($scope.moodlecourses[i].categoryid);
 				else
@@ -832,17 +845,18 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,PROPERTIES,ngT
 		return null;
 	};
 
+/*
 	var getSIUCourseID = function (codigoActividad) {
 		for(var i = 0; i<$scope.cursosSiu.length; i++){
 			if ($scope.cursosSiu[i].nombre == PROPERTIES.CURRENT_YEAR+'-'+codigoActividad)	
 				return 	$scope.cursosSiu[i].curso;
 		}
 		return 0;
-	};
+	};*/
 
 	var getMoodleCourseID = function (codigoActividad) {
 		for(var i = 0; i<$scope.moodlecourses.length; i++){
-			if ($scope.moodlecourses[i].shortname == PROPERTIES.CURRENT_YEAR+'-'+codigoActividad)
+			if ($filter('actividadEquals')(codigoActividad,$scope.moodlecourses[i].shortname,$scope.periodoSelected) )
 				return 	$scope.moodlecourses[i].id;
 		}
 		return 0;
@@ -850,16 +864,23 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,PROPERTIES,ngT
 
 	var getMoodleCourseByActividad = function (codigoActividad) {
 		for(var i = 0; i<$scope.moodlecourses.length; i++){
-			if ($scope.moodlecourses[i].shortname == PROPERTIES.CURRENT_YEAR+'-'+codigoActividad)
+			if ($filter('actividadEquals')(codigoActividad,$scope.moodlecourses[i].shortname,$scope.periodoSelected))
 				return 	$scope.moodlecourses[i];
 		}
 		return null;
 	};
 
 	var getMoodleGroupByComision = function (comisionSiu,cursoMoodle) {
-		console.log('Entre con',cursoMoodle);
 		for(var i = 0; i<cursoMoodle.comisiones.length; i++){
 			if (cursoMoodle.comisiones[i].name == comisionSiu)
+				return 	cursoMoodle.comisiones[i];
+		}
+		return null;
+	};
+
+	var getMoodleGroupById = function (groupid,cursoMoodle) {
+		for(var i = 0; i<cursoMoodle.comisiones.length; i++){
+			if (cursoMoodle.comisiones[i].id == groupid)
 				return 	cursoMoodle.comisiones[i];
 		}
 		return null;
@@ -903,7 +924,6 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,PROPERTIES,ngT
 	    	for ( j = 0 ; j< $scope.actividades[i].comisiones.length ; j++) {
 	    		if ($scope.actividades[i].comisiones[j].comision == idcomision){
 	    			$scope.actividades[i].comisiones[j].alumnos = students;
-	    			console.log('Agregue alumnos',$scope.actividades[i].comisiones[j])
 	    		}
 
 	    	}
@@ -915,7 +935,6 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,PROPERTIES,ngT
 	    	for ( j = 0 ; j< $scope.actividades[i].comisiones.length ; j++) {
 	    		if ($scope.actividades[i].comisiones[j].comision == idcomision){
 	    			$scope.actividades[i].comisiones[j].docentes = profesors;
-	    			console.log('Agregue docentes',$scope.actividades[i].comisiones[j])
 	    		}
 
 	    	}
@@ -927,10 +946,10 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,PROPERTIES,ngT
 	var addGroupsToCourse = function(groups){
 	    for (i = 0; i < $scope.moodlecourses.length ; i++){
 	    	if ( $scope.moodlecourses[i].id == groups[0].courseid) {
-	    		if ($scope.moodlecourses[i].comisiones != 'undefined')
-	    			$scope.moodlecourses[i].comisiones = groups;
+	    		if ($scope.moodlecourses[i].comisiones)
+	    			$scope.moodlecourses[i].comisiones.push(groups[0])
 	    		else
-	    			$scope.moodlecourses[i].comisiones.push(groups)
+	    			$scope.moodlecourses[i].comisiones = groups;
 	    	}
 	    }
 	}
@@ -941,10 +960,19 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,PROPERTIES,ngT
 		    	if ($scope.moodlecourses[i].comisiones){
 			    	for (j = 0; j<$scope.moodlecourses[i].comisiones.length ; j++){
 			    		if ( $scope.moodlecourses[i].comisiones[j].id == members[m].groupid) {
-			    			if ($scope.moodlecourses[i].comisiones[j].estudiantes)
-			    				$scope.moodlecourses[i].comisiones[j].estudiantes.push(members);
-			    			else
-				    			$scope.moodlecourses[i].comisiones[j].estudiantes = members[m].users;
+			    			//Es docente?
+			    			for (h = 0 ; h < members[m].users.length ; h++) {
+				    			if ($filter('isDocente')(members[m].users[h].username,members[m].groupname,$scope.actividades,$scope.moodlecourses[i].shortname,$scope.periodoSelected)) {
+					    			if (!$scope.moodlecourses[i].comisiones[j].docentes)
+					    				$scope.moodlecourses[i].comisiones[j].docentes = []
+					    			$scope.moodlecourses[i].comisiones[j].docentes.push(members[m].users[h]);
+					    		}
+					    		else {
+					    			if (!$scope.moodlecourses[i].comisiones[j].estudiantes)
+					    				$scope.moodlecourses[i].comisiones[j].estudiantes = [];
+					    			$scope.moodlecourses[i].comisiones[j].estudiantes.push(members[m].users[h]);	
+					    		}
+					    	}
 				    	}
 			    	}
 			    }
@@ -955,7 +983,7 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,PROPERTIES,ngT
 
 	var getImportCategory = function(categoryid){
 		for (i = 0 ; i < $scope.subCategoriasUnaj.length ; i++){
-    		if ( $scope.subCategoriasUnaj[i].parent == categoryid)
+    		if ( $scope.subCategoriasUnaj[i].parent == categoryid && $scope.subCategoriasUnaj[i].name == PROPERTIES.MOODLE_IMPORT_CATEGORY_NAME)
 	    		return $scope.subCategoriasUnaj[i].id;
 		}
 		return 0;
@@ -967,8 +995,14 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,PROPERTIES,ngT
 	*/
 	var getParentCategory = function(importCategoyid){
 		for (i = 0 ; i < $scope.subCategoriasUnaj.length ; i++){
-    		if ( $scope.subCategoriasUnaj[i].id == importCategoyid)
-	    		return $scope.subCategoriasUnaj[i].parent;
+    		if ( $scope.subCategoriasUnaj[i].id == importCategoyid){
+    			if ( $scope.subCategoriasUnaj[i].parent == PROPERTIES.MOODLE_ROOT_CATEGORY_ID ){
+	    			return $scope.subCategoriasUnaj[i].id;
+    			}
+	    		else{
+	    			return getParentCategory($scope.subCategoriasUnaj[i].parent);
+	    		}
+	    	}
 		}
 		return 0;
 	}
@@ -1008,7 +1042,4 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,PROPERTIES,ngT
         return periodoIsNew;
     }
 
-	
-		
-		
 });
