@@ -18,8 +18,8 @@ app.factory('siuFactory', function($http,PROPERTIES){
 	_password = password;
 	}
 
-	function setInfiniteLimit(){
-	_finalUrl = _finalUrl + '?limit=20'
+	function setLimit(limit,page){
+	_finalUrl = _finalUrl + '?limit='+limit+'&page='+page
 	}
 
 	function setFinalUrl(path){
@@ -42,15 +42,14 @@ app.factory('siuFactory', function($http,PROPERTIES){
 	return $http.post('wrapper.php',setParametros())
 	};
 
-	service.getAllComisiones = function(){
+	service.getAllComisiones = function(limit,page){
 	setFinalUrl('comisiones');
-	setInfiniteLimit();
+	setLimit(limit,page);
 	return $http.post('wrapper.php',setParametros())
 	};
 
 	service.getCursos = function(){
 	setFinalUrl('cursos');
-	setInfiniteLimit();
 	return $http.post('wrapper.php',setParametros())
 
 	};

@@ -1,5 +1,6 @@
 #app {
 	position:relative;
+	margin-bottom: -400px;
 }
 
 #loading-container {

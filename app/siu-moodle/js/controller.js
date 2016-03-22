@@ -1,4 +1,4 @@
-app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,PROPERTIES,ngTableParams,moodleFactory,siuFactory) {
+app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,$exceptionHandler,PROPERTIES,ngTableParams,moodleFactory,siuFactory) {
 
 	$scope.logArea = '';
 	
@@ -25,6 +25,8 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,PROPERTIES,ngT
 	$scope.periodosInitialized = false;
 	$scope.spinner = false;
 
+	$scope.siuLimit = 999;
+	$scope.siuPage = 1;
 
 	$scope.selectedAll = false;
 	$scope.moodleToken = '904c4c7981d381dba82c37c4bad03353';
@@ -151,31 +153,45 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,PROPERTIES,ngT
 
 	$scope.preInitData = function(){
 
+		$scope.spinner = true;
 		//Seteo configuracion de siuFactory
 		siuFactory.setUrl(PROPERTIES.SIU_REST_URI);
 		siuFactory.setUser($scope.siuUser);
 		siuFactory.setPassword($scope.siuPassword);
+		$scope.periodosLectivos = [];
+		
 
-		siuFactory.getAllComisiones()
+		siuFactory.getAllComisiones($scope.siuLimit,$scope.siuPage)
 			.success(function(data) {
-			    if (data.mensaje){
+			    if (data.mensaje || !data[0]){
 					logError('Error al intentar obtener comisiones de SIU: '+data.mensaje,'siuFactory.getComisiones',data);
 			    }
 			    else {
-			    	var periodosCount = 0;
-			    	indexedPeriodos = [];
-					angular.forEach(data,function (comision){
-						if (filterPeriodos(comision)) {
-							$scope.periodosLectivos.push(comision.periodo_lectivo);
-						}
-					});
+			    	try {
+				    	var periodosCount = 0;
+				    	indexedPeriodos = [];
+						angular.forEach(data,function (comision){
+							if (filterPeriodos(comision)) {
+								$scope.periodosLectivos.push(comision.periodo_lectivo);
+							}
+						});
 
-					$scope.comisiones = data; 
-					logSuccess('Se obtuvieron ' +$scope.comisiones.length+' Comisiones de SIU ','siuFactory.getComisiones',$scope.comisiones);
-				    logSuccess('Se obtuvieron ' +$scope.periodosLectivos.length+' Periodos Lectivos de SIU ','siuFactory.getComisiones',$scope.periodosLectivos);
-				    $scope.periodosInitialized = true;
+						$scope.comisiones = data; 
+						logSuccess('Se obtuvieron ' +$scope.comisiones.length+' Comisiones de SIU ','siuFactory.getComisiones',$scope.comisiones);
+					    logSuccess('Se obtuvieron ' +$scope.periodosLectivos.length+' Periodos Lectivos de SIU ','siuFactory.getComisiones',$scope.periodosLectivos);
+					    $scope.periodosInitialized = true;
+					    $scope.spinner = false;
+					}
+
+				    catch (e) {
+						$exceptionHandler(e);
+						logError('Error al intentar obtener comisiones de SIU: '+e.message,'siuFactory.getComisiones',data);
+						$scope.spinner = false;
+					}
 
 				}
+
+				
 			}).error(function(data, status, header, config) {
 			    logError('Error al intentar obtener comisiones de SIU','siuFactory.getComisiones',data);
 			});
@@ -183,8 +199,16 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,PROPERTIES,ngT
 
 
 
+
 	$scope.initData = function(){
+
+		if ( !$scope.periodosInitialized ){
+			logInfo('Por favor seleccione un Periodo Lectivo');
+			return
+		}
+
 		logInfo('Comenzando la inicializacion de datos...');
+		$scope.spinner = true;
 		//Seteo configuracion Moodle Factory
 		moodleFactory.setUrl(PROPERTIES.MOODLE_REST_URI);
 		moodleFactory.setToken($scope.moodleToken);
@@ -408,6 +432,8 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,PROPERTIES,ngT
 									$scope.tableParams.reload();
 
 
+
+									$scope.spinner = false;
 									$scope.dataInitialized = true;
 									logInfo('Se Inicializaron los datos correctamente');
 								});
@@ -418,6 +444,7 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,PROPERTIES,ngT
 					});	
 			    }
 			}).error(function(data, status, header, config) {
+				$scope.spinner = false;
 			    if (status == -1)
 					logError('Error al intentar obtener cursos de Moodle: Tiempo de espera agotado','moodleFactory.getCursos.error',data);
 			    else
@@ -428,6 +455,8 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,PROPERTIES,ngT
 
 	//Crear Curso
 	function _importCourse (siuActividad,categoria){
+
+		$scope.spinner = true;
 		console.log('importCourse',siuActividad);
 
 		//Callback para controlar importacion de varios cursos
@@ -445,6 +474,8 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,PROPERTIES,ngT
 					var moodleCourseID = data[0].id;
 					$scope.moodlecourses.push(data[0]);
 					$scope.tableParams.reload();
+
+					$scope.spinner = false;
 					deferred.resolve('Termine');
 
 					//Sincronizo con SIU (Creo curso) -> No utilizo cursos de SIU, dejar para agrupar luego
@@ -490,6 +521,7 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,PROPERTIES,ngT
 
 		//Callback para controlar sincronizacion de varios cursos
 		var deferred = $q.defer();
+		$scope.spinner = true;
 
 		logInfo('Comenzando sincronizacion de actividad '+siuActividad.codigo+'...');
 
@@ -609,16 +641,7 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,PROPERTIES,ngT
 
 			$q.all(removeFromCourse).then(function (data){
 				console.log(data);
-				/*angular.forEach(data, function(myItem){ 
-					if (!myItem.data.exception){
-						$scope.moodleusers.push(myItem.data);
-					}
-					else{
-						logError('Error al crear usuario',"moodleFactory.createUser",myItem);
-					}
-						
 
-				});*/
 
 				// (2)
 
@@ -631,7 +654,7 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,PROPERTIES,ngT
 					angular.forEach(comision.alumnos, function (alumno) {
 						if ( !$filter('userExistInMoodle')(alumno,$scope.moodleusers) )	{
 							newCount++;
-							createUserPromise.push(moodleFactory.createUser(alumno.usuario.toLowerCase(),"@1B2c3D4",alumno.nombres,alumno.apellido,alumno.email));
+							createUserPromise.push(moodleFactory.createUser(alumno.usuario.toLowerCase(),PROPERTIES.MOODLE_USER_DEFAULT_NAME,alumno.nombres,alumno.apellido,alumno.email));
 						}
 					});
 
@@ -773,6 +796,8 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,PROPERTIES,ngT
 							});
 
 
+
+							$scope.spinner = false;
 							//Disparo finalizacion
 							deferred.resolve('Termine');
 
@@ -792,6 +817,7 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,PROPERTIES,ngT
 
     //Sincronizar Actividad <-> Curso
 	$scope.synchronizeCourse = function (siuActividad){
+
 		_synchronizeCourse(siuActividad).then(function (data){
 			logSuccess('Finalizada migracion de actividad: '+siuActividad.codigo);
 		});
@@ -799,12 +825,12 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,PROPERTIES,ngT
 
 	//Bulk Sincronizar Actividad <-> Curso
 	$scope.bulkSynchronizeCourses = function (){
+		var queue = [];
 		angular.forEach($scope.actividades, function(actividad){ 
 			if (actividad.selected)
-				_synchronizeCourse(actividad).then(function (data){
-					logSuccess('Finalizada migracion de actividad: '+siuActividad.codigo);
-				});
+				queue.push(actividad);
 		})
+		synchronizeQueue(queue,0);
 	}
 
 	//Crear Curso
@@ -829,6 +855,15 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,PROPERTIES,ngT
 			_importCourse(queue[curr],queue[curr].moodleCategoryID).then(function (){
 				logSuccess('Finalizada importacion de actividad: '+queue[curr].codigo);
 				importQueue(queue,curr+1);
+			});
+		return;
+	}
+
+	function synchronizeQueue(queue,curr){
+		if (curr < queue.length)
+			_synchronizeCourse(queue[curr]).then(function (){
+				logSuccess('Finalizada sincronizacion de actividad: '+queue[curr].codigo);
+				synchronizeQueue(queue,curr+1);
 			});
 		return;
 	}
@@ -1012,13 +1047,14 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,PROPERTIES,ngT
 	
 	$scope.checkAll = function () {
 		if ($scope.selectedAll) {
-		    $scope.selectedAll = true;
-		} else {
 		    $scope.selectedAll = false;
+		} else {
+		    $scope.selectedAll = true;
 		}
-		angular.forEach($scope.tableParams.data, function (comision) {
-		    comision.selected = $scope.selectedAll;
+		angular.forEach($scope.actividades, function (actividad) {
+		    actividad.selected = $scope.selectedAll;
 		});
+		$scope.tableParams.reload();
 
 	};
 

@@ -138,7 +138,7 @@ app.factory('moodleFactory', function($http,PROPERTIES){
 	}
 
 	service.getGroupsMembers = function(groupsid){
-	_function = "core_group_get_group_members";
+	_function = "local_myplugin_get_group_members";
 	setParametros().groupids = groupsid;
 	return $http.post(_url,_parametros);
 	};
@@ -148,12 +148,6 @@ app.factory('moodleFactory', function($http,PROPERTIES){
 	setParametros().criteria= [{"key":"name","value":name}];
 	return $http.post(_url,_parametros);
 	};
-
-	/*service.getCategoriesImportCategory = function(parent){
-	_function = "core_course_get_categories";
-	setParametros().criteria= [{"key":"parent","value":parent},{"key":"name","value":PROPERTIES.MOODLE_IMPORT_CATEGORY_NAME}];
-	return $http.post(_url,_parametros);
-	};*/
 
 	service.getCategoriesByParent = function(parent,subcategories){
 	var value = "1";
@@ -176,3 +170,4 @@ app.factory('moodleFactory', function($http,PROPERTIES){
 
 	return service;
 });
+

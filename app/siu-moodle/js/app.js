@@ -111,6 +111,44 @@ var app = angular.module('siuMoodleApp', ['ngTable'],function($httpProvider) {
 		};
 	});
 
+	app.filter('sincronizado', function($filter) {
+		return function(comisionSiu,comisionMoodle) {
+			if ( (!comisionSiu.alumnos && comisionMoodle.estudiantes) 
+					|| (comisionSiu.alumnos && !comisionMoodle.estudiantes)
+					|| comisionSiu.alumnos.length != comisionMoodle.estudiantes.length)
+				return false;
+
+			if (comisionSiu.docentes.length != comisionMoodle.docentes.length)
+				return false;
+
+			//Docentes
+			for(i = 0 ; i < comisionSiu.docentes.length ; i++){
+				var exist = false;
+				for(j = 0 ; j < comisionMoodle.docentes.length ; j++)
+					if ( comisionMoodle.docentes[j].username == comisionSiu.docentes[i].usuario.toLowerCase() ){
+						exist = true;
+						break;
+					}
+				if (!exist)
+					return false
+			}
+
+			//Alumnos
+			for(i = 0 ; i < comisionSiu.alumnos.length ; i++){
+				var exist = false;
+				for(j = 0 ; j < comisionMoodle.estudiantes.length ; j++)
+					if ( comisionSiu.alumnos[i].usuario.toLowerCase() == comisionMoodle.estudiantes[j].username ) {
+						exist = true;
+						break;
+					}
+				if (!exist)
+					return false
+			}
+
+			return true;
+		};
+	});
+
 
 	app.filter('userExistInMoodle', function() {
 		return function(estudianteSiu,usuariosMoodle) {
