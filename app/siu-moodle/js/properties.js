@@ -1,6 +1,6 @@
 app.constant('PROPERTIES', {
   //URI de servicios REST de SIU (Ejemplo: 'http://170.210.158.23/guarani/3.10/rest/' )
-  SIU_REST_URI: 'http://170.210.158.23/guarani/3.10/rest/',
+  SIU_REST_URI: 'http://192.168.114.161/rest/',
 
   //URI de servicios REST de MOODLE (Ejemplo: 'http://localhost/www/moodle29/webservice/rest/server.php' )
   MOODLE_REST_URI: 'https://campus.unaj.edu.ar/webservice/rest/server.php',
@@ -12,7 +12,7 @@ app.constant('PROPERTIES', {
   MOODLE_STUDENT_ROLE_ID: 5,
 
   //ID del rol que se le da a los profesores
-  MOODLE_TEACHING_ROLE_ID: 4,
+  MOODLE_TEACHING_ROLE_ID: 3,
 
   //Metodo de autenticacion con el que se generan los usuarios
   CREATE_USER_MOODLE_AUTH: 'manual',

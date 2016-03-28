@@ -48,46 +48,41 @@ var app = angular.module('siuMoodleApp', ['ngTable'],function($httpProvider) {
 
 
 	app.filter('estudianteMigrated', function($filter) {
-		return function(estudianteSiu,comisionSiu,cursosMoodle,actividad,periodo) {
-			for (var i = 0; i<cursosMoodle.length ; i++){
-				if ($filter('actividadEquals')(actividad,cursosMoodle[i].shortname,periodo) && cursosMoodle[i].comisiones){
-					for (var j = 0; j<cursosMoodle[i].comisiones.length ; j++){
-						if (comisionSiu == cursosMoodle[i].comisiones[j].name ){
-							console.log(cursosMoodle[i].comisiones[j]);
-							if (cursosMoodle[i].comisiones[j].estudiantes){
-								for (var h = 0; h<cursosMoodle[i].comisiones[j].estudiantes.length ; h++){
-									if (estudianteSiu.usuario.toLowerCase() == cursosMoodle[i].comisiones[j].estudiantes[h].username)
-										return true;
-								}
+		return function(estudianteSiu,comisionSiu,cursoMoodle) {
 
+				for (var j = 0; j<cursoMoodle.comisiones.length ; j++){
+					if (comisionSiu == cursoMoodle.comisiones[j].name ){
+						if (cursoMoodle.comisiones[j].estudiantes){
+
+							for (var h = 0; h<cursoMoodle.comisiones[j].estudiantes.length ; h++){
+								if (estudianteSiu.usuario.toLowerCase() == cursoMoodle.comisiones[j].estudiantes[h].username)
+									return true;
 							}
-						return false;
 						}
-					}	
-				}
-			};
+					console.log('Fallo: '+estudianteSiu,cursoMoodle.comisiones[j]);
+					return false;
+					}
+				}	
+
 			return false;
 		};
 	});
 
 	app.filter('docenteMigrated', function($filter) {
-		return function(docenteSiu,comisionSiu,cursosMoodle,actividad,periodo) {
-			for (var i = 0; i<cursosMoodle.length ; i++){
-				if ($filter('actividadEquals')(actividad,cursosMoodle[i].shortname,periodo) && cursosMoodle[i].comisiones){
-					for (var j = 0; j<cursosMoodle[i].comisiones.length ; j++){
-						if (comisionSiu == cursosMoodle[i].comisiones[j].name ){
-							if (cursosMoodle[i].comisiones[j].docentes){
-								for (var h = 0; h<cursosMoodle[i].comisiones[j].docentes.length ; h++){
-									if (docenteSiu.usuario.toLowerCase() == cursosMoodle[i].comisiones[j].docentes[h].username)
-										return true;
-								}
+		return function(docenteSiu,comisionSiu,cursoMoodle) {
 
+				for (var j = 0; j<cursoMoodle.comisiones.length ; j++){
+					if (comisionSiu == cursoMoodle.comisiones[j].name ){
+						if (cursoMoodle.comisiones[j].docentes){
+							for (var h = 0; h<cursoMoodle.comisiones[j].docentes.length ; h++){
+								if (docenteSiu.usuario.toLowerCase() == cursoMoodle.comisiones[j].docentes[h].username)
+									return true;
 							}
-						return false;
+
 						}
-					}	
-				}
-			};
+					return false;
+					}
+				};
 			return false;
 		};
 	});
@@ -111,7 +106,7 @@ var app = angular.module('siuMoodleApp', ['ngTable'],function($httpProvider) {
 		};
 	});
 
-	app.filter('sincronizado', function($filter) {
+	/*app.filter('sincronizado', function($filter) {
 		return function(comisionSiu,comisionMoodle) {
 			if ( (!comisionSiu.alumnos && comisionMoodle.estudiantes) 
 					|| (comisionSiu.alumnos && !comisionMoodle.estudiantes)
@@ -147,13 +142,14 @@ var app = angular.module('siuMoodleApp', ['ngTable'],function($httpProvider) {
 
 			return true;
 		};
-	});
+	});*/
 
 
 	app.filter('userExistInMoodle', function() {
 		return function(estudianteSiu,usuariosMoodle) {
 			for (var i = 0; i<usuariosMoodle.length ; i++){
-				if (usuariosMoodle[i].username == estudianteSiu.usuario.toLowerCase()){
+				if (!usuariosMoodle[i].username)
+				if (usuariosMoodle[i].username.toLowerCase()== estudianteSiu.usuario.toLowerCase()){
 					return true;
 				}
 			};

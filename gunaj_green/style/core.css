@@ -2,6 +2,15 @@
 /************ HEADER *****************/
 /*************************************/
 
+#header-principal-1 {
+	background-color: rgb(138,176,63);
+}
+
+#moodleheader {
+	background-color: rgb(138,176,63);
+}
+
+
 .navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
     border-color: rgb(138,176,63);
 }
@@ -30,7 +39,7 @@
 /************** BODY *****************/
 /*************************************/
 a {
-	color:rgb(138,176,63);;
+	color:rgb(138,176,63);
 }
 
 .breadcrumb>li>a:hover, .breadcrumb>li>a:active, .breadcrumb>li>a:focus {

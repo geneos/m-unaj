@@ -2,6 +2,14 @@
 /************ HEADER *****************/
 /*************************************/
 
+#header-principal-1 {
+	background-color: #283A8A
+}
+
+#moodleheader {
+	background-color: #283A8A;
+}
+
 .navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
     border-color: #283A8A;
 }

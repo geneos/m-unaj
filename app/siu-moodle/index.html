@@ -58,10 +58,10 @@
 						  <div class="form-group">
 						    <label for="moodleToken"  class="col-sm-2 control-label">Moodle Token</label>
 						    <div class="col-sm-4">
-						      <input ng-disabled="dataInitialized" type="text" class="form-control" id="moodleToken"ng-model="moodleToken" value="{{moodleToken}}" placeholder="Token">
+						      <input ng-disabled="periodosInitialized" type="text" class="form-control" id="moodleToken"ng-model="moodleToken" value="{{moodleToken}}" placeholder="Token">
 						    </div>
 						    <label for="siuLimit"  class="col-sm-1 control-label">Limite</label>
-						    <div class="col-sm-1">
+						    <div class="col-sm-2">
 						       <input type="text" class="form-control" id="siuLimit" ng-model="siuLimit" value="{{siuLimit}}" placeholder="Limite de comisiones a traer">
 						    </div>
 						    <label for="siuPage"  class="col-sm-1 control-label">Pagina</label>
@@ -69,20 +69,20 @@
 						      <input type="text" class="form-control" id="siuPage" ng-model="siuPage" value="{{siuPagina}}" placeholder="Numero de pagina a traer (Se trae a partir de la (pagina-1)*limite hasta pagina*limite">
 						    </div>
 
-						    <div class="col-sm-2">
-						      <button type="button" class="btn btn-primary" ng-click="preInitData()">Cargar Periodos</button>
+						    <div class="col-sm-1">
+						      <button type="button" class="btn btn-primary" ng-click="preInitData()">Cargar</button>
 						    </div>
 						  </div>
 						  <div class="form-group">
 						    <label for="siuPeriodos"  class="col-sm-2 control-label">Periodos</label>
 						    <div class="col-sm-4">
-						       <select class="form-control" ng-options="periodo as periodo.nombre for periodo in periodosLectivos" ng-model="periodoSelected" ng-change="update()"></select>
+						       <select class="form-control" ng-options="periodo as periodo.nombre for periodo in periodosLectivos" ng-model="periodoSelected" ng-change="updatePeriodo()"></select>
 						    </div>
 						    
 
-						    <div class="col-sm-2">
+						    <!--div class="col-sm-2">
 						      <button type="button" class="btn btn-primary" ng-click="initData()">Cargar datos</button>
-						    </div>
+						    </div-->
 						  </div>
 
 
@@ -107,13 +107,13 @@
 						<td title="'Categoria'" >
 						    <select ng-options="category.id as category.name for category in categoriasUnaj" ng-model="actividad.moodleCategoryID" ng-disabled="actividad.migrado"  ></select></td>
 						<td ><button type="button" class="btn btn-primary" ng-disabled="actividad.migrado" ng-click="importCourse(actividad)">Importar</button></td>
-						<!--td ><button type="button" class="btn btn-danger" ng-disabled="actividad.codError == 0" ng-click="repairCourse(actividad)">Reparar</button></td-->
-						<td><button type="button" class="btn btn-success" ng-disabled="!actividad.migrado" ng-click="synchronizeCourse(actividad)" >Sincronizar</button></td>
+						<td><button type="button" class="btn btn-info" ng-disabled="!actividad.migrado" ng-click="initDataActivitySincronized(actividad)" >Cargar Datos</button></td>
+						<td><button type="button" class="btn btn-success" ng-disabled="!actividad.dataInitialized" ng-click="synchronizeCourse(actividad)" >Sincronizar</button></td>
 					    </tr>
 
 					    <tr ng-hide="actividad.$hideRows" class="warning" ng-repeat="comision in actividad.comisiones | orderBy : comision.nombre" ng-repeat-end>
 							<td colspan="3">Comision: {{comision.nombre}}</td>
-							<td colspan="4">
+							<td colspan="5">
 								<span>Alumnos: {{comision.alumnos.length}}</span> | 
 								<span>Docentes: {{comision.docentes.length}}</span>
 							</td>
@@ -127,10 +127,13 @@
 					<div class="col-sm-9 col-sm-offset-3" >
 						<div class="form-horizontal">
 						  <div class="form-group">
-						    <div class="col-sm-8">
+						    <div class="col-sm-6">
 						    </div>
 						    <div class="col-sm-2">
 						      <button type="button" class="btn btn-primary" ng-click="bulkImportCourses()">Importar Todos</button>
+						    </div>
+						    <div class="col-sm-2">
+						      <button type="button" class="btn btn-info" ng-click="bulkInitDataActivitySincronized()">Cargar Todos</button>
 						    </div>
 						    <div class="col-sm-2">
 						      <button type="button"  class="btn btn-success" ng-click="bulkSynchronizeCourses()">Sincronizar Todos</button>
@@ -144,7 +147,8 @@
 
 
 				<div class="row">
-					<samp><textarea id="logArea" ng-model="logArea" rows=10 style="overflow-y:scroll"  class="col-sm-12 bg-success text-warning"></textarea></samp>
+					<samp><textarea  id="logArea" ng-model="logArea" rows=10 style="overflow-y:scroll"  class="col-sm-12 bg-success text-warning"></textarea></samp>
+					<label class="col-sm-2 text-warning">Cantidad de Errores: {{errorCount}}</label>
 				</div>
 
 			</div>

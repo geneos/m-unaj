@@ -45,6 +45,14 @@ a {
 /*********** BREADCRUMB **************/
 /*************************************/
 
+#header-principal-1 {
+	background-color: #F29230;
+}
+
+#moodleheader {
+	background-color: #F29230;
+}
+
 .navbar-inverse .navbar-nav>.open>a,
 .navbar-inverse .navbar-nav>.open>a:hover,
 .navbar-inverse .navbar-nav>.open>a:focus,

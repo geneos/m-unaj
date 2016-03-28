@@ -37,7 +37,6 @@ app.factory('moodleFactory', function($http,PROPERTIES){
 		- Se agrega como descripcion el nombre del periodo lectivo.
 	*/
 	service.createCourse = function(fullname,shortname,category,periodo){
-		console.log(periodo);
 	_function = "core_course_create_courses";
 	setParametros().courses = [{"fullname":fullname,"shortname":PROPERTIES.MOODLE_COURSE_SHORTNAME_PREFIX+shortname+'-'+periodo.periodo_lectivo,"categoryid":category,"visible":0,"format":"topics","summary":periodo.nombre}];
 	return $http.post(_url,_parametros);
@@ -86,7 +85,6 @@ app.factory('moodleFactory', function($http,PROPERTIES){
 	service.createGroupForCourse = function(courseid,name){
 	_function = service.createGroupForCourseFunctionName();//"core_group_create_groups";
 	setParametros().groups = [{"courseid":courseid,"name":name,"description":" ","descriptionformat":1}];
-	console.log(_parametros);
 	return $http.post(_url,_parametros);
 	};
 
@@ -101,7 +99,6 @@ app.factory('moodleFactory', function($http,PROPERTIES){
 	service.deleteGroup = function(groupid){
 	_function = service.deleteGroupFunctionName();//"core_group_delete_groups";
 	setParametros().groupids = [groupid];
-	console.log(_parametros);
 	return $http.post(_url,_parametros);
 	};
 

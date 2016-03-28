@@ -3,50 +3,50 @@
 /*************************************/
 
 #header-principal-1 {
-	background-color: #A63322;
+	background-color: #FFB000
 }
 
 #moodleheader {
-	background-color: #A63322;
+	background-color: #FFB000;
 }
 
 .navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
-    border-color: #A63322;
+    border-color: #FFB000;
 }
 
 .navbar .navbar-nav>.dropdown>a:hover .caret,
 .navbar .navbar-nav>.dropdown>a:focus .caret {
-    border-top-color: #A63322;
-    border-bottom-color: #A63322;
+    border-top-color: #FFB000;
+    border-bottom-color: #FFB000;
 }
 
 .navbar-inverse .navbar-toggle{
-    background-color: #A63322;
+    background-color: #FFB000;
 }
 
 .navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
-    border-color: #A63322;
+    border-color: #FFB000;
 }
 
 @media (max-width: 767px) {
 	.navbar-inverse .navbar-nav .open .dropdown-menu > li > a:hover, 
 	.navbar-inverse .navbar-nav .open .dropdown-menu > li > a:focus {
-		color: #A63322;
+		color: #FFB000;
 	}
 }
 /*************************************/
 /************** BODY *****************/
 /*************************************/
 a {
-	color:#A63322;;
+	color:#FFB000;
 }
 
 .breadcrumb>li>a:hover, .breadcrumb>li>a:active, .breadcrumb>li>a:focus {
-    color:#A63322;
+    color:#FFB000;
 }
 
 .path-course-view .course_title h2{
-	color:#A63322;
+	color:#FFB000;
 }
 
 /*************************************/
@@ -57,11 +57,11 @@ a {
 .navbar-inverse .navbar-nav>.open>a:hover,
 .navbar-inverse .navbar-nav>.open>a:focus,
 .navbar-inverse .navbar-nav> li >a:hover {
-    border-bottom-color: #A63322;
+    border-bottom-color: #FFB000;
 }
 
 .dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
-	background-color: #A63322;
+	background-color: #FFB000;
 }
 
 /*************************************/
@@ -69,39 +69,40 @@ a {
 /*************************************/
 #block-region-side-post .block .header,
 #block-region-side-pre .block .header {
-	background-color:#A63322;
+	background-color:#FFB000;
 }
 
+
 .block_login .content .footer div:nth-child(1) a {
-	color:#A63322;
+	color:#FFB000;
 }
 
 .block_login .btn:hover{
-	background:#A63322 !important;
-    
+	background:#FFB000 !important;
+   
 }
 
 /** TINY MCE **/
 .titulo_oscuro{
-	color:#911d14;
+	color:#d68400;
 }
 
 .titulo_claro{
-	color:#b7433b;
+	color:#ffc35a;
 }
 
 .subtitulo_oscuro{
-	color:#911d14;
+	color:#d68400;
 }
 
 .subtitulo_claro{
-	color:#b7433b;
+	color:#ffc35a;
 }
 
 .recuadro_oscuro{
-	border-color:#911d14;
+	border-color:#d68400;
 }
 
 .recuadro_claro{
-	border-color:#b7433b;
+	border-color:#ffc35a;
 }

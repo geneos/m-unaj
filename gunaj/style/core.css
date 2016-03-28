@@ -5,6 +5,12 @@
 #header-principal-1 .container {
 	padding: 0px;
 }
+
+#moodleheader {
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
 #logo-header-principal-1 {
 	float: left;
 	margin-top:50px;
