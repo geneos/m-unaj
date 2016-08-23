@@ -49,6 +49,11 @@ a {
 	color:#283A8A;
 }
 
+/** FEEDBACK TABLE **/
+.feedbacktable img.expandsummaryicon {
+	background-color:#283A8A;
+}
+
 /*************************************/
 /*********** BREADCRUMB **************/
 /*************************************/
@@ -80,6 +85,12 @@ a {
 .block_login .btn:hover{
 	background:#283A8A !important;
    
+}
+
+/* Recursos */
+
+#page-content #maincontent + h2{
+	color:#1a2e75;
 }
 
 /** TINY MCE **/

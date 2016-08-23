@@ -107,7 +107,7 @@ echo $OUTPUT->doctype() ?>
     </div>
 </header>
 
-<section id="main" class="clearfix">
+<section id="main" class="clearfix default">
     <div id="page" class="<?php echo $container; ?>">
         <header id="page-header" class="clearfix">
             <div id="course-header">

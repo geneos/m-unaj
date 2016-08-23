@@ -245,11 +245,13 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,$exceptionHand
 			    else{
 					logSuccess('Se obtuvieron ' +data.length+' categorias de Moodle','moodleFactory.getCategoriesByParent',data);
 
-					$scope.subCategoriasUnaj = $scope.categoriasUnaj;
-					for(i = 0; i<$scope.subCategoriasUnaj.lenght ; i++){
+
+					$scope.categoriasUnaj = data;
+					$scope.subCategoriasUnaj = data;
+					/*for(i = 0; i<$scope.subCategoriasUnaj.lenght ; i++){
 						if ($scope.subCategoriasUnaj[i].parent == PROPERTIES.MOODLE_ROOT_CATEGORY_ID)
 							$scope.categoriasUnaj.push($scope.subCategoriasUnaj[i]);
-					}
+					}*/
 
 					//Itero sobre todos las categorias y obtengo las categorias "importados"
 				    var catImportadosPromise = [];
@@ -674,7 +676,7 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,$exceptionHand
 
 		angular.forEach(actividad.comisiones, function (comision) {
 
-			if ( !$filter('comisionMigrated')(comision.nombre,$scope.moodlecourses,comision.actividad.codigo,$scope.periodoSelected) )	{
+			if ( comision.selected && !$filter('comisionMigrated')(comision.nombre,$scope.moodlecourses,comision.actividad.codigo,$scope.periodoSelected) )	{
 				newCount++;
 		    	addComisionesPromise.push (moodleFactory.createGroupForCourse(moodleCourse.id,comision.nombre));  
 			}
@@ -727,7 +729,13 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,$exceptionHand
 
 			var syncComisionSincronizedDefer = $q.defer();
 			var syncComisionSincronizedPromise = syncComisionSincronizedDefer.promise;
-			_synchronizeComisionQueue(actividad.comisiones,0,actividad.codigo,syncComisionSincronizedDefer);
+			var queue = [];
+			angular.forEach(actividad.comisiones, function(comision){ 
+			if (comision.selected)
+				queue.push(comision);
+			});
+
+			_synchronizeComisionQueue(queue,0,actividad.codigo,syncComisionSincronizedDefer);
 			syncComisionSincronizedPromise.then( function(data){
 				synchronizeActividadSinchronizedDefer.resolve();
 			});
@@ -1341,7 +1349,15 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,$exceptionHand
 		var initDataActivitySincronizedDefer = $q.defer();
 		var initDataComisionSincronizedDefer = $q.defer();
 		var initDataComisionSincronizedPromise = initDataComisionSincronizedDefer.promise;
-		_initDataQueue(actividad.comisiones,0,initDataComisionSincronizedDefer);
+
+
+		var queue = [];
+		angular.forEach(actividad.comisiones, function(comision){ 
+		if (comision.selected)
+			queue.push(comision);
+		});
+
+		_initDataQueue(queue,0,initDataComisionSincronizedDefer);
 		initDataComisionSincronizedPromise.then( function(data){
 			actividad.dataInitialized = true;
 			initDataActivitySincronizedDefer.resolve()
@@ -1352,7 +1368,7 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,$exceptionHand
 
 	function _initDataQueue(queue,curr,defer){
 		_initDataComision(queue[curr]).then(function (){
-			logSuccess('Finalizada inicializacion de comision: '+queue[curr].nombre);
+			logSuccess('Finalizada inicializacion de comision: '+queue[curr].nombre,'_initDataQueue',queue[curr]);
 			if (curr == queue.length-1)
 				defer.resolve();
 			else
@@ -1369,8 +1385,7 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,$exceptionHand
 	function _initDataActivityQueue(queue,curr){
 		if (curr < queue.length)
 			_initDataActivitySincronized(queue[curr]).then(function (){
-				logSuccess('Finalizada inicializacion de la actividad: '+queue[curr].nombre);
-				_initDataActivityQueue(queue,curr+1);
+				logSuccess('Finalizada inicializacion de la actividad: '+queue[curr].nombre,queue[curr]);
 			});
 	}
 
@@ -1384,11 +1399,4 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,$exceptionHand
 		_initDataActivityQueue(queue,0);
 	}
 
-	$scope.buscarUsario = function(){
-		var dummy = {'usuario':$scope.testUserr};
-		if ( $filter('userExistInMoodle')(dummy,$scope.moodleusers) )	
-			alert('Si');
-		else
-			alert('No');
-	}
 });

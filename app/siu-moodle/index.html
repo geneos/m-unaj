@@ -112,8 +112,9 @@
 					    </tr>
 
 					    <tr ng-hide="actividad.$hideRows" class="warning" ng-repeat="comision in actividad.comisiones | orderBy : comision.nombre" ng-repeat-end>
+					    	<td ><input type="checkbox" ng-model="comision.selected"  value="" /></td>
 							<td colspan="3">Comision: {{comision.nombre}}</td>
-							<td colspan="5">
+							<td colspan="4">
 								<span>Alumnos: {{comision.alumnos.length}}</span> | 
 								<span>Docentes: {{comision.docentes.length}}</span>
 							</td>

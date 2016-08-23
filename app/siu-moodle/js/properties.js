@@ -15,7 +15,7 @@ app.constant('PROPERTIES', {
   MOODLE_TEACHING_ROLE_ID: 3,
 
   //Metodo de autenticacion con el que se generan los usuarios
-  CREATE_USER_MOODLE_AUTH: 'manual',
+  CREATE_USER_MOODLE_AUTH: 'db',
 
   //Dominio del mail que se utiliza por defecto al crear un usuario
   CREATE_USER_MOODLE_EMAIL_DEFAULT: '@default.com',

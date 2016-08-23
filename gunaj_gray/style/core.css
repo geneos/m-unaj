@@ -41,6 +41,11 @@ a {
 	color:#9FA3A2;
 }
 
+/** FEEDBACK TABLE **/
+.feedbacktable img.expandsummaryicon {
+	background-color:#9FA3A2;
+}
+
 /*************************************/
 /*********** BREADCRUMB **************/
 /*************************************/

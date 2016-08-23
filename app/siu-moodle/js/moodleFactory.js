@@ -114,10 +114,10 @@ app.factory('moodleFactory', function($http,PROPERTIES){
 	*/
 	service.createUser = function(username,password,firstname,lastname,email){
 	_function = "core_user_create_users";
-	if (email.length == 0 || !email.trim())
+	if ( !email || email.length == 0 || !email.trim())
 		//Si no tiene mail entonces le asigno un mail por defecto
 		email = username+PROPERTIES.CREATE_USER_MOODLE_EMAIL_DEFAULT
-	setParametros().users = [{"username":username,"password":password,"firstname":firstname,"lastname":lastname,"email":email}];
+	setParametros().users = [{"username":username,"password":password,"firstname":firstname,"lastname":lastname,"email":email,"auth":PROPERTIES.CREATE_USER_MOODLE_AUTH}];
 	return $http.post(_url,_parametros);
 	};
 

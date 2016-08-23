@@ -1,3 +1,4 @@
+<?php require_once($CFG->dirroot . '/user/lib.php');?>
 <div id="header-principal-1" class="clearfix">
 		
         <?php echo $OUTPUT->course_header(); ?>
@@ -13,14 +14,14 @@
 					<?php $user_picture=new user_picture($USER); ?>
 					<?php $src=$user_picture->get_url($PAGE); ?>
 					<?php $src = str_replace("f2","f1",$src); ?>
+					
 					<li class="perfil-image"><img src="<?php echo $src; ?>"/></li>
-					<li class="navbar-text">
-						<?php //echo $OUTPUT->user_menu(); ?>
+					<li class="navbar-text navbar">
 						<div class="textolog">
 							   <span class="bienv">Bienvenido </span><a class="cerrar_sesion" href="<?php echo $CFG->httpswwwroot ?>/login/logout.php?sesskey=<?php echo $USER->sesskey; ?>">(Salir)</a><br>
-							   <a href="/user/profile.php?id=<?php echo $USER->id; ?>"><?php echo $USER->firstname; ?>  
-							   <?php echo $USER->lastname; ?></a><br>
+							   <a href="/user/profile.php?id=<?php echo $USER->id; ?>"><?php echo $OUTPUT->user_menu_custom() ?></a><br>
 					   </div>
+
 				   </li>
 				</ul>		
 			<?php } ?>

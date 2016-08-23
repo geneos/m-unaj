@@ -148,10 +148,10 @@ var app = angular.module('siuMoodleApp', ['ngTable'],function($httpProvider) {
 	app.filter('userExistInMoodle', function() {
 		return function(estudianteSiu,usuariosMoodle) {
 			for (var i = 0; i<usuariosMoodle.length ; i++){
-				if (!usuariosMoodle[i].username)
-				if (usuariosMoodle[i].username.toLowerCase()== estudianteSiu.usuario.toLowerCase()){
-					return true;
-				}
+				if (usuariosMoodle[i].username)
+					if (usuariosMoodle[i].username.toLowerCase() == estudianteSiu.usuario.toLowerCase()){
+						return true;
+					}
 			};
 			return false;
 		};

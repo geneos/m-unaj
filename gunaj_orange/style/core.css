@@ -41,6 +41,11 @@ a {
 	color:#F29230;
 }
 
+/** FEEDBACK TABLE **/
+.feedbacktable img.expandsummaryicon {
+	background-color:#F29230;
+}
+
 /*************************************/
 /*********** BREADCRUMB **************/
 /*************************************/
@@ -80,6 +85,13 @@ a {
 	background:#F29230 !important;
     
 }
+
+/* Recursos */
+
+#page-content #maincontent + h2{
+	color:#ea7d1b;
+}
+
 
 /** TINY MCE **/
 .titulo_oscuro{

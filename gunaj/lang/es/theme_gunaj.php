@@ -51,15 +51,15 @@ Website: <a href="http://www.basbrands.nl">www.basbrands.nl</a>
 
 </div></div>';
 
-$string['pluginname'] = 'theme_gunaj_yellow';
-$string['configtitle'] = 'GUNAJ GRAY';
+$string['pluginname'] = 'theme_gunaj';
+$string['configtitle'] = 'GUNAJ';
 
 $string['region-side-middle'] = 'Homepage Middle';
 $string['region-hidden-dock'] = 'Admin Only';
 
 $string['reader'] = 'Reader';
 
-$string['mydashboard'] = 'My Dashboard';
+$string['mydashboard'] = 'Area personal';
 
 $string['customcss'] = 'Custom CSS';
 $string['customcssdesc'] = 'Whatever CSS rules you add to this textarea will be reflected in every page, making for easier customization of this theme.';
