@@ -29,15 +29,6 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,$exceptionHand
 	function moveCaretToEnd() {
 		var el = document.getElementById("logArea");
 		setTimeout(function(){ el.scrollTop = el.scrollHeight; }, 250);
-		
-	    /*if (typeof el.selectionStart == "number") {
-	        el.selectionStart = el.selectionEnd = el.value.length;
-	    } else if (typeof el.createTextRange != "undefined") {
-	        el.focus();
-	        var range = el.createTextRange();
-	        range.collapse(false);
-	        range.select();
-	    }*/
 	}
 
 	$scope.dataInitialized = false;
@@ -188,7 +179,6 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,$exceptionHand
 			    }
 			    else {
 			    	try {
-				    	var periodosCount = 0;
 				    	indexedPeriodos = [];
 						angular.forEach(data,function (comision){
 							if (filterPeriodos(comision)) {
@@ -196,9 +186,12 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,$exceptionHand
 							}
 						});
 
+						//Agrego opcion de Todos los periodos lectivos
+						$scope.periodosLectivos.unshift({'nombre':'Todos','periodo_lectivo':0});
+
 						$scope.comisiones = data; 
 						logSuccess('Se obtuvieron ' +$scope.comisiones.length+' Comisiones de SIU ','siuFactory.getComisiones',$scope.comisiones);
-					    logSuccess('Se obtuvieron ' +$scope.periodosLectivos.length+' Periodos Lectivos de SIU ','siuFactory.getComisiones',$scope.periodosLectivos);
+					    logSuccess('Se obtuvieron ' +$scope.periodosLectivos.length+' Periodos Lectivos de SIU ','siuFactory.getComisiones.PeriodosLectivos',$scope.periodosLectivos);
 					}
 
 				    catch (e) {
@@ -243,31 +236,17 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,$exceptionHand
 			    if (data.exception)
 					logError('Error al intentar obtener categorias de Moodle:'+'\n'+data.exception+'\n'+data.message +'\n'+data.debuginfo,'moodleFactory.getCategoriesByParent',data);
 			    else{
-					logSuccess('Se obtuvieron ' +data.length+' categorias de Moodle','moodleFactory.getCategoriesByParent',data);
-
 
 					$scope.categoriasUnaj = data;
-					$scope.subCategoriasUnaj = data;
-					/*for(i = 0; i<$scope.subCategoriasUnaj.lenght ; i++){
-						if ($scope.subCategoriasUnaj[i].parent == PROPERTIES.MOODLE_ROOT_CATEGORY_ID)
-							$scope.categoriasUnaj.push($scope.subCategoriasUnaj[i]);
-					}*/
-
-					//Itero sobre todos las categorias y obtengo las categorias "importados"
-				    var catImportadosPromise = [];
-					angular.forEach($scope.categoriasUnaj, function (categoria) {
-						catImportadosPromise.push (moodleFactory.getCategoriesByParent(categoria.id,true));   
-					});	
-
-					$q.all(catImportadosPromise).then(function(data) {
-						angular.forEach(data, function (myItem) {
-							if (myItem.data.length > 0) {
-								$scope.subCategoriasUnaj.push(myItem.data[0])		
-							}
-						});	
-
-						logSuccess('Se obtuvieron ' +$scope.subCategoriasUnaj.length+' subcategorias de Moodle','moodleFactory.getCategoriesImportCategory',$scope.subCategoriasUnaj);
+					logSuccess('Se obtuvieron ' +$scope.categoriasUnaj.length+' categorias de Moodle','moodleFactory.getCategories',$scope.categoriasUnaj);
+					
+					moodleFactory.getCategoriesByParent(PROPERTIES.MOODLE_ROOT_CATEGORY_ID,true)
+					.success(function(data) {
+						console.log(data);
+						$scope.subCategoriasUnaj = data;
+						logSuccess('Se obtuvieron ' +$scope.subCategoriasUnaj.length+' sub categorias de Moodle','moodleFactory.getSubCategories',$scope.subCategoriasUnaj);
 					});
+
 			    }
 			}).error(function(data, status, header, config) {
 				if (status == -1)
@@ -294,7 +273,7 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,$exceptionHand
 					$q.all(requestPromise).then(function(data) {
 
 						for (var i = 0; i < $scope.actividades.length; i++) {
-							$scope.actividades[i].moodleCategoryID =  getMoodleCategoryID($scope.actividades[i].codigo,true);
+							$scope.actividades[i].moodleCategoryID =  getMoodleCategoryID($scope.actividades[i].codigo,true,$scope.actividades[i].periodoLectivo.periodo_lectivo);
 						} 
 
 						var groupsPromise = [];
@@ -354,7 +333,7 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,$exceptionHand
 
 
 
-	$scope.initData = function(){
+	/*$scope.initData = function(){
 
 		if ( !$scope.periodosInitialized ){
 			logInfo('Por favor seleccione un Periodo Lectivo');
@@ -363,15 +342,6 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,$exceptionHand
 
 		logInfo('Comenzando la inicializacion de datos...');
 		$scope.spinner = true;
-		
-		
-		//Seteo configuracion de siuFactory
-		/*siuFactory.setUrl(PROPERTIES.SIU_REST_URI);
-		siuFactory.setUser($scope.siuUser);
-		siuFactory.setPassword($scope.siuPassword);*/
-		
-		
-
 
     	//Filtro por periodo
 		var comisionesFiltered = $scope.comisiones.filter(function (comision) {
@@ -387,6 +357,7 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,$exceptionHand
 
 	    for (var i = 0; i < comisionesFiltered.length; i++) {
 		  	//Agrupo en actividades (las comisiones vienen ordenadas por actividad)
+			
 			if (filterActividades(comisionesFiltered[i])){
 			  	$scope.actividades.push({ 	
 			  							'codigo': comisionesFiltered[i].actividad.codigo,
@@ -397,14 +368,16 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,$exceptionHand
 			  							'migrado':false,
 			  							//'curso':0,
 			  							'codError':0,
-			  							'$hideRows':true
+			  							'$hideRows':true,
+			  							'periodoLectivo':comisionesFiltered[i].periodo_lectivo
 			  							});
 			  	actividadesCount++;
 		  	}
-  		$scope.actividades[actividadesCount-1].comisiones.push(comisionesFiltered[i]);
+
+		actividadPos = indexedActivities.indexOf(comisionesFiltered[i].actividad.codigo+'-'+comisionesFiltered[i].periodo_lectivo.periodo_lectivo);
+  		$scope.actividades[actividadPos].comisiones.push(comisionesFiltered[i]);
 		
 		}
-
 
 	    //Itero sobre todos las actividades y obtengo los docentes
 	    var docentesPromise = [];
@@ -515,13 +488,13 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,$exceptionHand
 					//Control de sincronizacion por obtencion de cursos (SIU), comisiones (SIU), categorias (Moodle) y usuarios (Moodle)
 					$q.all(requestPromise).then(function(data) {
 						for (var i = 0; i < $scope.actividades.length; i++) {
-														$scope.actividades[i].migrado =  $filter('actividadMigrated')($scope.actividades[i].codigo,$scope.moodlecourses,$scope.periodoSelected);
+														$scope.actividades[i].migrado =  $filter('actividadMigrated')($scope.actividades[i].codigo,$scope.moodlecourses,$scope.actividades[i].periodoLectivo);
 							//$scope.actividades[i].curso = getSIUCourseID($scope.actividades[i].codigo);
 							
 							if ($scope.actividades[i].migrado && $scope.actividades[i].curso == 0) {
 								$scope.actividades[i].codError = 100;
 							}
-							$scope.actividades[i].moodleCategoryID =  getMoodleCategoryID($scope.actividades[i].codigo,true);
+							$scope.actividades[i].moodleCategoryID =  getMoodleCategoryID($scope.actividades[i].codigo,true,$scope.actividades[i].periodoLectivo.periodo_lectivo);
 							//$scope.actividades[i].parentMoodleCategoryID =  getMoodleCategoryID($scope.actividades[i].codigo,true);
 						} 
 						var groupsPromise = [];
@@ -583,20 +556,19 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,$exceptionHand
 					logError('Error al intentar obtener cursos de Moodle','moodleFactory.getCursos',data);
 			});
 	
-	}
+	}*/
 
 	//Crear Curso
 	function _importCourse (siuActividad,categoria){
 
 		$scope.spinner = true;
-		console.log('importCourse',siuActividad);
 
 		//Callback para controlar importacion de varios cursos
 		var deferred = $q.defer();
 
 		var categoriaid = getImportCategory(siuActividad.moodleCategoryID);
-		if (categoriaid != 0 && ($scope.periodoSelected.periodo_lectivo == siuActividad.comisiones[0].periodo_lectivo.periodo_lectivo) )
-			moodleFactory.createCourse(siuActividad.nombre,siuActividad.codigo,categoriaid,$scope.periodoSelected).
+		if (categoriaid != 0 ) {
+			moodleFactory.createCourse(siuActividad.nombre,siuActividad.codigo,categoriaid,siuActividad.periodoLectivo).
 			success(function(data) {
 			    if (data.exception)
 					logError('Hubo un error al importar actividad '+siuActividad.nombre+' en moodle','importCourse.createCourse.Error'+data.exception + '\n'+data.message +'\n'+data.debuginfo,data);
@@ -617,6 +589,7 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,$exceptionHand
 			}).error(function(data) {
 			     console.log('importCourse.Error',data);
 			});
+		}
 		else
 			logError('Hubo un error al crear el curso en Moodle para la actividad '+siuActividad.codigo+' no existe subcategoria importados en moodle','moodleFactory.createCourse',data);
 	
@@ -627,7 +600,6 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,$exceptionHand
 	* 100: Se importo actividad a moodle pero no se creo curso en SIU
 	**/
 	$scope.repairCourse = function (siuActividad){
-		console.log('repairCourse',siuActividad);
 		if (siuActividad.codError = 100){
 			moodleCourseID = getMoodleCourseID(siuActividad.codigo);
 			siuFactory.createCurso(moodleCourseID,siuActividad.codigo).
@@ -801,8 +773,6 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,$exceptionHand
 			logInfo('Se van a desmatricular: '+removeFromCourse.length+' usuarios');
 
 			$q.all(removeFromCourse).then(function (data){
-				console.log(data);
-
 
 				// (2)
 
@@ -1101,13 +1071,14 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,$exceptionHand
 		return;
 	}
 
-	var getMoodleCategoryID = function (codigoActividad,parent) {
+	var getMoodleCategoryID = function (codigoActividad,parent,periodo) {
 		for(var i = 0; i<$scope.moodlecourses.length; i++){
-			if ($filter('actividadEquals')(codigoActividad,$scope.moodlecourses[i].shortname,$scope.periodoSelected))
+			if ($filter('actividadEquals')(codigoActividad,$scope.moodlecourses[i].shortname,periodo)){
 				if (parent)	
 					return 	getParentCategory($scope.moodlecourses[i].categoryid);
 				else
 					return 	$scope.moodlecourses[i].categoryid;
+			}
 		}
 		return null;
 	};
@@ -1285,11 +1256,13 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,$exceptionHand
 	};
 
 	//Para agrupar actividades
+	//Las actividades se distingen si pertenecen a un periodo lectivo distinto,
+	// es por eso que se concatenan para formar el indice
 	var indexedActivities = [];
     filterActividades = function(comision) {
-        var actividadIsNew = indexedActivities.indexOf(comision.actividad.codigo) == -1;
+        var actividadIsNew = indexedActivities.indexOf(comision.actividad.codigo+'-'+comision.periodo_lectivo.periodo_lectivo) == -1;
         if (actividadIsNew) {
-            indexedActivities.push(comision.actividad.codigo);
+            indexedActivities.push(comision.actividad.codigo+'-'+comision.periodo_lectivo.periodo_lectivo);
         }
         return actividadIsNew;
     }
@@ -1309,7 +1282,9 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,$exceptionHand
     $scope.updatePeriodo = function(){
     	//Filtro por periodo
 		var comisionesFiltered = $scope.comisiones.filter(function (comision) {
-		    return (comision.periodo_lectivo.periodo_lectivo == $scope.periodoSelected.periodo_lectivo);
+		    return ( ($scope.periodoSelected.periodo_lectivo == 0 ) ||
+		    		(comision.periodo_lectivo.periodo_lectivo == $scope.periodoSelected.periodo_lectivo) 
+		    		);
 		});
 
 
@@ -1330,13 +1305,16 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,$exceptionHand
 			  							'moodleCategoryID':null,
 			  							'codError':0,
 			  							'$hideRows':true,
-			  							'migrado':$filter('actividadMigrated')(comisionesFiltered[i].actividad.codigo,$scope.moodlecourses,$scope.periodoSelected),
-			  							'dataInitialized':false
+			  							'migrado':$filter('actividadMigrated')(comisionesFiltered[i].actividad.codigo,$scope.moodlecourses,comisionesFiltered[i].periodo_lectivo),
+			  							'dataInitialized':false,
+			  							'periodoLectivo':comisionesFiltered[i].periodo_lectivo,
 			  							});
-			  	$scope.actividades[actividadesCount].moodleCategoryID =  getMoodleCategoryID($scope.actividades[actividadesCount].codigo,true);
+			  	$scope.actividades[actividadesCount].moodleCategoryID =  getMoodleCategoryID($scope.actividades[actividadesCount].codigo,true,$scope.actividades[actividadesCount].periodoLectivo);
+			  	console.log($scope.actividades[actividadesCount].moodleCategoryID);
 			  	actividadesCount++;
 		  	}
-  		$scope.actividades[actividadesCount-1].comisiones.push(comisionesFiltered[i]);
+		actividadPos = indexedActivities.indexOf(comisionesFiltered[i].actividad.codigo+'-'+comisionesFiltered[i].periodo_lectivo.periodo_lectivo);
+  		$scope.actividades[actividadPos].comisiones.push(comisionesFiltered[i]);
 		
 		}
 

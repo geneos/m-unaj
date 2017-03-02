@@ -152,7 +152,10 @@ app.factory('moodleFactory', function($http,PROPERTIES){
 		value = "0";
 	_function = "core_course_get_categories";
 	setParametros().criteria = [{"key":"parent","value":parent}];
-	_parametros.addsubcategories = value;
+	if (!subcategories){
+		_parametros.addsubcategories = value;
+	}
+	console.log('llamado:',_parametros);
 	return $http.post(_url,_parametros);
 	};
 

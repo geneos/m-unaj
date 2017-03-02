@@ -27,7 +27,7 @@
 		<script src="js/ng-table.min.js"></script>
 		<script src="js/app.js"></script>
 		<script src="js/properties.js"></script>
-		<script src="js/controller.js"></script>
+		<script src="js/controller.js?1.0.1"></script>
 		<script src="js/siuFactory.js"></script>
 		<script src="js/moodleFactory.js"></script>
 		
@@ -58,7 +58,7 @@
 						  <div class="form-group">
 						    <label for="moodleToken"  class="col-sm-2 control-label">Moodle Token</label>
 						    <div class="col-sm-4">
-						      <input ng-disabled="periodosInitialized" type="text" class="form-control" id="moodleToken"ng-model="moodleToken" value="{{moodleToken}}" placeholder="Token">
+						      <input ng-disabled="periodosInitialized" type="text" class="form-control" id="moodleToken" ng-model="moodleToken" value="{{moodleToken}}" placeholder="Token">
 						    </div>
 						    <label for="siuLimit"  class="col-sm-1 control-label">Limite</label>
 						    <div class="col-sm-2">
@@ -104,6 +104,8 @@
 						</td>
 						<td title="'Actividad'" sortable="'nombre'" filter="{nombre: 'text'}">
 						    {{actividad.nombre}}</td>
+						<td title="'Periodo Lectivo'">
+						    {{actividad.periodoLectivo.nombre}}</td>
 						<td title="'Categoria'" >
 						    <select ng-options="category.id as category.name for category in categoriasUnaj" ng-model="actividad.moodleCategoryID" ng-disabled="actividad.migrado"  ></select></td>
 						<td ><button type="button" class="btn btn-primary" ng-disabled="actividad.migrado" ng-click="importCourse(actividad)">Importar</button></td>

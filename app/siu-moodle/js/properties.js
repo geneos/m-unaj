@@ -1,6 +1,6 @@
 app.constant('PROPERTIES', {
   //URI de servicios REST de SIU (Ejemplo: 'http://170.210.158.23/guarani/3.10/rest/' )
-  SIU_REST_URI: 'http://192.168.114.161/rest/',
+  SIU_REST_URI: 'https://guarani.sistemas.unaj.edu.ar/rest/',
 
   //URI de servicios REST de MOODLE (Ejemplo: 'http://localhost/www/moodle29/webservice/rest/server.php' )
   MOODLE_REST_URI: 'https://campus.unaj.edu.ar/webservice/rest/server.php',
