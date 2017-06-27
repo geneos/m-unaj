@@ -601,7 +601,7 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,$exceptionHand
 	**/
 	$scope.repairCourse = function (siuActividad){
 		if (siuActividad.codError = 100){
-			moodleCourseID = getMoodleCourseID(siuActividad.codigo);
+			moodleCourseID = getMoodleCourseID(siuActividad.codigo,siuActividad.periodoLectivo);
 			siuFactory.createCurso(moodleCourseID,siuActividad.codigo).
 			success(function(data) {
 			    if ( (data.status == 204) || (data.status == 201)){
@@ -627,7 +627,7 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,$exceptionHand
 
 		var synchronizeActividadSinchronizedDefer = $q.defer();
 
-		var moodleCourse = getMoodleCourseByActividad(actividad.codigo);
+		var moodleCourse = getMoodleCourseByActividad(actividad.codigo,actividad.periodoLectivo);
 
 		if (moodleCourse == null){
 			logError('Hubo un error al crear la comision en MOODLE para la actividad '+actividad.codigo+' no existe curso asociado en moodle para el periodo lectivo','siuFactory.moodleFactory.createGroupForCourse',data); 
@@ -685,7 +685,7 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,$exceptionHand
 					else {
 						addGroupsToCourse(myItem.data);
 						//Actualizo moodle course
-						moodleCourse = getMoodleCourseByActividad(actividad.codigo);
+						moodleCourse = getMoodleCourseByActividad(actividad.codigo,actividad.periodoLectivo);
 					}
 					
 				}
@@ -707,7 +707,7 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,$exceptionHand
 				queue.push(comision);
 			});
 
-			_synchronizeComisionQueue(queue,0,actividad.codigo,syncComisionSincronizedDefer);
+			_synchronizeComisionQueue(queue,0,actividad.codigo,actividad.periodoLectivo,syncComisionSincronizedDefer);
 			syncComisionSincronizedPromise.then( function(data){
 				synchronizeActividadSinchronizedDefer.resolve();
 			});
@@ -720,7 +720,7 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,$exceptionHand
 	}
 
 	//Sincronizar Actividad <-> Curso
-	function _synchronizeComision(comision,codigoActividad){
+	function _synchronizeComision(comision,codigoActividad,periodoActividad){
 
 		//Callback para controlar sincronizacion de varias comisiones
 		var deferred = $q.defer();
@@ -728,7 +728,7 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,$exceptionHand
 
 		logInfo('Comenzando sincronizacion de comision '+comision.nombre+'...');
 
-		var moodleCourse = getMoodleCourseByActividad(codigoActividad);
+		var moodleCourse = getMoodleCourseByActividad(codigoActividad,periodoActividad);
 
 
 			//Sigo con el resto
@@ -1033,14 +1033,14 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,$exceptionHand
 		return;
 	}
 
-	function _synchronizeComisionQueue(queue,curr,codigoActividad,defer){
+	function _synchronizeComisionQueue(queue,curr,codigoActividad,periodoActividad,defer){
     	
-			_synchronizeComision(queue[curr],codigoActividad).then(function (){
+			_synchronizeComision(queue[curr],codigoActividad,periodoActividad).then(function (){
 				logSuccess('Finalizada sincronizacion de comision: '+queue[curr].nombre);
 				if (curr == queue.length-1)
 					defer.resolve();
 				else
-					_synchronizeComisionQueue(queue,curr+1,codigoActividad,defer);
+					_synchronizeComisionQueue(queue,curr+1,codigoActividad,periodoActividad,defer);
 			});
 		return;
     }
@@ -1083,17 +1083,17 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,$exceptionHand
 		return null;
 	};
 
-	var getMoodleCourseID = function (codigoActividad) {
+	var getMoodleCourseID = function (codigoActividad,periodoActividad) {
 		for(var i = 0; i<$scope.moodlecourses.length; i++){
-			if ($filter('actividadEquals')(codigoActividad,$scope.moodlecourses[i].shortname,$scope.periodoSelected) )
+			if ($filter('actividadEquals')(codigoActividad,$scope.moodlecourses[i].shortname,periodoActividad) )
 				return 	$scope.moodlecourses[i].id;
 		}
 		return 0;
 	};
 
-	var getMoodleCourseByActividad = function (codigoActividad) {
+	var getMoodleCourseByActividad = function (codigoActividad,periodoActividad) {
 		for(var i = 0; i<$scope.moodlecourses.length; i++){
-			if ($filter('actividadEquals')(codigoActividad,$scope.moodlecourses[i].shortname,$scope.periodoSelected))
+			if ($filter('actividadEquals')(codigoActividad,$scope.moodlecourses[i].shortname,periodoActividad))
 				return 	$scope.moodlecourses[i];
 		}
 		return null;
