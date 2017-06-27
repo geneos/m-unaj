@@ -208,6 +208,10 @@ font-size: 11px;
 .dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
 	background-color: rgb(0,159,227);
 }
+
+#page-navbar .breadcrumb-button .forumsearch{
+	display:none;	
+}
 /*************************************/
 /************** BODY *****************/
 /*************************************/
@@ -561,6 +565,12 @@ body,h1, h2, h3, h4, h5, h6 {
 /**** LOGIN *****/
 .loginpanel form {
 	background:none;
+}
+
+/** RECUPERO DE CONTRASEÑA **/
+
+#page-login-forgot_password #id_searchbyusername {
+	display:none;
 }
 
 /** FORMATO PESTAÑAS **/
