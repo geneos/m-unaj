@@ -27,8 +27,8 @@
 
 defined('MOODLE_INTERNAL') || die;
 
-$plugin->version   = 2014111000;
-$plugin->release = '1.1 (Build: 20140323)';
+$plugin->version   = 2017071900;
+$plugin->release = '2.0 (Build: 20170719)';
 $plugin->maturity = MATURITY_STABLE;             // this version's maturity level.
 $plugin->requires  = 2013110500;
 $plugin->component = 'theme_gunaj';

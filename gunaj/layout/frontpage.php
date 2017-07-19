@@ -76,6 +76,8 @@ echo $OUTPUT->doctype() ?>
     <link rel="shortcut icon" href="<?php echo $OUTPUT->favicon(); ?>" />
     <?php echo $OUTPUT->standard_head_html() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300,500' rel='stylesheet' type='text/css'>
+
 </head>
 
 <body <?php echo $OUTPUT->body_attributes(); ?>>
@@ -125,7 +127,7 @@ echo $OUTPUT->doctype() ?>
     <div id="page" class="<?php echo $container; ?>">
     
         <!-- Start Marketing Spots -->
-        <?php/*
+        <?php /*
         	if($hasmarketing==1) {
         		require_once(dirname(__FILE__).'/includes/marketing.php');
         	} else if($hasmarketing==2 && !isloggedin()) {
@@ -185,6 +187,9 @@ echo $OUTPUT->doctype() ?>
 <?php echo $OUTPUT->standard_end_of_body_html() ?>
 
 <script>
+
+
+
     $('body').show();
     $('.version').text(NProgress.version);
     NProgress.start();
@@ -208,6 +213,8 @@ echo $OUTPUT->doctype() ?>
     			prev: '<',
     			next: '>'
 	});
+
+    $('.navbar').affix({offset: {top: 122} });
 </script>
 
 </body>

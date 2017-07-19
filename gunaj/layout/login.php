@@ -416,6 +416,9 @@ echo $OUTPUT->doctype() ?>
       <?php if ($hasloginbg4image) { echo '"'.$loginbg4.'",'; } ?>
       <?php if ($hasloginbg5image) { echo '"'.$loginbg5.'"'; } ?>
   ], {duration: 3000, fade: 750});
+
+    //Not in login page!
+    //$('.navbar').affix({offset: {top: 122} });
 </script>
 
 </body>

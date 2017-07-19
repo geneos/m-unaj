@@ -1,28 +1,67 @@
+/* COLORES UNAJ
+#009fe3
+#FFB000;
+#A63322;
+#8ab03f;
+#F29230;
+#283A8A;
+
+Gris slider
+#e4e4e4
+*/
+
 /*************************************/
 /************ HEADER *****************/
 /*************************************/
 
-#header-principal-1 .container {
+/*#header-principal-1 .container {
 	padding: 0px;
-}
+}*/
 
 #moodleheader {
-	background-repeat: no-repeat;
-	background-position: center;
+	background:none;
+	background-color: [[setting:themecolor]]
 }
 
 #logo-header-principal-1 {
 	float: left;
-	margin-top:50px;
+	margin-top:35px;
 	display:block;
-	width:163px;
-	height:41px;
-	background:url([[pix:theme|unaj_logo]]) no-repeat center center;
+	width:178px;
+	height:61px;
+	background:url([[pix:theme|unaj_logo]]) no-repeat left center;
+	border-right: 2px solid #FFF;
 }
 
 #header-principal-1 {
-	height:142px;
-	background: [[setting:themecolor]] url([[setting:headerbg]]) no-repeat center center;
+	height:122px;
+	background-color: [[setting:themecolor]];
+}
+
+#header-principal-1 .campus_virtual {
+	float:left;
+	margin-top: 55px;
+	margin-left:10px;
+}
+
+#header-principal-1 .campus_virtual span {
+	
+	display:block;
+	text-transform:uppercase;
+	line-height: 16px;
+}
+
+#header-principal-1 .campus_virtual span:nth-child(1){
+	color:#fff;
+	font-weight: bold;
+	font-size:19px;
+	
+}
+
+#header-principal-1 .campus_virtual span:nth-child(2){
+	color: #000;
+    font-size: 16px;
+    letter-spacing: 2px;
 }
 
 #header-principal-1 #moodle-navbar-1{
@@ -31,7 +70,7 @@
 }
 
 #header-principal-1 .nav.infologeo{
-    margin-top: 50px;
+    margin-top: 35px;
     width: 192px;
     border-right: 2px solid #FFF;
     padding-right: 10px;
@@ -83,6 +122,19 @@
 	background-color: rgba(255, 255, 255, 0.65);
 }
 
+.navbar.affix {
+	width: 100%;
+    top: 0;
+    z-index:10;
+}
+
+.navbar > .container {
+
+}
+
+nav.navbar.navbar-inverse {
+    border-bottom: 5px solid [[setting:themecolor]];
+}
 
 @media (max-width: 767px) {
 	.nav.infologeo .textolog .navbar-nav {
@@ -146,6 +198,133 @@ font-size: 11px;
 	display:none;
 }
 
+.banner ul li {
+	min-height:initial;
+	position:relative;
+}
+
+.banner.has-dots .dots{
+	display:block;
+}
+
+.banner.has-dots .dots .dot {
+	background:none;
+	border:none;
+	-webkit-filter: none;
+    -moz-filter: none;
+    -ms-filter: none;
+    -o-filter: none;
+    filter: none;
+    margin-right: 7px;
+    text-indent: 0;
+    color: transparent;
+    font-size: 0;
+    line-height: 0;
+    content:'';
+}
+
+.banner.has-dots .dots .dot:after{
+	content: "\f10c";
+	display:block;
+	font-family:FontAwesome;
+	font-size:20px;
+	color:[[setting:themecolor]];
+}
+
+.banner.has-dots .dots .dot.active:after,
+.banner.has-dots .dots .dot:hover:after{
+	content: "\f192";
+}
+
+.banner .arrows{
+	position: absolute;
+    width: 100%;
+    top: 40%;
+    padding: 0px 10px;
+}
+
+.banner .arrows .arrow{
+	background-color:#fffffd;
+	-webkit-box-shadow: 2px 1px 18px -3px rgba(0,0,0,0.75);
+	-moz-box-shadow: 2px 1px 18px -3px rgba(0,0,0,0.75);
+	box-shadow: 2px 1px 18px -3px rgba(0,0,0,0.75);
+	width: 30px;
+    height: 30px;
+    border-radius: 15px;
+    font-family:FontAwesome;
+    content:'';
+    color:transparent;
+    font-size:0px;
+    line-height: 0;
+}
+
+.banner .arrows .arrow:hover{
+	cursor:pointer;
+}
+
+.banner .arrows .prev{
+	-webkit-box-shadow: -2px 1px 18px -3px rgba(0,0,0,0.75);
+	-moz-box-shadow: -2px 1px 18px -3px rgba(0,0,0,0.75);
+	box-shadow: -2px 1px 18px -3px rgba(0,0,0,0.75);
+	float:left;
+}
+
+.banner .arrows .prev:after{
+	color:[[setting:themecolor]];
+	content: "\f053";
+	display:block;
+	font-size: 20px;
+    line-height: 32px;
+    margin-left: -4px;
+}
+
+.banner .arrows .next{
+	float:right;
+}
+
+.banner .arrows .next:after{
+	color:[[setting:themecolor]];
+	content: "\f054";
+	display:block;
+	font-size: 20px;
+    line-height: 32px;
+    margin-right: -4px;
+}
+
+.banner li .slider_text{
+    height: 100%;
+    position: absolute;
+    width: 40%;
+    top: 0px;
+    float: left;
+    background-color: #e4e4e4;
+    -webkit-box-shadow: 30px -20px 45px 35px #e4e4e4;
+	-moz-box-shadow: 30px -20px 45px 35px #e4e4e4;
+	box-shadow: 30px -20px 45px 35px #e4e4e4;
+}
+
+.banner li .slider_text h1{
+    text-transform: uppercase;
+    font-family: Roboto, sans-serif;
+    letter-spacing: 1px;
+    color: #000;
+    padding-top: 65px;
+    margin-bottom: 0px;
+    font-weight:normal;
+}
+
+.banner li .slider_text p{
+    font-size:35px;
+    color: [[setting:themecolor]];
+    font-weight:300;
+}
+
+.bannercontainer {
+	border-bottom:35px solid [[setting:themecolor]];
+}
+
+/* Usar font awesome:     content: "\f192"; para el slider activo y     content: "\f10c"; para el inactivo*/
+
 .navbar-inverse .navbar-toggle,
 .navbar-inverse .navbar-toggle {
     background-color: rgb(0,159,227);
@@ -178,9 +357,9 @@ font-size: 11px;
 .container > .navbar-header, .container > .navbar-collapse{
 	margin:0px;
 }
-.navbar > .container {
+/*.navbar > .container {
 	padding:0px;
-}
+}*/
 
 .navbar .navbar-header .navbar-brand{
 	margin:0px;
@@ -223,6 +402,15 @@ a {
     color:rgb(0,159,227);
 }
 
+.breadcrumb-button {
+	margin-top: 16px;
+}
+
+.breadcrumb-nav {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
 #main {
 	background-color:#FFF;
 	background-image:none;
@@ -234,6 +422,10 @@ body,h1, h2, h3, h4, h5, h6 {
 
 #region-main, #page-marketing {
 	border:none;
+}
+
+#region-main, #page-marketing {
+	padding: 0 20px 18px 20px;
 }
 
 #block-region-side-middle .block .content {
@@ -317,6 +509,9 @@ body,h1, h2, h3, h4, h5, h6 {
 	margin-top: 25px;
 }
 
+.breadcrumb-button .singlebutton{
+	display:inline-block;
+}
 /** Course **/
 
 .path-course-view .course_title {
@@ -652,4 +847,116 @@ body,h1, h2, h3, h4, h5, h6 {
 	padding-bottom: 21px;
 }
 
+/********************************************************/
+/******************* BANNER *****************************/
+/********************************************************/
+.gunaj_banner {
+	height: 126px;
+    /*border: 1px #aaa solid;*/
+    border-left: none;
+    -webkit-box-shadow: 4px 0px 6px 2px rgba(170,170,170,1);
+	-moz-box-shadow: 4px 0px 6px 2px rgba(170,170,170,1);
+	box-shadow: 4px 0px 6px 2px rgba(170,170,170,1);
+	margin:15px 15px 5px 5px;
+	position:relative;
+	background: url([[pix:theme|banner_logo]]) no-repeat 95% 50%;
+	padding-right: 170px;
+}
+
+.gunaj_banner.onlyRight{
+	padding: 0px 150px 0px 40px;
+    min-height: 118px;
+    border: 1px solid rgba(170,170,170,1);
+}
+
+.gunaj_banner.onlyRight{
+	padding: 0px 150px 0px 40px;
+    min-height: 118px;
+}
+
+.gunaj_banner .banner_left{
+	background:url([[pix:theme|banner_left]]) no-repeat top center;
+	height:143px;
+	width:153px;
+	position:absolute;
+	top: -12px;
+    left: 30px;
+    padding-top: 40px;
+}
+
+.gunaj_banner .banner_left .left_identifier,
+.gunaj_banner .banner_left .left_number {
+	display: block;
+    text-transform: uppercase;
+    color: #fff;
+    font-weight: bold;
+    text-align: center;
+    margin-right: 10px;
+}
+
+.gunaj_banner .banner_left .left_identifier {
+    font-size:16px;
+    line-height: 21px;
+}
+
+.gunaj_banner .banner_left .left_number {
+	font-size: 55px;
+    margin-top: 12px;
+    line-height: 21px;
+}
+
+.gunaj_banner .banner_right{
+	margin-left:220px;
+	padding-top: 30px;
+	display:block;
+}
+
+.gunaj_banner.onlyRight .banner_right{
+	margin-left:0px;
+	padding-top: 0px;
+	position: relative;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+.gunaj_banner .banner_right .right_title{
+	 font-weight: bold;
+	 text-transform: uppercase;
+	 font-size:18px;
+	 display:block;
+	 color:rgb(0,159,227);
+}
 	
+@media (max-width: 991px) {
+
+	.gunaj_banner {
+		height:uto;
+		background-position: 94% 94%;
+	    padding-right: 0px;
+	    background-size: 15%;
+	    padding-bottom: 65px;
+	}
+
+	.gunaj_banner .banner_left{
+		padding-top: 15px;
+   		height: 110px;
+		background:none;
+		width:auto;
+		position:initial;
+		background-color:rgb(0,159,227);
+		border-radius: 0px 0px 60px 0px;
+	}
+
+	.gunaj_banner .banner_left .left_identifier,
+	.gunaj_banner .banner_left .left_number {
+	    text-align: right;
+	    margin-right: 30px;
+	}
+
+	.gunaj_banner .banner_right {
+		margin-left: 30px;
+		padding-top:20px;
+	}
+}

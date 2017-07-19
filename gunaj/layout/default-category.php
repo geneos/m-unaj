@@ -73,6 +73,8 @@ echo $OUTPUT->doctype() ?>
     <link rel="shortcut icon" href="<?php echo $OUTPUT->favicon(); ?>" />
     <?php echo $OUTPUT->standard_head_html() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300,500' rel='stylesheet' type='text/css'>
+
 </head>
 
 <body <?php echo $OUTPUT->body_attributes(); ?>>
@@ -179,7 +181,7 @@ jQuery(document).ready(function() {
         return false;
     });
 	
-	$('.banner').unslider({
+	jQuery('.banner').unslider({
 				fluid: true,
         dots: true,
         speed: <?php echo $slidespeed; ?>,
@@ -188,6 +190,8 @@ jQuery(document).ready(function() {
     			prev: '<',
     			next: '>'
 	});
+
+    jQuery('.navbar').affix({offset: {top: 0} });
 });
 </script>
  <a href="#top" class="back-to-top"><i class="fa fa-angle-up "></i></a>

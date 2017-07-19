@@ -15,3 +15,112 @@
 	border:1px solid;
 	padding: 5px;
 }
+
+/********************************************************/
+/******************* BANNER *****************************/
+/********************************************************/
+.gunaj_banner {
+	height: 126px;
+    /*border: 1px #aaa solid;*/
+    border-left: none;
+    -webkit-box-shadow: 4px 0px 6px 2px rgba(170,170,170,1);
+	-moz-box-shadow: 4px 0px 6px 2px rgba(170,170,170,1);
+	box-shadow: 4px 0px 6px 2px rgba(170,170,170,1);
+	margin:15px 15px 5px 5px;
+	position:relative;
+	background: url([[pix:theme|banner_logo]]) no-repeat 95% 50%;
+	padding-right: 170px;
+}
+
+.gunaj_banner.onlyRight{
+	padding: 0px 150px 0px 40px;
+    min-height: 118px;
+    border: 1px solid rgba(170,170,170,1);
+}
+
+.gunaj_banner .banner_left{
+	background:url([[pix:theme|banner_left]]) no-repeat top center;
+	height:143px;
+	width:153px;
+	position:absolute;
+	top: -12px;
+    left: 30px;
+    padding-top: 40px;
+}
+
+.gunaj_banner .banner_left .left_identifier,
+.gunaj_banner .banner_left .left_number {
+	display: block;
+    text-transform: uppercase;
+    color: #fff;
+    font-weight: bold;
+    text-align: center;
+    margin-right: 10px;
+}
+
+.gunaj_banner .banner_left .left_identifier {
+    font-size:16px;
+    line-height: 21px;
+}
+
+.gunaj_banner .banner_left .left_number {
+	font-size: 55px;
+    margin-top: 12px;
+    line-height: 21px;
+}
+
+.gunaj_banner .banner_right{
+	margin-left:220px;
+	padding-top: 30px;
+	display:block;
+}
+
+.gunaj_banner.onlyRight .banner_right{
+	margin-left:0px;
+	padding-top: 0px;
+	position: relative;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+.gunaj_banner .banner_right .right_title{
+	 font-weight: bold;
+	 text-transform: uppercase;
+	 font-size:18px;
+	 display:block;
+	 color:rgb(0,159,227);
+}
+	
+@media (max-width: 500px) {
+
+	.gunaj_banner {
+		height:auto;
+		background-position: 94% 94%;
+	    padding-right: 0px;
+	    background-size: 15%;
+	    padding-bottom: 65px;
+	}
+
+	.gunaj_banner .banner_left{
+		padding-top: 15px;
+   		height: 110px;
+		background:none;
+		width:auto;
+		position:initial;
+		background-color:rgb(0,159,227);
+		border-radius: 0px 0px 60px 0px;
+	}
+
+	.gunaj_banner .banner_left .left_identifier,
+	.gunaj_banner .banner_left .left_number {
+	    text-align: right;
+	    margin-right: 30px;
+	}
+
+	.gunaj_banner .banner_right {
+		margin-left: 30px;
+		padding-top:20px;
+	}
+}

@@ -66,10 +66,10 @@ echo $OUTPUT->doctype() ?>
     <link rel="shortcut icon" href="<?php echo $OUTPUT->favicon(); ?>" />
     <?php echo $OUTPUT->standard_head_html() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href='https://fonts.googleapis.com/css?family=Roboto:500' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300,500' rel='stylesheet' type='text/css'>
 </head>
 
-<body <?php echo $OUTPUT->body_attributes(); ?>>
+<body id="deFAULTTT" <?php echo $OUTPUT->body_attributes(); ?>>
 
 <?php include 'includes/header.php'; ?>
 
@@ -180,7 +180,10 @@ jQuery(document).ready(function() {
         event.preventDefault();
         jQuery('html, body').animate({scrollTop: 0}, duration);
         return false;
-    })
+    });
+
+    console.log('Carge');
+    jQuery('.navbar').affix({offset: {top: 0} });
 });
 </script>
  <a href="#top" class="back-to-top"><i class="fa fa-angle-up "></i></a>

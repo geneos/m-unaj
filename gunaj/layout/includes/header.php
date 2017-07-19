@@ -6,6 +6,10 @@
 			<a href="http://www.unaj.edu.ar">
 			<div id="logo-header-principal-1" class="clearfix"></div>
 			</a>
+			<div class="campus_virtual">
+				<span>campus</span>
+				<span>virtual</span>
+			</div>
 			<div id="moodle-navbar-1">
 			<?php if (isloggedin())  { ?>
 				<ul class="nav pull-right infologeo">

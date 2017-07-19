@@ -418,7 +418,7 @@ defined('MOODLE_INTERNAL') || die;
         $title = get_string('bannertext', 'theme_gunaj', $bannernumber);
         $description = get_string('bannertextdesc', 'theme_gunaj', $bannernumber);
         $default = 'Bacon ipsum dolor sit amet turducken jerky beef ribeye boudin t-bone shank fatback pork loin pork short loin jowl flank meatloaf venison. Salami meatball sausage short loin beef ribs';
-        $setting = new admin_setting_configtextarea($name, $title, $description, $default);
+        $setting = new admin_setting_configtext($name, $title, $description, $default);
         $setting->set_updatedcallback('theme_reset_all_caches');
         $temp->add($setting);
 

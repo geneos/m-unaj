@@ -135,114 +135,153 @@ $slide10url = (empty($PAGE->theme->settings->bannerlinkurl10)) ? false : $PAGE->
 $slide10linktext = (empty($PAGE->theme->settings->bannerlinktext10)) ? false : $PAGE->theme->settings->bannerlinktext10;
 
 $hasslideshow = ($hasslide1 || $hasslide2 || $hasslide3 || $hasslide4|| $hasslide5|| $hasslide6|| $hasslide7|| $hasslide8|| $hasslide9|| $hasslide10 ) ? true : false;
+
+$slidecount = 0;
+
+if ($hasslide1)
+	$slidecount++;
+
+if ($hasslide2)
+	$slidecount++;
+
+if ($hasslide3)
+	$slidecount++;
+
+if ($hasslide4)
+	$slidecount++;
+
+if ($hasslide5)
+	$slidecount++;
+
+if ($hasslide6)
+	$slidecount++;
+
+if ($hasslide7)
+	$slidecount++;
+
+if ($hasslide8)
+	$slidecount++;
+
+if ($hasslide9)
+	$slidecount++;
+
+if ($hasslide10)
+	$slidecount++;
+
 ?>
-
 <?php if ($hasslideshow) { ?>
-<div class="banner has-dots" style="overflow: hidden; width: 100%; height: 415px;">
-	<ul style="width: 400%; position: relative; left: -200%; height: 415px;">
+<div class="bannercontainer">
+	<div class="banner <?php if($slidecount > 1) echo 'has-dots' ?>" style="overflow: hidden; width: 100%; height: 415px;">
+		<ul style="width: 400%; position: relative; left: -200%; height: 415px;">
 
-		<?php if ($hasslide1) { ?>
-		<li id="slide1" style="background-image: url(<?php echo $slide1image ?>); background-size: 100% 100%; width: 25%;">
-			<h1><?php echo $slide1title ?></h1>
-			<p><?php echo $slide1caption ?></p>
-			<?php if ($slide1linktext) { ?>
-				<a class="btn" href="<?php echo $slide1url ?>"><?php echo $slide1linktext ?></a>
+			<?php if ($hasslide1) { ?>
+			<li id="slide1" style="padding-bottom:calc(17.5%/<?php echo $slidecount; ?> - 20px); background-image: url(<?php echo $slide1image ?>); background-size: 100% 100%; width: 25%;">
+				<?php if (!empty($slide1title)) {?>
+				<div class="slider_text">
+					<h1><?php echo $slide1title ?></h1>
+					<p><?php echo $slide1caption ?></p>
+				</div>
+				<?php }?>
+				<?php if ($slide1linktext) { ?>
+					<a class="btn" href="<?php echo $slide1url ?>"><?php echo $slide1linktext ?></a>
+				<?php } ?>
+			</li>
 			<?php } ?>
-		</li>
-		<?php } ?>
 
-		<?php if ($hasslide2) { ?>
-		<li id="slide2" style="background-image: url(<?php echo $slide2image ?>); background-size: 100%; width: 25%;">
-			<h1><?php echo $slide2title ?></h1>
-			<p><?php echo $slide2caption ?></p>
-			<?php if ($slide2linktext) { ?>
-				<a class="btn" href="<?php echo $slide2url ?>"><?php echo $slide2linktext ?></a>
+			<?php if ($hasslide2) { ?>
+			<li id="slide2" style="padding-bottom:calc(17.5%/<?php echo $slidecount; ?> - 20px); background-image: url(<?php echo $slide2image ?>); background-size: 100%; width: 25%;">
+				<?php if (!empty($slide2title)) {?>
+				<div class="slider_text">
+					<h1><?php echo $slide2title ?></h1>
+					<p><?php echo $slide2caption ?></p>
+				</div>
+				<?php }?>
+			</li>
 			<?php } ?>
-		</li>
-		<?php } ?>
 
 
-		<?php if ($hasslide3) { ?>
-		<li id="slide3" style="background-image: url(<?php echo $slide3image ?>); background-size: 100%; width: 25%;">
-			<h1><?php echo $slide3title ?></h1>
-			<p><?php echo $slide3caption ?></p>
-			<?php if ($slide3linktext) { ?>
-				<a class="btn" href="<?php echo $slide3url ?>"><?php echo $slide3linktext ?></a>
+			<?php if ($hasslide3) { ?>
+			<li id="slide3" style="padding-bottom:calc(17.5%/<?php echo $slidecount ?>-20px); background-image: url(<?php echo $slide3image ?>); background-size: 100%; width: 25%;">
+				<h1><?php echo $slide3title ?></h1>
+				<p><?php echo $slide3caption ?></p>
+				<?php if ($slide3linktext) { ?>
+					<a class="btn" href="<?php echo $slide3url ?>"><?php echo $slide3linktext ?></a>
+				<?php } ?>
+			</li>
 			<?php } ?>
-		</li>
-		<?php } ?>
 
 
-		<?php if ($hasslide4) { ?>
-		<li id="slide4" style="background-image: url(<?php echo $slide4image ?>); background-size: 100%; width: 25%;">
-			<h1><?php echo $slide4title ?></h1>
-			<p><?php echo $slide4caption ?></p>
-			<?php if ($slide4linktext) { ?>
-				<a class="btn" href="<?php echo $slide4url ?>"><?php echo $slide4linktext ?></a>
+			<?php if ($hasslide4) { ?>
+			<li id="slide4" style="padding-bottom:calc(17.5%/<?php echo $slidecount ?>-20px); background-image: url(<?php echo $slide4image ?>); background-size: 100%; width: 25%;">
+				<h1><?php echo $slide4title ?></h1>
+				<p><?php echo $slide4caption ?></p>
+				<?php if ($slide4linktext) { ?>
+					<a class="btn" href="<?php echo $slide4url ?>"><?php echo $slide4linktext ?></a>
+				<?php } ?>
+			</li>
 			<?php } ?>
-		</li>
-		<?php } ?>
 
-		<?php if ($hasslide5) { ?>
-		<li id="slide5" style="background-image: url(<?php echo $slide5image ?>); background-size: 100%; width: 25%;">
-			<h1><?php echo $slide5title ?></h1>
-			<p><?php echo $slide5caption ?></p>
-			<?php if ($slide5linktext) { ?>
-				<a class="btn" href="<?php echo $slide5url ?>"><?php echo $slide5linktext ?></a>
+			<?php if ($hasslide5) { ?>
+			<li id="slide5" style="padding-bottom:calc(17.5%/<?php echo $slidecount ?>-20px); background-image: url(<?php echo $slide5image ?>); background-size: 100%; width: 25%;">
+				<h1><?php echo $slide5title ?></h1>
+				<p><?php echo $slide5caption ?></p>
+				<?php if ($slide5linktext) { ?>
+					<a class="btn" href="<?php echo $slide5url ?>"><?php echo $slide5linktext ?></a>
+				<?php } ?>
+			</li>
 			<?php } ?>
-		</li>
-		<?php } ?>
 
-		<?php if ($hasslide6) { ?>
-		<li id="slide6" style="background-image: url(<?php echo $slide6image ?>); background-size: 100%; width: 26%;">
-			<h1><?php echo $slide6title ?></h1>
-			<p><?php echo $slide6caption ?></p>
-			<?php if ($slide6linktext) { ?>
-				<a class="btn" href="<?php echo $slide6url ?>"><?php echo $slide6linktext ?></a>
+			<?php if ($hasslide6) { ?>
+			<li id="slide6" style="padding-bottom:calc(17.5%/<?php echo $slidecount ?>-20px); background-image: url(<?php echo $slide6image ?>); background-size: 100%; width: 26%;">
+				<h1><?php echo $slide6title ?></h1>
+				<p><?php echo $slide6caption ?></p>
+				<?php if ($slide6linktext) { ?>
+					<a class="btn" href="<?php echo $slide6url ?>"><?php echo $slide6linktext ?></a>
+				<?php } ?>
+			</li>
 			<?php } ?>
-		</li>
-		<?php } ?>
 
-		<?php if ($hasslide7) { ?>
-		<li id="slide7" style="background-image: url(<?php echo $slide7image ?>); background-size: 100%; width: 27%;">
-			<h1><?php echo $slide7title ?></h1>
-			<p><?php echo $slide7caption ?></p>
-			<?php if ($slide7linktext) { ?>
-				<a class="btn" href="<?php echo $slide7url ?>"><?php echo $slide7linktext ?></a>
+			<?php if ($hasslide7) { ?>
+			<li id="slide7" style="padding-bottom:calc(17.5%/<?php echo $slidecount ?>-20px); background-image: url(<?php echo $slide7image ?>); background-size: 100%; width: 27%;">
+				<h1><?php echo $slide7title ?></h1>
+				<p><?php echo $slide7caption ?></p>
+				<?php if ($slide7linktext) { ?>
+					<a class="btn" href="<?php echo $slide7url ?>"><?php echo $slide7linktext ?></a>
+				<?php } ?>
+			</li>
 			<?php } ?>
-		</li>
-		<?php } ?>
 
-		<?php if ($hasslide8) { ?>
-		<li id="slide8" style="background-image: url(<?php echo $slide8image ?>); background-size: 100%; width: 28%;">
-			<h1><?php echo $slide8title ?></h1>
-			<p><?php echo $slide8caption ?></p>
-			<?php if ($slide8linktext) { ?>
-				<a class="btn" href="<?php echo $slide8url ?>"><?php echo $slide8linktext ?></a>
+			<?php if ($hasslide8) { ?>
+			<li id="slide8" style="padding-bottom:calc(17.5%/<?php echo $slidecount ?>-20px); background-image: url(<?php echo $slide8image ?>); background-size: 100%; width: 28%;">
+				<h1><?php echo $slide8title ?></h1>
+				<p><?php echo $slide8caption ?></p>
+				<?php if ($slide8linktext) { ?>
+					<a class="btn" href="<?php echo $slide8url ?>"><?php echo $slide8linktext ?></a>
+				<?php } ?>
+			</li>
 			<?php } ?>
-		</li>
-		<?php } ?>
 
-		<?php if ($hasslide9) { ?>
-		<li id="slide9" style="background-image: url(<?php echo $slide9image ?>); background-size: 100%; width: 29%;">
-			<h1><?php echo $slide9title ?></h1>
-			<p><?php echo $slide9caption ?></p>
-			<?php if ($slide9linktext) { ?>
-				<a class="btn" href="<?php echo $slide9url ?>"><?php echo $slide9linktext ?></a>
+			<?php if ($hasslide9) { ?>
+			<li id="slide9" style="padding-bottom:calc(17.5%/<?php echo $slidecount ?>-20px); background-image: url(<?php echo $slide9image ?>); background-size: 100%; width: 29%;">
+				<h1><?php echo $slide9title ?></h1>
+				<p><?php echo $slide9caption ?></p>
+				<?php if ($slide9linktext) { ?>
+					<a class="btn" href="<?php echo $slide9url ?>"><?php echo $slide9linktext ?></a>
+				<?php } ?>
+			</li>
 			<?php } ?>
-		</li>
-		<?php } ?>
 
-		<?php if ($hasslide10) { ?>
-		<li id="slide10" style="background-image: url(<?php echo $slide10image ?>); background-size: 100%; width: 210%;">
-			<h1><?php echo $slide10title ?></h1>
-			<p><?php echo $slide10caption ?></p>
-			<?php if ($slide10linktext) { ?>
-				<a class="btn" href="<?php echo $slide10url ?>"><?php echo $slide10linktext ?></a>
+			<?php if ($hasslide10) { ?>
+			<li id="slide10" style="padding-bottom:calc(17.5%/<?php echo $slidecount ?>-20px); background-image: url(<?php echo $slide10image ?>); background-size: 100%; width: 210%;">
+				<h1><?php echo $slide10title ?></h1>
+				<p><?php echo $slide10caption ?></p>
+				<?php if ($slide10linktext) { ?>
+					<a class="btn" href="<?php echo $slide10url ?>"><?php echo $slide10linktext ?></a>
+				<?php } ?>
+			</li>
 			<?php } ?>
-		</li>
-		<?php } ?>
 
-	</ul>
+		</ul>
+	</div>
 </div>
 <?php } ?>

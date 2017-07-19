@@ -116,3 +116,19 @@ a {
 .recuadro_claro{
 	border-color:#b7433b;
 }
+
+/********************************************************/
+/******************* BANNER *****************************/
+/********************************************************/
+
+.gunaj_banner .banner_right .right_title{
+	 color:#A63322;
+}
+	
+@media (max-width: 991px) {
+
+	.gunaj_banner .banner_left{
+		background-color:#A63322;
+
+	}
+}

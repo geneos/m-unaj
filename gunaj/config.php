@@ -39,6 +39,11 @@ $THEME->rendererfactory = 'theme_overridden_renderer_factory';
 
 $THEME->csspostprocess = 'theme_elegance_process_css';
 
+$THEME->javascripts = array(
+    'bootstrap-affix'
+);
+
+
 if ((!empty($THEME->settings->enablecustomlogin)) && ($THEME->settings->enablecustomlogin == '1')) {
 	$loginlayout='login.php';
   $loginsheet='login1';
