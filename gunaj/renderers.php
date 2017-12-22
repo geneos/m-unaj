@@ -26,3 +26,4 @@
  */
 require_once($CFG->dirroot . "/theme/elegance/renderers.php");
 require_once('renderers/core_renderer.php');
+require_once('renderers/mod_assign_renderer.php');

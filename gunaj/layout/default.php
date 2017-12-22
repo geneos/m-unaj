@@ -182,8 +182,7 @@ jQuery(document).ready(function() {
         return false;
     });
 
-    console.log('Carge');
-    jQuery('.navbar').affix({offset: {top: 0} });
+    jQuery('.navbar').affix({offset: {top: 144} });
 });
 </script>
  <a href="#top" class="back-to-top"><i class="fa fa-angle-up "></i></a>

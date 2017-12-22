@@ -171,11 +171,11 @@ if ($hasslide10)
 ?>
 <?php if ($hasslideshow) { ?>
 <div class="bannercontainer">
-	<div class="banner <?php if($slidecount > 1) echo 'has-dots' ?>" style="overflow: hidden; width: 100%; height: 415px;">
-		<ul style="width: 400%; position: relative; left: -200%; height: 415px;">
+	<div class="banner <?php if($slidecount == 1) echo 'no-dots' ?>" style="overflow: hidden; width: 100%;">
+		<ul style="width: 400%; position: relative; left: -200%;">
 
 			<?php if ($hasslide1) { ?>
-			<li id="slide1" style="padding-bottom:calc(17.5%/<?php echo $slidecount; ?> - 20px); background-image: url(<?php echo $slide1image ?>); background-size: 100% 100%; width: 25%;">
+			<li id="slide1" class="slide <?php if (!empty($slide1title)) echo "with_text"; ?>" style="padding-bottom:calc(18.75%/<?php echo $slidecount; ?> - 20px); background-image: url(<?php echo $slide1image ?>); width:25%;">
 				<?php if (!empty($slide1title)) {?>
 				<div class="slider_text">
 					<h1><?php echo $slide1title ?></h1>
@@ -189,21 +189,28 @@ if ($hasslide10)
 			<?php } ?>
 
 			<?php if ($hasslide2) { ?>
-			<li id="slide2" style="padding-bottom:calc(17.5%/<?php echo $slidecount; ?> - 20px); background-image: url(<?php echo $slide2image ?>); background-size: 100%; width: 25%;">
+			<li id="slide2" class="slide <?php if (!empty($slide2title)) echo "with_text"; ?>" style="padding-bottom:calc(18.75%/<?php echo $slidecount; ?> - 20px); background-image: url(<?php echo $slide2image ?>);  width:25%;">
 				<?php if (!empty($slide2title)) {?>
 				<div class="slider_text">
 					<h1><?php echo $slide2title ?></h1>
 					<p><?php echo $slide2caption ?></p>
 				</div>
 				<?php }?>
+				<?php if ($slide2linktext) { ?>
+					<a class="btn" href="<?php echo $slide2url ?>"><?php echo $slide2linktext ?></a>
+				<?php } ?>
 			</li>
 			<?php } ?>
 
 
 			<?php if ($hasslide3) { ?>
-			<li id="slide3" style="padding-bottom:calc(17.5%/<?php echo $slidecount ?>-20px); background-image: url(<?php echo $slide3image ?>); background-size: 100%; width: 25%;">
-				<h1><?php echo $slide3title ?></h1>
-				<p><?php echo $slide3caption ?></p>
+			<li id="slide3" class="slide <?php if (!empty($slide3title)) echo "with_text"; ?>" style="padding-bottom:calc(18.75%/<?php echo $slidecount ?> - 20px); background-image: url(<?php echo $slide3image ?>);  width:25%;">
+				<?php if (!empty($slide3title)) {?>
+				<div class="slider_text">
+					<h1><?php echo $slide3title ?></h1>
+					<p><?php echo $slide3caption ?></p>
+				</div>
+				<?php }?>
 				<?php if ($slide3linktext) { ?>
 					<a class="btn" href="<?php echo $slide3url ?>"><?php echo $slide3linktext ?></a>
 				<?php } ?>
@@ -212,9 +219,13 @@ if ($hasslide10)
 
 
 			<?php if ($hasslide4) { ?>
-			<li id="slide4" style="padding-bottom:calc(17.5%/<?php echo $slidecount ?>-20px); background-image: url(<?php echo $slide4image ?>); background-size: 100%; width: 25%;">
-				<h1><?php echo $slide4title ?></h1>
-				<p><?php echo $slide4caption ?></p>
+			<li id="slide4" class="slide <?php if (!empty($slide4title)) echo "with_text"; ?>" style="padding-bottom:calc(18.75%/<?php echo $slidecount ?> - 20px); background-image: url(<?php echo $slide4image ?>);  width:25%;">
+				<?php if (!empty($slide4title)) {?>
+				<div class="slider_text">
+					<h1><?php echo $slide4title ?></h1>
+					<p><?php echo $slide4caption ?></p>
+				</div>
+				<?php }?>
 				<?php if ($slide4linktext) { ?>
 					<a class="btn" href="<?php echo $slide4url ?>"><?php echo $slide4linktext ?></a>
 				<?php } ?>
@@ -222,9 +233,13 @@ if ($hasslide10)
 			<?php } ?>
 
 			<?php if ($hasslide5) { ?>
-			<li id="slide5" style="padding-bottom:calc(17.5%/<?php echo $slidecount ?>-20px); background-image: url(<?php echo $slide5image ?>); background-size: 100%; width: 25%;">
-				<h1><?php echo $slide5title ?></h1>
-				<p><?php echo $slide5caption ?></p>
+			<li id="slide5" class="slide <?php if (!empty($slide5title)) echo "with_text"; ?>" style="padding-bottom:calc(18.75%/<?php echo $slidecount ?> - 20px); background-image: url(<?php echo $slide5image ?>);  width:25%;">
+				<?php if (!empty($slide5title)) {?>
+				<div class="slider_text">
+					<h1><?php echo $slide5title ?></h1>
+					<p><?php echo $slide5caption ?></p>
+				</div>
+				<?php }?>
 				<?php if ($slide5linktext) { ?>
 					<a class="btn" href="<?php echo $slide5url ?>"><?php echo $slide5linktext ?></a>
 				<?php } ?>
@@ -232,9 +247,13 @@ if ($hasslide10)
 			<?php } ?>
 
 			<?php if ($hasslide6) { ?>
-			<li id="slide6" style="padding-bottom:calc(17.5%/<?php echo $slidecount ?>-20px); background-image: url(<?php echo $slide6image ?>); background-size: 100%; width: 26%;">
-				<h1><?php echo $slide6title ?></h1>
-				<p><?php echo $slide6caption ?></p>
+			<li id="slide6" class="slide <?php if (!empty($slide6title)) echo "with_text"; ?>" style="padding-bottom:calc(18.75%/<?php echo $slidecount ?> - 20px); background-image: url(<?php echo $slide6image ?>); width:25%;">
+				<?php if (!empty($slide6title)) {?>
+				<div class="slider_text">
+					<h1><?php echo $slide6title ?></h1>
+					<p><?php echo $slide6caption ?></p>
+				</div>
+				<?php }?>
 				<?php if ($slide6linktext) { ?>
 					<a class="btn" href="<?php echo $slide6url ?>"><?php echo $slide6linktext ?></a>
 				<?php } ?>
@@ -242,9 +261,13 @@ if ($hasslide10)
 			<?php } ?>
 
 			<?php if ($hasslide7) { ?>
-			<li id="slide7" style="padding-bottom:calc(17.5%/<?php echo $slidecount ?>-20px); background-image: url(<?php echo $slide7image ?>); background-size: 100%; width: 27%;">
-				<h1><?php echo $slide7title ?></h1>
-				<p><?php echo $slide7caption ?></p>
+			<li id="slide7" class="slide <?php if (!empty($slide7title)) echo "with_text"; ?>" style="padding-bottom:calc(18.75%/<?php echo $slidecount ?> - 20px); background-image: url(<?php echo $slide7image ?>); width:25%;">
+				<?php if (!empty($slide7title)) {?>
+				<div class="slider_text">
+					<h1><?php echo $slide7title ?></h1>
+					<p><?php echo $slide7caption ?></p>
+				</div>
+				<?php }?>
 				<?php if ($slide7linktext) { ?>
 					<a class="btn" href="<?php echo $slide7url ?>"><?php echo $slide7linktext ?></a>
 				<?php } ?>
@@ -252,9 +275,13 @@ if ($hasslide10)
 			<?php } ?>
 
 			<?php if ($hasslide8) { ?>
-			<li id="slide8" style="padding-bottom:calc(17.5%/<?php echo $slidecount ?>-20px); background-image: url(<?php echo $slide8image ?>); background-size: 100%; width: 28%;">
-				<h1><?php echo $slide8title ?></h1>
-				<p><?php echo $slide8caption ?></p>
+			<li id="slide8" class="slide <?php if (!empty($slide8title)) echo "with_text"; ?>" style="padding-bottom:calc(18.75%/<?php echo $slidecount ?> - 20px); background-image: url(<?php echo $slide8image ?>); width:25%;">
+				<?php if (!empty($slide8title)) {?>
+				<div class="slider_text">
+					<h1><?php echo $slide8title ?></h1>
+					<p><?php echo $slide8caption ?></p>
+				</div>
+				<?php }?>
 				<?php if ($slide8linktext) { ?>
 					<a class="btn" href="<?php echo $slide8url ?>"><?php echo $slide8linktext ?></a>
 				<?php } ?>
@@ -262,9 +289,13 @@ if ($hasslide10)
 			<?php } ?>
 
 			<?php if ($hasslide9) { ?>
-			<li id="slide9" style="padding-bottom:calc(17.5%/<?php echo $slidecount ?>-20px); background-image: url(<?php echo $slide9image ?>); background-size: 100%; width: 29%;">
-				<h1><?php echo $slide9title ?></h1>
-				<p><?php echo $slide9caption ?></p>
+			<li id="slide9" class="slide <?php if (!empty($slide9title)) echo "with_text"; ?>" style="padding-bottom:calc(18.75%/<?php echo $slidecount ?> - 20px); background-image: url(<?php echo $slide9image ?>); width:25%;">
+				<?php if (!empty($slide9title)) {?>
+				<div class="slider_text">
+					<h1><?php echo $slide9title ?></h1>
+					<p><?php echo $slide9caption ?></p>
+				</div>
+				<?php }?>
 				<?php if ($slide9linktext) { ?>
 					<a class="btn" href="<?php echo $slide9url ?>"><?php echo $slide9linktext ?></a>
 				<?php } ?>
@@ -272,9 +303,13 @@ if ($hasslide10)
 			<?php } ?>
 
 			<?php if ($hasslide10) { ?>
-			<li id="slide10" style="padding-bottom:calc(17.5%/<?php echo $slidecount ?>-20px); background-image: url(<?php echo $slide10image ?>); background-size: 100%; width: 210%;">
-				<h1><?php echo $slide10title ?></h1>
-				<p><?php echo $slide10caption ?></p>
+			<li id="slide10" class="slide <?php if (!empty($slide10title)) echo "with_text"; ?>" style="padding-bottom:calc(18.75%/<?php echo $slidecount ?> - 20px); background-image: url(<?php echo $slide10image ?>); width:25%;">
+				<?php if (!empty($slide10title)) {?>
+				<div class="slider_text">
+					<h1><?php echo $slide10title ?></h1>
+					<p><?php echo $slide10caption ?></p>
+				</div>
+				<?php }?>
 				<?php if ($slide10linktext) { ?>
 					<a class="btn" href="<?php echo $slide10url ?>"><?php echo $slide10linktext ?></a>
 				<?php } ?>

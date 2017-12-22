@@ -34,6 +34,16 @@ class theme_gunaj_core_renderer extends theme_elegance_core_renderer {
         return $this->render_user_menu_custom($usermenu);
     }
 
+    protected function render_pix_icon(pix_icon $icon) {
+        $unajMainConfig = theme_config::load('gunaj');
+        if ($unajMainConfig->settings->fonticons === '1'
+            && $icon->attributes["alt"] === ''
+            && $this->replace_moodle_icon($icon->pix) !== false) {
+            return $this->replace_moodle_icon($icon->pix);
+        }
+        return parent::render_pix_icon($icon);
+    }
+
     protected function render_user_menu_custom(custom_menu $menu) {
         global $CFG, $USER, $DB, $PAGE; //Elegance add $PAGE;
 

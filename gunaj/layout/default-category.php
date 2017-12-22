@@ -191,7 +191,7 @@ jQuery(document).ready(function() {
     			next: '>'
 	});
 
-    jQuery('.navbar').affix({offset: {top: 0} });
+    jQuery('.navbar').affix({offset: {top: 144} });
 });
 </script>
  <a href="#top" class="back-to-top"><i class="fa fa-angle-up "></i></a>

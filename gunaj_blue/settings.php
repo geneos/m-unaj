@@ -50,6 +50,16 @@ defined('MOODLE_INTERNAL') || die;
     $temp->add(new admin_setting_heading('theme_gunaj_blue_colors', get_string('colorsettingssub', 'theme_gunaj_blue'),
     		format_text(get_string('colorsettingsdesc' , 'theme_gunaj_blue'), FORMAT_MARKDOWN)));
 
+        // Main theme colour setting.
+        $name = 'theme_gunaj_blue/themecolor';
+        $title = get_string('themecolor', 'theme_gunaj_blue');
+        $description = get_string('themecolordesc', 'theme_gunaj_blue');
+        $default = '#283A8A';
+        $previewconfig = null;
+        $setting = new admin_setting_configcolourpicker($name, $title, $description, $default, $previewconfig);
+        $setting->set_updatedcallback('theme_reset_all_caches');
+        $temp->add($setting);
+
     	// Logo Image.
     	$name = 'theme_gunaj_blue/logo';
     	$title = get_string('logo', 'theme_gunaj_blue');
@@ -123,12 +133,13 @@ defined('MOODLE_INTERNAL') || die;
     $setting->set_updatedcallback('theme_reset_all_caches');
     $temp->add($setting);
 
-    $hasslidenum = (!empty($PAGE->theme->settings->slidenumber));
+    $config = theme_config::load('gunaj_blue');
+    $hasslidenum = (!empty($config->settings->slidenumber));
     if ($hasslidenum) {
-    		$slidenum = $PAGE->theme->settings->slidenumber;
-	} else {
-		$slidenum = '1';
-	}
+            $slidenum = $config->settings->slidenumber;
+    } else {
+        $slidenum = '1';
+    }
 
 	$bannertitle = array('Slide One', 'Slide Two', 'Slide Three','Slide Four','Slide Five','Slide Six','Slide Seven', 'Slide Eight', 'Slide Nine', 'Slide Ten');
 

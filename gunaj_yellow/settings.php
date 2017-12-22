@@ -50,6 +50,16 @@ defined('MOODLE_INTERNAL') || die;
     $temp->add(new admin_setting_heading('theme_gunaj_yellow_colors', get_string('colorsettingssub', 'theme_gunaj_yellow'),
     		format_text(get_string('colorsettingsdesc' , 'theme_gunaj_yellow'), FORMAT_MARKDOWN)));
 
+        // Main theme colour setting.
+        $name = 'theme_gunaj_yellow/themecolor';
+        $title = get_string('themecolor', 'theme_gunaj_yellow');
+        $description = get_string('themecolordesc', 'theme_gunaj_yellow');
+        $default = '#FFB000';
+        $previewconfig = null;
+        $setting = new admin_setting_configcolourpicker($name, $title, $description, $default, $previewconfig);
+        $setting->set_updatedcallback('theme_reset_all_caches');
+        $temp->add($setting);
+
     	// Logo Image.
     	$name = 'theme_gunaj_yellow/logo';
     	$title = get_string('logo', 'theme_gunaj_yellow');
@@ -123,9 +133,11 @@ defined('MOODLE_INTERNAL') || die;
     $setting->set_updatedcallback('theme_reset_all_caches');
     $temp->add($setting);
 
-    $hasslidenum = (!empty($PAGE->theme->settings->slidenumber));
+
+    $config = theme_config::load('gunaj_yellow');
+    $hasslidenum = (!empty($config->settings->slidenumber));
     if ($hasslidenum) {
-    		$slidenum = $PAGE->theme->settings->slidenumber;
+    		$slidenum = $config->settings->slidenumber;
 	} else {
 		$slidenum = '1';
 	}
