@@ -448,6 +448,13 @@ body,h1, h2, h3, h4, h5, h6 {
 	padding: 0 20px 18px 20px;
 }
 
+#block-region-side-middle .block .header .title h2:after,
+h2.quicklinksheader::after,
+#frontpage-course-list h2::after,
+#frontpage-category-name h2::after {
+	width: 230px;
+}
+
 #block-region-side-middle .block .content {
 	overflow-y:auto;
 	height:auto;
