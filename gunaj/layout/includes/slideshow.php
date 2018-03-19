@@ -170,7 +170,7 @@ if ($hasslide10)
 
 ?>
 <?php if ($hasslideshow) { ?>
-<div class="bannercontainer">
+<div class="bannercontainer container">
 	<div class="banner <?php if($slidecount == 1) echo 'no-dots' ?>" style="overflow: hidden; width: 100%;">
 		<ul style="width: 400%; position: relative; left: -200%;">
 

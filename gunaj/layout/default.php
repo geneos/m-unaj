@@ -96,8 +96,8 @@ echo $OUTPUT->doctype() ?>
     </div>
 </nav>
 
-<header id="moodleheader" class="clearfix">
-    <div id="page-navbar" class="container">
+<header id="moodleheader" class="clearfix container">
+    <div id="page-navbar" class="row">
         <nav class="breadcrumb-nav" role="navigation" aria-label="breadcrumb"><?php echo $OUTPUT->navbar(); ?></nav>
         <div class="breadcrumb-button"><?php echo $OUTPUT->page_heading_button(); ?></div>
     </div>

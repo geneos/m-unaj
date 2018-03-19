@@ -194,6 +194,15 @@ font-size: 11px;
 	text-decoration:underline;
 }
 
+html,body {
+	background: white;
+}
+
+.bannercontainer.container {
+	padding-left:0px;
+	padding-right:0px;
+}
+
 .banner.no-dots .dots{
 	display:none;
 }
