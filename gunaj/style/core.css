@@ -498,6 +498,7 @@ h2.quicklinksheader::after,
 
 #quicklink .btn {
 	display:block;
+	border:none;
 }
 
 .feedbacktable img.expandsummaryicon {
