@@ -19,7 +19,12 @@
 					<?php $src=$user_picture->get_url($PAGE); ?>
 					<?php $src = str_replace("f2","f1",$src); ?>
 					
-					<li class="perfil-image"><img src="<?php echo $src; ?>"/></li>
+					<li class="perfil-image">
+						<a href="/user/profile.php?id=<?php echo $USER->id; ?>">
+							<img src="<?php echo $src; ?>"/>
+						</a>
+					</li>
+
 					<li class="navbar-text navbar">
 						<div class="textolog">
 							   <span class="bienv">Bienvenido </span><a class="cerrar_sesion" href="<?php echo $CFG->httpswwwroot ?>/login/logout.php?sesskey=<?php echo $USER->sesskey; ?>">(Salir)</a><br>
