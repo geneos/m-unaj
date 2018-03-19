@@ -10,6 +10,18 @@ Gris slider
 #e4e4e4
 */
 
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px rgb(208, 234, 244) inset !important;
+}
+
+form select:focus, 
+form input[type='text']:focus, 
+form input[type='password']:focus, 
+form.atto_form input[type='url']:focus, 
+select.singleselect:focus {
+	border-color: [[setting:themecolor]];
+}
+
 /*************************************/
 /************ HEADER *****************/
 /*************************************/
