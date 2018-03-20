@@ -559,8 +559,23 @@ h2.quicklinksheader::after,
 	padding: 5px 12px 6px;
 }
 
+.course_category_tree .category > .info > .categoryname {
+	background-image:;
+	
+}
+
+.course_category_tree .category:not(.with_children) > .info > .categoryname a{
+	pointer-events: none;
+	color:#777;
+}
+
+
+.course_category_tree .category.with_children > .info > .categoryname  {
+	pointer-events: initial;
+}
+
 .breadcrumb-button {
-	margin-top: 25px;
+    margin-top: 16px;
 }
 
 .breadcrumb-button .singlebutton{
