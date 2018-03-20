@@ -749,6 +749,19 @@ h2.quicklinksheader::after,
 	display:none;
 }
 
+.block_login .loginform .c1.btn {
+	padding:0;
+}
+
+.block_login .loginform .c1.btn input{
+	width:100%;
+	height:100%;
+	border:none;
+	margin:0;
+	background: transparent;
+	padding: 4px 12px;
+}
+
 .block_login label {
 	color:#27282a;
 }
