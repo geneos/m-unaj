@@ -69,7 +69,7 @@ echo $OUTPUT->doctype() ?>
     <link href='https://fonts.googleapis.com/css?family=Roboto:300,500' rel='stylesheet' type='text/css'>
 </head>
 
-<body id="deFAULTTT" <?php echo $OUTPUT->body_attributes(); ?>>
+<body <?php echo $OUTPUT->body_attributes(); ?>>
 
 <?php include 'includes/header.php'; ?>
 
