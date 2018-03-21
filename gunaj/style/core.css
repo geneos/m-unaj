@@ -109,6 +109,9 @@ fieldset[disabled] input[type="button"].active,
 fieldset[disabled] input[type="submit"].active, 
 fieldset[disabled] input[type="reset"].active {
 	border:none;
+	border-radius:0px 10px 10px 10px !important;
+	-moz-border-radius:0px 10px 10px 10px !important;
+	-webkit-border-radius:0px 10px 10px 10px !important;
 }
 
 .btn:hover, 
@@ -523,6 +526,27 @@ html,body {
 #page-navbar .breadcrumb-button .forumsearch{
 	display:none;	
 }
+
+#moodleheader .btn:hover, 
+#moodleheader #id_submitbutton:hover, 
+#moodleheader #id_cancel:hover, 
+#moodleheader button:hover, 
+#moodleheader input.form-submit:hover, 
+#moodleheader input[type='button']:hover, 
+#moodleheader input[type='submit']:hover, 
+#moodleheader input[type='reset']:hover,
+#moodleheader .btn:focus, 
+#moodleheader #id_submitbutton:focus, 
+#moodleheader #id_cancel:focus, 
+#moodleheader button:focus, 
+#moodleheader input.form-submit:focus, 
+#moodleheader input[type='button']:focus, 
+#moodleheader input[type='submit']:focus, 
+#moodleheader input[type='reset']:focus {
+	background-color: #ccc;
+	color:#414243;
+}
+
 /*************************************/
 /************** BODY *****************/
 /*************************************/
@@ -917,7 +941,7 @@ h2.quicklinksheader::after,
 
 .block_login .btn {
     background: #ecedf0 !important;
-	border: 1px solid #b4b4b7;
+	border: none;
 	color:#414243;
 }
 
