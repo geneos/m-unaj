@@ -566,8 +566,19 @@ a {
 	color:rgb(0,159,227);
 }
 
-.breadcrumb>li>a:hover, .breadcrumb>li>a:active, .breadcrumb>li>a:focus {
-    color:rgb(0,159,227);
+.breadcrumb {
+	background:none;
+}
+
+.breadcrumb li a,
+.breadcrumb > li + li:before {
+	color:white;
+}
+
+.breadcrumb li a:hover,
+.breadcrumb li a:active,
+.breadcrumb li a:focus {
+	color:#666;
 }
 
 .breadcrumb-button {
