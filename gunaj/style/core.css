@@ -148,10 +148,6 @@ select.singleselect:focus {
 
 }
 
-nav.navbar.navbar-inverse {
-    border-bottom: 5px solid [[setting:themecolor]];
-}
-
 @media (max-width: 767px) {
 	.nav.infologeo .textolog .navbar-nav {
 		margin: 0px -15px;
