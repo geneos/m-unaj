@@ -111,6 +111,26 @@ fieldset[disabled] input[type="reset"].active {
 	border:none;
 }
 
+.btn:hover, 
+#id_submitbutton:hover, 
+#id_cancel:hover, 
+button:hover, 
+input.form-submit:hover, 
+input[type='button']:hover, 
+input[type='submit']:hover, 
+input[type='reset']:hover,
+.btn:focus, 
+#id_submitbutton:focus, 
+#id_cancel:focus, 
+button:focus, 
+input.form-submit:focus, 
+input[type='button']:focus, 
+input[type='submit']:focus, 
+input[type='reset']:focus {
+	background-color: [[setting:themecolor]];
+	color:white;
+}
+
 /*************************************/
 /************ HEADER *****************/
 /*************************************/
