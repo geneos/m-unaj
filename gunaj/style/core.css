@@ -1014,6 +1014,15 @@ h2.quicklinksheader::after,
 #page-footer .helplink {
 	display:none;
 }
+/* PAGINA CATEGORIAS */
+
+#page-course-index-category.jsenabled .collapsible-actions {
+	display:none;
+}
+
+#page-course-index-category .course_category_tree {
+	margin-top:15px;
+}
 
 /* Recursos */
 
