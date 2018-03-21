@@ -314,7 +314,9 @@ echo $OUTPUT->doctype() ?>
                                 <?php
                             } ?>
                         </div>
-    
+
+                        <button class="icon-submit icon-submit-bottom"><?php echo get_string('login'); ?></button>
+
                         <a href="forgot_password.php" id="forgotten"><?php echo get_string('passwordforgotten'); ?></a>
                     </form>
     

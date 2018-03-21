@@ -943,9 +943,8 @@ h2.quicklinksheader::after,
 
 
 #forgotten {
-	color:rgb(0,159,227);
-	text-align:center;
-	margin: 10px 0 0 85px;
+	color:[[setting:themecolor]];
+	margin: 10px 0 10px 95px;
 }
 
 .loginpanel form#guestlogin input[type="submit"] {
@@ -977,12 +976,54 @@ h2.quicklinksheader::after,
 }
 
 .block_login .content .footer div:nth-child(1) a {
-	color:rgb(0,159,227);
+	color:[[setting:themecolor]];
 }
 
 /**** LOGIN *****/
 .loginpanel form {
 	background:none;
+}
+
+
+ .loginpanel .inputarea {
+ 	position:relative;
+ }
+
+.loginpanel .icon-submit-bottom,
+.loginpanel .guestform input {
+  	margin:0;
+}
+
+.loginpanel .guestsub {
+	clear: both;
+    border-top: 4px solid rgb(223, 223, 223);
+}
+ 
+.loginpanel .icon-submit:not(.icon-submit-bottom) {
+	position:absolute;
+	right: -15px;
+    top: 20px;
+	border-radius:30px !important;
+	-moz-border-radius:30px !important;
+	-webkit-border-radius:30px !important;
+}
+
+.loginpanel .icon-submit-bottom {
+  	position:initial;
+  	width: 100%;
+  	padding: 5px 12px 6px;
+  	height:auto;
+  	background-color:rgb(236, 237, 240);
+  	color:#333537;
+  	font-size:14px;
+  	font-weight: normal;
+  	border:none;
+  	float:none;
+  }
+
+.loginpanel .icon-submit-bottom:hover,
+.loginpanel .icon-submit:hover {
+ 	background-color: [[setting:themecolor]];
 }
 
 /** RECUPERO DE CONTRASEÑA **/
