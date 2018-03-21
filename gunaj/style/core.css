@@ -286,7 +286,18 @@ input[type='reset']:focus {
 }
 
 #header-principal-1 .nav.infologeo  a.dropdown-toggle{
-	padding:3px;
+	padding:5px 5px 5px 10px;
+}
+
+#header-principal-1 .nav.infologeo  a.dropdown-toggle:hover,
+#header-principal-1 .nav.infologeo  a.dropdown-toggle:focus{
+	background-color:rgba(0,0,0,0.05);
+}
+
+#header-principal-1 .nav.infologeo  a.dropdown-toggle:hover b,
+#header-principal-1 .nav.infologeo  a.dropdown-toggle:focus b{
+	border-top-color: white;
+    border-bottom-color: white;
 }
 
 #header-principal-1 .bienv {
@@ -307,7 +318,8 @@ input[type='reset']:focus {
 
 
 #header-principal-1 .textolog a.cerrar_sesion{
-font-size: 11px;
+	font-size: 11px;
+	margin-right: 5px;
 }
 
 #header-principal-1 .textolog a.cerrar_sesion:hover{
