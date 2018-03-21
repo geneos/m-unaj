@@ -10,6 +10,10 @@ Gris slider
 #e4e4e4
 */
 
+.nav-tabs>li>a {
+	cursor:pointer;
+}
+
 input:-webkit-autofill {
     -webkit-box-shadow: 0 0 0px 1000px rgb(208, 234, 244) inset !important;
 }
@@ -208,11 +212,6 @@ font-size: 11px;
 
 html,body {
 	background: white;
-}
-
-.bannercontainer.container {
-	padding-left:0px;
-	padding-right:0px;
 }
 
 .banner.no-dots .dots{
