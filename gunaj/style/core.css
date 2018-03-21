@@ -694,11 +694,6 @@ h2.quicklinksheader::after,
 	padding: 5px 12px 6px;
 }
 
-.course_category_tree .category > .info > .categoryname {
-	background-image:;
-	
-}
-
 .course_category_tree .category:not(.with_children) > .info > .categoryname a{
 	pointer-events: none;
 	color:#777;
@@ -1022,6 +1017,14 @@ h2.quicklinksheader::after,
 
 #page-course-index-category .course_category_tree {
 	margin-top:15px;
+}
+
+#page-course-index-category  .course_category_tree 
+.category >.info {
+	border:none;
+	-webkit-box-shadow:none;
+	box-shadow:none;
+	padding: 2px 0px;
 }
 
 /* Recursos */
