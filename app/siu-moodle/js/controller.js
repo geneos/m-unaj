@@ -752,7 +752,9 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,$exceptionHand
 			for (j = 0 ; j<moodleCourse.comisiones.length ; j++){
 				if (moodleCourse.comisiones[j].name == comision.nombre) {
 					if (moodleCourse.comisiones[j].estudiantes){
+						console.log('Estudiantes de comision '+moodleCourse.comisiones[j].name+' antes de sincronizar',moodleCourse.comisiones[j].estudiantes);
 						for (h = 0 ; h<moodleCourse.comisiones[j].estudiantes.length ; h++){
+							//Variable que controla si el alumno de moodle existe en siu
 							exist = false;
 								
 							if (comision.alumnos)
@@ -762,12 +764,32 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,$exceptionHand
 									}
 
 								}
-						if (false){
+						if (!exist){
 							removeFromCourse.push( moodleFactory.unenrolUser(moodleCourse.comisiones[j].estudiantes[h].id,moodleCourse.id) );
 							}
 						}
 					}
+/*
+					if (moodleCourse.comisiones[j].docentes){
+						console.log('Docentes de comision '+moodleCourse.comisiones[j].name+' antes de sincronizar',moodleCourse.comisiones[j].estudiantes)
+						for (h = 0 ; h<moodleCourse.comisiones[j].docentes.length ; h++){
+							//Variable que controla si el alumno de moodle existe en siu
+							exist = false;
+								
+							if (comision.docentes)
+								for (j2 = 0 ; j2<comision.docentes.length ; j2++){
+									if (comision.docentes[j2].docente.usuario.toLowerCase() == moodleCourse.comisiones[j].docentes[h].username){
+										exist = true;
+									}
+
+								}
+						if (!exist){
+							removeFromCourse.push( moodleFactory.unenrolUser(moodleCourse.comisiones[j].estudiantes[h].id,moodleCourse.id) );
+							}
+						}
+					}*/
 				}
+
 			}
 			
 			logInfo('Se van a desmatricular: '+removeFromCourse.length+' usuarios');
@@ -782,15 +804,23 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,$exceptionHand
 				//1.1
 				var createUserPromise = [];
 					angular.forEach(comision.alumnos, function (alumno) {
-						if ( !$filter('userExistInMoodle')(alumno,$scope.moodleusers) )	{
-							createUserPromise.push(moodleFactory.createUser(alumno.usuario.toLowerCase(),PROPERTIES.MOODLE_USER_DEFAULT_NAME,alumno.nombres,alumno.apellido,alumno.email));
+						if (!alumno.usuario) {
+							logError('Alumno de SIU sin campo usuario asignado, se omite sincronizacion de dicho alumno ('+alumno.docente.apellido_nombres+')',"app.createUserPromise (alumno)",alumno);
 						}
+						else
+							if ( !$filter('userExistInMoodle')(alumno,$scope.moodleusers) )	{
+								createUserPromise.push(moodleFactory.createUser(alumno.usuario.toLowerCase(),PROPERTIES.MOODLE_USER_DEFAULT_NAME,alumno.nombres,alumno.apellido,alumno.email));
+							}
 					});
 
 					angular.forEach(comision.docentes, function (docente) {
-						if ( !$filter('userExistInMoodle')(docente.docente,$scope.moodleusers) )	{
-							createUserPromise.push(moodleFactory.createUser(docente.docente.usuario.toLowerCase(),"@1B2c3D4",docente.docente.nombres,docente.docente.apellido,docente.docente.email));
+						if (!docente.docente.usuario) {
+							logError('Docente de SIU sin campo usuario asignado, se omite sincronizacion de dicho docente ('+docente.docente.apellido+', '+docente.docente.nombres+')',"app.createUserPromise (docente)",docente);
 						}
+						else
+							if ( !$filter('userExistInMoodle')(docente.docente,$scope.moodleusers) )	{
+								createUserPromise.push(moodleFactory.createUser(docente.docente.usuario.toLowerCase(),"@1B2c3D4",docente.docente.nombres,docente.docente.apellido,docente.docente.email));
+							}
 					});
 
 				logInfo('Se van a crear '+createUserPromise.length+' nuevos usuarios en moodle');
@@ -814,7 +844,8 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,$exceptionHand
 					var cDocentes = 0;
 
 						angular.forEach(comision.alumnos, function (alumno) {
-							if ( !$filter('estudianteMigrated')(alumno,comision.nombre,moodleCourse) )	{
+							//Omito usuarios de siu sin username
+							if ( alumno.usuario && !$filter('estudianteMigrated')(alumno,comision.nombre,moodleCourse) )	{
 								//userid: lo saco de los usuarios de moodle
 								var user = getMoodleUserByUsername(alumno.usuario);
 								if (user != null){
@@ -831,8 +862,8 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,$exceptionHand
 
 
 						angular.forEach(comision.docentes, function (docente) {
-							
-							if ( !$filter('docenteMigrated')(docente.docente,comision.nombre,moodleCourse) )	{
+							//Omito usuarios de siu sin username
+							if (docente.docente.usuario && !$filter('docenteMigrated')(docente.docente,comision.nombre,moodleCourse) )	{
 
 								//userid: lo saco de los usuarios de moodle
 								var user = getMoodleUserByUsername(docente.docente.usuario);
@@ -867,8 +898,8 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,$exceptionHand
 							var cDocentes = 0;
 
 							angular.forEach(comision.alumnos, function (alumno) {
-								
-								if ( !$filter('estudianteMigrated')(alumno,comision.nombre,moodleCourse) )	{
+								//Omito usuarios de siu sin username
+								if (  alumno.usuario && !$filter('estudianteMigrated')(alumno,comision.nombre,moodleCourse) )	{
 									var user = getMoodleUserByUsername(alumno.usuario);
 									if (user != null) {
 										var group = getMoodleGroupByComision(comision.nombre,moodleCourse);
@@ -878,11 +909,11 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,$exceptionHand
 										logError('Error al asignar usuario a grupo, el usuario no existe en moodle',"moodleFactory.addGroupMember",alumno)
 
 								}
-
 							});
 
 							angular.forEach(comision.docentes, function (docente) {
-								if ( !$filter('docenteMigrated')(docente.docente,comision.nombre,moodleCourse) )	{
+								//Omito usuarios de siu sin username
+								if ( docente.docente.usuario && !$filter('docenteMigrated')(docente.docente,comision.nombre,moodleCourse) )	{
 									var user = getMoodleUserByUsername(docente.docente.usuario);
 									if (user != null) {
 										var group = getMoodleGroupByComision(comision.nombre,moodleCourse);
@@ -913,7 +944,7 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,$exceptionHand
 									addMembersToGroup(dummyMember);
 								}
 								else
-									logError('Error al asignar usuario a grupo','moodleFactory.addGroupMember',data);
+									logError('Error al asignar usuario a grupo','moodleFactory.addGroupMember',myItem);
 							});
 
 
@@ -1310,7 +1341,6 @@ app.controller('siuMoodleCtrl', function($scope,$http,$q, $filter,$exceptionHand
 			  							'periodoLectivo':comisionesFiltered[i].periodo_lectivo,
 			  							});
 			  	$scope.actividades[actividadesCount].moodleCategoryID =  getMoodleCategoryID($scope.actividades[actividadesCount].codigo,true,$scope.actividades[actividadesCount].periodoLectivo);
-			  	console.log($scope.actividades[actividadesCount].moodleCategoryID);
 			  	actividadesCount++;
 		  	}
 		actividadPos = indexedActivities.indexOf(comisionesFiltered[i].actividad.codigo+'-'+comisionesFiltered[i].periodo_lectivo.periodo_lectivo);

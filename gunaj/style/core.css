@@ -109,9 +109,9 @@ fieldset[disabled] input[type="button"].active,
 fieldset[disabled] input[type="submit"].active, 
 fieldset[disabled] input[type="reset"].active {
 	border:none;
-	border-radius:0px 10px 10px 10px !important;
-	-moz-border-radius:0px 10px 10px 10px !important;
-	-webkit-border-radius:0px 10px 10px 10px !important;
+	border-radius:0px 0px 10px 0px !important;
+	-moz-border-radius:0px 0px 10px 0px !important;
+	-webkit-border-radius:0px 0px 10px 0px !important;
 }
 
 .btn:hover, 
@@ -326,10 +326,6 @@ input[type='reset']:focus {
 	text-decoration:underline;
 }
 
-html,body {
-	background: white;
-}
-
 .banner.no-dots .dots{
 	display:none;
 }
@@ -511,6 +507,7 @@ html,body {
 .navbar .navbar-header .navbar-brand{
 	margin:0px;
 	padding:0px;	
+	box-sizing:content-box;
 }
 
 .navbar .navbar-header .navbar-brand #logo{
@@ -518,6 +515,22 @@ html,body {
 	margin-bottom:-5px;
 	margin-top:5px;
 	width:163px;
+	background:none;
+	font-family: 'FontAwesome';
+	text-align:center;
+}
+
+.navbar .navbar-header .navbar-brand #logo:before {
+    content: "\f015";
+    display: inline-block;
+    font-size: 40px;
+    margin-top: 10px;
+    color: #333;
+}
+
+.navbar .navbar-header .navbar-brand:hover {
+    border-bottom: 5px solid [[setting:themecolor]];;
+    background: #eee;
 }
 
 #moodle-navbar a{
@@ -944,7 +957,7 @@ h2.quicklinksheader::after,
 
 #forgotten {
 	color:[[setting:themecolor]];
-	margin: 10px 0 10px 95px;
+	margin: 10px 0 10px 65px;
 }
 
 .loginpanel form#guestlogin input[type="submit"] {
@@ -1251,3 +1264,100 @@ h2.quicklinksheader::after,
 		padding-top:20px;
 	}
 }
+
+/* FORMATO PESTANIAS */
+
+.format-onetopic ul.nav-tabs {
+	border-bottom: 1px solid [[setting:themecolor]];
+	padding-bottom: 10px;
+}
+
+.format-onetopic ul.nav-tabs li a {
+	padding: 0;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.format-onetopic ul.nav-tabs li div {
+	overflow: hidden;
+    text-overflow: ellipsis;
+    background-color:[[setting:themecolor]];
+	color:white;
+	border:1px solid [[setting:themecolor]];
+	border-bottom:none;
+	font-style:normal !important;
+	border-radius: 5px 5px 0px 0px;
+	transition:all 0.5s;
+}
+
+.format-onetopic ul.nav-tabs li a {
+	background: none;
+	border:none;	
+}
+
+.format-onetopic ul.nav-tabs li a .smallicon{
+	background: [[setting:themecolor]];
+	-moz-border-radius:10px;	
+	-webkit-border-radius:10px;	
+	border-radius:10px;	
+}
+
+
+
+.format-onetopic ul.nav-tabs li a:hover div,
+.format-onetopic ul.nav-tabs li.active a div {
+	background-color:white;
+	color:#414243;
+}
+
+.format-onetopic ul.nav-tabs li.active a:hover div{
+	border-color:[[setting:themecolor]];
+	border-bottom:none;
+}
+
+.format-onetopic ul.nav-tabs li.active a:hover{
+	border:none;
+}
+
+.format-onetopic ul.nav-tabs li a div.dimmed {
+	opacity: 0.5;
+	color:white !important;
+	font-style:italic;
+}
+
+.format-onetopic ul.nav-tabs li.active a div.dimmed {
+	color:#999 !important;
+}
+
+.format-onetopic ul.nav-tabs li a:hover div.dimmed {
+	color:#414243 !important;
+}
+
+.format-onetopic .nav-tabs + .nav-tabs {
+	margin-top:5px;
+	padding-bottom: 0px;
+}
+
+.format-onetopic .nav-tabs + .nav-tabs a div{
+	color:[[setting:themecolor]];
+	background: none;
+	border:none;
+	padding: 3px 10px;
+	border-left: 1px solid [[setting:themecolor]];
+	-moz-border-radius:0px;	
+	-webkit-border-radius:0px;	
+	border-radius:0px;	
+}
+
+.format-onetopic .nav-tabs + .nav-tabs li:first-child a div {
+	border:none;
+}
+
+.format-onetopic .nav-tabs + .nav-tabs li.active a div,
+.format-onetopic .nav-tabs + .nav-tabs a:hover div {
+	color:#414243;
+}
+
+
