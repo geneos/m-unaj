@@ -3,13 +3,14 @@
 		
         <?php echo $OUTPUT->course_header(); ?>
 		<div class="container">
-			<a href="http://www.unaj.edu.ar">
+			<a href="<?php echo $CFG->wwwroot;?>">
 			<div id="logo-header-principal-1" class="clearfix"></div>
-			</a>
+			
 			<div class="campus_virtual">
 				<span>campus</span>
 				<span>virtual</span>
 			</div>
+			</a>
 			<div id="moodle-navbar-1">
 			<?php if (isloggedin())  { ?>
 				<ul class="nav pull-right infologeo">

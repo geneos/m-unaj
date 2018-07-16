@@ -6,7 +6,7 @@
 //
 
 /**
- * XMLRPC client for Moodle 2 - local_wstemplate
+ * XMLRPC client for Moodle 2 - local_get_groupmembers
  *
  * This script does not depend of any Moodle code,
  * and it can be called from a browser.
@@ -26,7 +26,7 @@ $token = 'dff3bc6a9368d3b0db1ef59f6760ef7c';
 $domainname = 'http://YOURMOODLE';
 
 /// FUNCTION NAME
-$functionname = 'local_wstemplate_hello_world';
+$functionname = 'local_get_groupmembers';
 
 /// PARAMETERS
 $welcomemsg = 'Hello, ';

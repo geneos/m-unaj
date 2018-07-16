@@ -23,7 +23,7 @@
 require_once($CFG->libdir . "/externallib.php");
 require_once($CFG->libdir . "/accesslib.php");
 
-class local_myplugin_external extends external_api {
+class local_get_groupmembers_external extends external_api {
  
     /**
      * Returns description of method parameters
@@ -119,23 +119,5 @@ class local_myplugin_external extends external_api {
             )
         );
     }
-
-      /*public static function get_group_members_returns() {
-
-        return new external_multiple_structure(
-            new external_single_structure(
-                array(
-                    'groupid' => new external_value(PARAM_INT, 'group record id'),
-                    'users' => new external_multiple_structure( new external_single_structure(
-                                    array(
-                                        'id' => new external_value(PARAM_INT, 'id from user'),
-                                        'email' => new external_value(PARAM_TEXT, 'email from user'),
-                                        ),
-                                    )
-                    ),
-                )
-            )
-        );
-    }*/
 
 }

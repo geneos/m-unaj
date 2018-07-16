@@ -23,21 +23,12 @@
 
 // We defined the web service functions to install.
 $functions = array(
-    'local_myplugin_get_group_members' => array(         //web service function name
-        'classname'   => 'local_myplugin_external',  //class containing the external function
+    'local_get_groupmembers_get_group_members' => array(         //web service function name
+        'classname'   => 'local_get_groupmembers_external',  //class containing the external function
         'methodname'  => 'get_group_members',          //external function name
-        'classpath'   => 'local/myplugin/externallib.php',  //file containing the class/external function
+        'classpath'   => 'local/get_groupmembers/externallib.php',  //file containing the class/external function
         'description' => 'Get group members.',    //human readable description of the web service function
         'type'        => 'read'                  //database rights of the web service function (read, write)
     )
 );
 
-// We define the services to install as pre-build services. A pre-build service is not editable by administrator.
-$services = array(
-        'My service 2' => array(
-                'functions' => array ('local_myplugin_get_group_members',),
-                'restrictedusers' => 0,
-                'enabled'=>1,
-                'requiredcapability' => ''
-        )
-);

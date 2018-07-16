@@ -515,22 +515,6 @@ input[type='reset']:focus {
 	margin-bottom:-5px;
 	margin-top:5px;
 	width:163px;
-	background:none;
-	font-family: 'FontAwesome';
-	text-align:center;
-}
-
-.navbar .navbar-header .navbar-brand #logo:before {
-    content: "\f015";
-    display: inline-block;
-    font-size: 40px;
-    margin-top: 10px;
-    color: #333;
-}
-
-.navbar .navbar-header .navbar-brand:hover {
-    border-bottom: 5px solid [[setting:themecolor]];;
-    background: #eee;
 }
 
 #moodle-navbar a{
@@ -720,7 +704,6 @@ h2.quicklinksheader::after,
 
 .course_category_tree .category:not(.with_children) > .info > .categoryname a{
 	pointer-events: none;
-	color:#777;
 }
 
 
@@ -867,6 +850,7 @@ h2.quicklinksheader::after,
 	-webkit-box-shadow: 0px 0px 17px -3px rgba(0,0,0,0.75);
 	-moz-box-shadow: 0px 0px 17px -3px rgba(0,0,0,0.75);
 	box-shadow: 0px 0px 17px -3px rgba(0,0,0,0.75);
+	opacity:0.5;
 }
 
 #block-region-side-post .block .header .title h2:after,
@@ -1094,6 +1078,29 @@ h2.quicklinksheader::after,
 
 /* Recursos */
 
+#page-mod-quiz-edit .add-menu-outer .toggle-display{
+	background: #ecedf0;
+	color:#333;
+	line-height: 22px;
+	font-size: 14px;
+	transition: 0.25s;
+    font-weight: 500;
+    font-family: "Roboto";
+	padding: 5px 12px 6px;
+	border-radius: 0px 0px 10px 0px !important;
+    -moz-border-radius: 0px 0px 10px 0px !important;
+    -webkit-border-radius: 0px 0px 10px 0px !important;
+    display: inline-block;
+    margin: 5px 0;
+    cursor:pointer;
+}
+
+#page-mod-quiz-edit .add-menu-outer .toggle-display:hover,
+#page-mod-quiz-edit .add-menu-outer .toggle-display:focus{
+	background-color: [[setting:themecolor]];
+	color:white;
+}
+
 .path-mod .course_title .course_title_center h1,
 .path-mod .course_title .course_title_center h2{
 	font-size:14px;
@@ -1268,7 +1275,6 @@ h2.quicklinksheader::after,
 /* FORMATO PESTANIAS */
 
 .format-onetopic ul.nav-tabs {
-	border-bottom: 1px solid [[setting:themecolor]];
 	padding-bottom: 10px;
 }
 
@@ -1283,61 +1289,31 @@ h2.quicklinksheader::after,
 .format-onetopic ul.nav-tabs li div {
 	overflow: hidden;
     text-overflow: ellipsis;
-    background-color:[[setting:themecolor]];
-	color:white;
-	border:1px solid [[setting:themecolor]];
-	border-bottom:none;
-	font-style:normal !important;
 	border-radius: 5px 5px 0px 0px;
 	transition:all 0.5s;
 }
 
-.format-onetopic ul.nav-tabs li a {
-	background: none;
-	border:none;	
-}
 
 .format-onetopic ul.nav-tabs li a .smallicon{
-	background: [[setting:themecolor]];
 	-moz-border-radius:10px;	
 	-webkit-border-radius:10px;	
 	border-radius:10px;	
 }
 
-
-
-.format-onetopic ul.nav-tabs li a:hover div,
-.format-onetopic ul.nav-tabs li.active a div {
-	background-color:white;
-	color:#414243;
-}
-
-.format-onetopic ul.nav-tabs li.active a:hover div{
-	border-color:[[setting:themecolor]];
-	border-bottom:none;
-}
-
-.format-onetopic ul.nav-tabs li.active a:hover{
-	border:none;
-}
-
-.format-onetopic ul.nav-tabs li a div.dimmed {
-	opacity: 0.5;
-	color:white !important;
-	font-style:italic;
-}
-
-.format-onetopic ul.nav-tabs li.active a div.dimmed {
-	color:#999 !important;
-}
-
-.format-onetopic ul.nav-tabs li a:hover div.dimmed {
-	color:#414243 !important;
+.format-onetopic ul.nav-tabs li a:hover{
+	background: white;
+	border: 1px solid #ddd;
+	border-bottom:1px solid transparent;	
 }
 
 .format-onetopic .nav-tabs + .nav-tabs {
 	margin-top:5px;
 	padding-bottom: 0px;
+}
+
+.format-onetopic .nav-tabs + ul.nav-tabs li a {
+	background: none;
+	border:none;	
 }
 
 .format-onetopic .nav-tabs + .nav-tabs a div{

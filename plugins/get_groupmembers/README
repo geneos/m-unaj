@@ -1,0 +1,4 @@
+Web service get_groupmembers for Moodle
+------------------------------------------
+
+This modules enables webservices get_groupmembers ($groupid) for getting group members of a courde moodle group
